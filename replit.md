@@ -50,13 +50,33 @@ The login page has a collapsible "Demo Accounts" panel that pre-fills credential
 - `lp_profiles`, `programs`, `applications`, `scores`
 - `capital_calls`, `capital_call_allocations` — MP capital call management
 - `cap_table_entries` — per-founder equity/ownership tracking
+- `closing_checklists`, `closing_checklist_items` — per-deal closing workflow
+- `board_meetings`, `board_materials` — board meeting management
+- `diligence_checklists`, `diligence_checklist_items` — per-deal due diligence
+- `fund_metrics_snapshots` — point-in-time TVPI/DPI/RVPI/IRR snapshots per fund
+
+### Deal Pipeline State Machine
+Canonical stages (new): `sourced → interested → due_diligence → ready_for_ic → ic_approved/ic_rejected → closing → invested` (terminal: `passed`, `deal_dead`)
+Legacy stages (backward compat): `screening`, `ic_review`, `term_sheet`, `closed`
+- Advance via `PATCH /api/deals/:id/stage` with `{ toStage }` — enforces VALID_TRANSITIONS
+- `PUT /ic/deals/:id` rejects any body containing `pipelineStage` (bypass locked)
+- IC votes auto-advance `ready_for_ic` → `ic_approved` or `ic_rejected` on majority (≥2 votes)
 
 ### VC Management Features
-- **Capital Calls** (MP): Create/manage LP capital calls, track payment status (`/mp/capital-calls`)
+- **Capital Calls** (MP): Create/manage LP capital calls, pro-rata allocation engine (`/mp/capital-calls`)
 - **Capital Calls** (LP): View own capital call obligations (`/lp/capital-calls`)
 - **Cap Table** (Admin/MP): Full cap table per startup (`/admin/cap-table`)
 - **IC Meeting Packets**: Expandable deal packets with vote summary (`/ic/packets`)
-- **Fund Metrics** (MP): Portfolio KPIs, stage/sector breakdown (`/mp/fund-metrics`)
+- **Closing Workflows**: Per-deal closing checklists with default 8-item template (`/closing/checklists`)
+- **Board Materials**: Board meeting creation and material uploads (`/board/meetings`, `/board/materials`)
+- **Diligence Checklists**: Per-deal due diligence item tracking by category (`/diligence/checklists`)
+- **Fund Metrics Snapshots**: TVPI/DPI/RVPI/IRR recording per fund per quarter (`/mp/funds/:id/metrics`)
+- **LP Portal**: Fund summary with commitment/called capital, K-1 download link, quarterly updates
+
+### OpenAPI / Codegen
+- Spec lives at `lib/api-spec/openapi.yaml` (NOT `artifacts/api-server/openapi.yaml`)
+- Run codegen: `cd lib/api-spec && pnpm codegen`
+- Generated clients in `lib/api-spec/src/generated/`
 
 ### Environment Variables
 - `JWT_SECRET` — shared env var (auto-generated on first setup)

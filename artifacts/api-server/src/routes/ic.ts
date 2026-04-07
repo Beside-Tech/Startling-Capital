@@ -6,19 +6,29 @@ import {
 import { eq, desc, count, sql } from "drizzle-orm";
 import { requireIC, requireManagingPartner } from "../lib/auth";
 
-type PipelineStage = "sourced" | "screening" | "due_diligence" | "ic_review" | "term_sheet" | "closed" | "passed";
+type PipelineStage =
+  | "sourced" | "interested" | "due_diligence" | "ready_for_ic"
+  | "ic_approved" | "ic_rejected" | "closing" | "invested" | "passed" | "deal_dead"
+  | "screening" | "ic_review" | "term_sheet" | "closed";
 
-const VALID_TRANSITIONS: Record<PipelineStage, PipelineStage[]> = {
-  sourced:       ["screening", "passed"],
-  screening:     ["due_diligence", "passed"],
-  due_diligence: ["ic_review", "passed"],
-  ic_review:     ["term_sheet", "passed"],
-  term_sheet:    ["closed", "passed"],
-  closed:        [],
+const VALID_TRANSITIONS: Record<string, PipelineStage[]> = {
+  sourced:       ["interested", "passed", "deal_dead"],
+  interested:    ["due_diligence", "passed", "deal_dead"],
+  due_diligence: ["ready_for_ic", "passed", "deal_dead"],
+  ready_for_ic:  ["ic_approved", "ic_rejected", "deal_dead"],
+  ic_approved:   ["closing", "deal_dead"],
+  ic_rejected:   ["deal_dead"],
+  closing:       ["invested", "deal_dead"],
+  invested:      [],
   passed:        [],
+  deal_dead:     [],
+  screening:     ["due_diligence", "passed", "deal_dead"],
+  ic_review:     ["ic_approved", "ic_rejected", "deal_dead"],
+  term_sheet:    ["closing", "invested", "deal_dead"],
+  closed:        [],
 };
 
-const MP_ONLY_TARGETS: PipelineStage[] = ["ic_review", "term_sheet", "closed"];
+const MP_ONLY_TARGETS: PipelineStage[] = ["ic_approved", "ic_rejected", "closing", "invested"];
 
 const router = Router();
 
@@ -145,10 +155,14 @@ router.patch("/deals/:id/stage", requireIC, async (req, res) => {
 router.put("/ic/deals/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
-    const { pipelineStage, notes, decisionDate, sector, stage, amountSoughtCad, instrument } = req.body;
+    const { notes, decisionDate, sector, stage, amountSoughtCad, instrument } = req.body;
+    if ("pipelineStage" in req.body) {
+      return res.status(400).json({
+        error: "Direct pipelineStage mutation is not allowed. Use PATCH /api/deals/:id/stage to advance the state machine.",
+      });
+    }
 
     const [deal] = await db.update(dealFlowTable).set({
-      ...(pipelineStage !== undefined && { pipelineStage }),
       ...(notes !== undefined && { notes }),
       ...(decisionDate !== undefined && { decisionDate }),
       ...(sector !== undefined && { sector }),
@@ -201,10 +215,10 @@ router.post("/ic/deals/:id/vote", requireIC, async (req, res) => {
       const [currentDeal] = await db.select({ pipelineStage: dealFlowTable.pipelineStage })
         .from(dealFlowTable).where(eq(dealFlowTable.id, dealId)).limit(1);
 
-      if (currentDeal?.pipelineStage === "ic_review") {
+      if (currentDeal?.pipelineStage === "ic_review" || currentDeal?.pipelineStage === "ready_for_ic") {
         let newStage: PipelineStage | null = null;
-        if (approves > total / 2) newStage = "term_sheet";
-        else if (rejects > total / 2) newStage = "passed";
+        if (approves > total / 2) newStage = "ic_approved";
+        else if (rejects > total / 2) newStage = "ic_rejected";
 
         if (newStage) {
           await db.update(dealFlowTable)

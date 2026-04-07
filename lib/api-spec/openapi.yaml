@@ -23,7 +23,26 @@ tags:
   - name: export
     description: Export
   - name: admin
-    description: Admin management
+  - name: deal-flow
+    description: Deal pipeline and state machine
+  - name: ic-operations
+    description: Investment Committee voting and operations
+  - name: term-sheets
+    description: Term sheet management
+  - name: diligence
+    description: Due diligence checklists
+  - name: closing
+    description: Closing workflow checklists
+  - name: board-materials
+    description: Board meeting materials
+  - name: capital-calls
+    description: LP capital call engine
+  - name: cap-table
+    description: Portfolio cap table
+  - name: fund-admin
+    description: Fund metrics snapshots and fund administration
+  - name: lp-portal
+    description: LP portal with quarterly updates and K-1
 
 paths:
   /healthz:
@@ -780,6 +799,507 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessResponse"
+
+  /api/ic/deals:
+    get:
+      tags: [ic-operations]
+      summary: List all deals (IC view)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of deals
+  /api/ic/deals/{id}:
+    get:
+      tags: [ic-operations]
+      summary: Get deal detail
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deal detail
+    put:
+      tags: [ic-operations]
+      summary: Update deal fields (no pipelineStage)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes: { type: string }
+                decisionDate: { type: string }
+                sector: { type: string }
+                stage: { type: string }
+                amountSoughtCad: { type: number }
+                instrument: { type: string }
+      responses:
+        "200":
+          description: Updated deal
+        "400":
+          description: pipelineStage not allowed here
+  /api/deals/{id}/stage:
+    patch:
+      tags: [deal-flow]
+      summary: Advance deal pipeline stage via state machine
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [toStage]
+              properties:
+                toStage:
+                  type: string
+                  enum:
+                    - sourced
+                    - interested
+                    - due_diligence
+                    - ready_for_ic
+                    - ic_approved
+                    - ic_rejected
+                    - closing
+                    - invested
+                    - passed
+                    - deal_dead
+      responses:
+        "200":
+          description: Stage advanced
+        "400":
+          description: Invalid transition
+        "403":
+          description: Insufficient role for this transition
+  /api/ic/deals/{id}/vote:
+    post:
+      tags: [ic-operations]
+      summary: Cast IC vote; auto-advances stage on majority
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [vote]
+              properties:
+                vote:
+                  type: string
+                  enum: [approve, reject, abstain]
+                comment: { type: string }
+      responses:
+        "200":
+          description: Vote recorded; tally and optional auto-advance stage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  icVote: { type: object }
+                  tally: { type: object }
+                  autoAdvancedTo: { type: string, nullable: true }
+  /api/mp/term-sheets:
+    get:
+      tags: [term-sheets]
+      summary: List all term sheets
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of term sheets
+    post:
+      tags: [term-sheets]
+      summary: Create term sheet (equityPct auto-calculated)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dealId]
+              properties:
+                dealId: { type: integer }
+                valuationCapCad: { type: number }
+                investmentAmountCad: { type: number }
+                instrument: { type: string }
+                discountRate: { type: number }
+                maturityDate: { type: string }
+                boardSeat: { type: boolean }
+                proRataRights: { type: boolean }
+                status: { type: string }
+      responses:
+        "201":
+          description: Term sheet created with equityPct
+  /api/mp/term-sheets/{id}:
+    put:
+      tags: [term-sheets]
+      summary: Update term sheet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated term sheet
+  /api/diligence/checklists:
+    get:
+      tags: [diligence]
+      summary: List diligence checklists
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List
+    post:
+      tags: [diligence]
+      summary: Create diligence checklist for a deal
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dealId]
+              properties:
+                dealId: { type: integer }
+                name: { type: string }
+      responses:
+        "201":
+          description: Checklist created
+  /api/diligence/checklists/{id}:
+    get:
+      tags: [diligence]
+      summary: Get diligence checklist with items
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Checklist and items
+  /api/diligence/checklists/{checklistId}/items/{itemId}:
+    patch:
+      tags: [diligence]
+      summary: Update diligence item status
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: checklistId
+          required: true
+          schema: { type: integer }
+        - in: path
+          name: itemId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated item
+  /api/closing/checklists:
+    get:
+      tags: [closing]
+      summary: List closing checklists
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List
+    post:
+      tags: [closing]
+      summary: Create closing checklist for a deal (seeds default items)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dealId]
+              properties:
+                dealId: { type: integer }
+                name: { type: string }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Checklist with default items
+  /api/closing/checklists/{id}:
+    get:
+      tags: [closing]
+      summary: Get closing checklist with items
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Checklist and items
+  /api/closing/checklists/{checklistId}/items/{itemId}:
+    patch:
+      tags: [closing]
+      summary: Mark closing checklist item complete/incomplete
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: checklistId
+          required: true
+          schema: { type: integer }
+        - in: path
+          name: itemId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isComplete: { type: boolean }
+                notes: { type: string }
+      responses:
+        "200":
+          description: Updated item
+  /api/board/meetings:
+    get:
+      tags: [board-materials]
+      summary: List board meetings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of meetings
+    post:
+      tags: [board-materials]
+      summary: Create board meeting
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [companyName, title]
+              properties:
+                companyName: { type: string }
+                title: { type: string }
+                scheduledAt: { type: string }
+                agenda: { type: string }
+                founderId: { type: integer }
+      responses:
+        "201":
+          description: Meeting created
+  /api/board/meetings/{id}:
+    get:
+      tags: [board-materials]
+      summary: Get board meeting with materials
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Meeting and materials
+    put:
+      tags: [board-materials]
+      summary: Update board meeting
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated meeting
+  /api/board/materials:
+    post:
+      tags: [board-materials]
+      summary: Upload board material
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                boardMeetingId: { type: integer }
+                founderId: { type: integer }
+                title: { type: string }
+                fileUrl: { type: string }
+                fileType:
+                  type: string
+                  enum: [deck, financials, legal, update, other]
+                isConfidential: { type: boolean }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Material uploaded
+  /api/mp/funds/{fundId}/metrics:
+    get:
+      tags: [fund-admin]
+      summary: Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: fundId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of snapshots
+    post:
+      tags: [fund-admin]
+      summary: Record fund metrics snapshot
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: fundId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [snapshotDate, quarter, year]
+              properties:
+                snapshotDate: { type: string }
+                quarter: { type: integer }
+                year: { type: integer }
+                navCad: { type: number }
+                calledCapitalCad: { type: number }
+                distributedCapitalCad: { type: number }
+                tvpi: { type: number }
+                dpi: { type: number }
+                rvpi: { type: number }
+                irr: { type: number }
+                portfolioCount: { type: integer }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Snapshot recorded; fund metrics updated
+  /api/mp/capital-calls:
+    get:
+      tags: [capital-calls]
+      summary: List capital calls
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List
+    post:
+      tags: [capital-calls]
+      summary: Create capital call
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created
+  /api/mp/capital-calls/{id}/generate-allocations:
+    post:
+      tags: [capital-calls]
+      summary: Generate pro-rata LP allocations for a capital call
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Allocations generated
+  /api/lp/fund-summary:
+    get:
+      tags: [lp-portal]
+      summary: LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Fund summary
+  /api/lp/quarterly-updates:
+    get:
+      tags: [lp-portal]
+      summary: LP quarterly updates
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List
+  /api/lp/k1/{year}:
+    get:
+      tags: [lp-portal]
+      summary: Download K-1 link for a given tax year
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: year
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: K-1 link
+  /api/mp/cap-table:
+    get:
+      tags: [cap-table]
+      summary: Portfolio cap table overview
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Cap table rows
+  /api/mp/cap-table/{id}:
+    put:
+      tags: [cap-table]
+      summary: Update cap table entry
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated entry
+  /api/ic/meetings:
+    get:
+      tags: [ic-operations]
+      summary: List IC meeting packets
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List
+    post:
+      tags: [ic-operations]
+      summary: Create IC meeting packet
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created
 
 components:
   securitySchemes:

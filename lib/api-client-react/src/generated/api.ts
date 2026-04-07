@@ -43,7 +43,18 @@ import type {
   LoginRequest,
   LoginResponse,
   MeResponse,
+  PatchApiClosingChecklistsChecklistIdItemsItemIdBody,
+  PatchApiDealsIdStageBody,
+  PostApiBoardMaterialsBody,
+  PostApiBoardMeetingsBody,
+  PostApiClosingChecklistsBody,
+  PostApiDiligenceChecklistsBody,
+  PostApiIcDealsIdVote200,
+  PostApiIcDealsIdVoteBody,
+  PostApiMpFundsFundIdMetricsBody,
+  PostApiMpTermSheetsBody,
   Program,
+  PutApiIcDealsIdBody,
   ResetPinRequest,
   ResetPinResponse,
   Score,
@@ -2808,4 +2819,2817 @@ export const useAdminDeleteAssignment = <
   TContext
 > => {
   return useMutation(getAdminDeleteAssignmentMutationOptions(options));
+};
+
+/**
+ * @summary List all deals (IC view)
+ */
+export const getGetApiIcDealsUrl = () => {
+  return `/api/api/ic/deals`;
+};
+
+export const getApiIcDeals = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetApiIcDealsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiIcDealsQueryKey = () => {
+  return [`/api/api/ic/deals`] as const;
+};
+
+export const getGetApiIcDealsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiIcDeals>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcDeals>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiIcDealsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiIcDeals>>> = ({
+    signal,
+  }) => getApiIcDeals({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcDeals>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiIcDealsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiIcDeals>>
+>;
+export type GetApiIcDealsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all deals (IC view)
+ */
+
+export function useGetApiIcDeals<
+  TData = Awaited<ReturnType<typeof getApiIcDeals>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcDeals>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiIcDealsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get deal detail
+ */
+export const getGetApiIcDealsIdUrl = (id: number) => {
+  return `/api/api/ic/deals/${id}`;
+};
+
+export const getApiIcDealsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiIcDealsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiIcDealsIdQueryKey = (id: number) => {
+  return [`/api/api/ic/deals/${id}`] as const;
+};
+
+export const getGetApiIcDealsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiIcDealsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiIcDealsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiIcDealsIdQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiIcDealsId>>> = ({
+    signal,
+  }) => getApiIcDealsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcDealsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiIcDealsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiIcDealsId>>
+>;
+export type GetApiIcDealsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get deal detail
+ */
+
+export function useGetApiIcDealsId<
+  TData = Awaited<ReturnType<typeof getApiIcDealsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiIcDealsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiIcDealsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update deal fields (no pipelineStage)
+ */
+export const getPutApiIcDealsIdUrl = (id: number) => {
+  return `/api/api/ic/deals/${id}`;
+};
+
+export const putApiIcDealsId = async (
+  id: number,
+  putApiIcDealsIdBody: PutApiIcDealsIdBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiIcDealsIdUrl(id), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(putApiIcDealsIdBody),
+  });
+};
+
+export const getPutApiIcDealsIdMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiIcDealsId>>,
+    TError,
+    { id: number; data: BodyType<PutApiIcDealsIdBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiIcDealsId>>,
+  TError,
+  { id: number; data: BodyType<PutApiIcDealsIdBody> },
+  TContext
+> => {
+  const mutationKey = ["putApiIcDealsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiIcDealsId>>,
+    { id: number; data: BodyType<PutApiIcDealsIdBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return putApiIcDealsId(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiIcDealsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiIcDealsId>>
+>;
+export type PutApiIcDealsIdMutationBody = BodyType<PutApiIcDealsIdBody>;
+export type PutApiIcDealsIdMutationError = ErrorType<void>;
+
+/**
+ * @summary Update deal fields (no pipelineStage)
+ */
+export const usePutApiIcDealsId = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiIcDealsId>>,
+    TError,
+    { id: number; data: BodyType<PutApiIcDealsIdBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiIcDealsId>>,
+  TError,
+  { id: number; data: BodyType<PutApiIcDealsIdBody> },
+  TContext
+> => {
+  return useMutation(getPutApiIcDealsIdMutationOptions(options));
+};
+
+/**
+ * @summary Advance deal pipeline stage via state machine
+ */
+export const getPatchApiDealsIdStageUrl = (id: number) => {
+  return `/api/api/deals/${id}/stage`;
+};
+
+export const patchApiDealsIdStage = async (
+  id: number,
+  patchApiDealsIdStageBody: PatchApiDealsIdStageBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPatchApiDealsIdStageUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(patchApiDealsIdStageBody),
+  });
+};
+
+export const getPatchApiDealsIdStageMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+    TError,
+    { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+  TError,
+  { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+  TContext
+> => {
+  const mutationKey = ["patchApiDealsIdStage"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+    { id: number; data: BodyType<PatchApiDealsIdStageBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return patchApiDealsIdStage(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PatchApiDealsIdStageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof patchApiDealsIdStage>>
+>;
+export type PatchApiDealsIdStageMutationBody =
+  BodyType<PatchApiDealsIdStageBody>;
+export type PatchApiDealsIdStageMutationError = ErrorType<void>;
+
+/**
+ * @summary Advance deal pipeline stage via state machine
+ */
+export const usePatchApiDealsIdStage = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+    TError,
+    { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+  TError,
+  { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+  TContext
+> => {
+  return useMutation(getPatchApiDealsIdStageMutationOptions(options));
+};
+
+/**
+ * @summary Cast IC vote; auto-advances stage on majority
+ */
+export const getPostApiIcDealsIdVoteUrl = (id: number) => {
+  return `/api/api/ic/deals/${id}/vote`;
+};
+
+export const postApiIcDealsIdVote = async (
+  id: number,
+  postApiIcDealsIdVoteBody: PostApiIcDealsIdVoteBody,
+  options?: RequestInit,
+): Promise<PostApiIcDealsIdVote200> => {
+  return customFetch<PostApiIcDealsIdVote200>(getPostApiIcDealsIdVoteUrl(id), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiIcDealsIdVoteBody),
+  });
+};
+
+export const getPostApiIcDealsIdVoteMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+    TError,
+    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+  TError,
+  { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiIcDealsIdVote"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return postApiIcDealsIdVote(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiIcDealsIdVoteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiIcDealsIdVote>>
+>;
+export type PostApiIcDealsIdVoteMutationBody =
+  BodyType<PostApiIcDealsIdVoteBody>;
+export type PostApiIcDealsIdVoteMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Cast IC vote; auto-advances stage on majority
+ */
+export const usePostApiIcDealsIdVote = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+    TError,
+    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+  TError,
+  { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+  TContext
+> => {
+  return useMutation(getPostApiIcDealsIdVoteMutationOptions(options));
+};
+
+/**
+ * @summary List all term sheets
+ */
+export const getGetApiMpTermSheetsUrl = () => {
+  return `/api/api/mp/term-sheets`;
+};
+
+export const getApiMpTermSheets = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpTermSheetsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpTermSheetsQueryKey = () => {
+  return [`/api/api/mp/term-sheets`] as const;
+};
+
+export const getGetApiMpTermSheetsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpTermSheets>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiMpTermSheetsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpTermSheets>>
+  > = ({ signal }) => getApiMpTermSheets({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpTermSheetsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpTermSheets>>
+>;
+export type GetApiMpTermSheetsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all term sheets
+ */
+
+export function useGetApiMpTermSheets<
+  TData = Awaited<ReturnType<typeof getApiMpTermSheets>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpTermSheetsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create term sheet (equityPct auto-calculated)
+ */
+export const getPostApiMpTermSheetsUrl = () => {
+  return `/api/api/mp/term-sheets`;
+};
+
+export const postApiMpTermSheets = async (
+  postApiMpTermSheetsBody: PostApiMpTermSheetsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiMpTermSheetsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiMpTermSheetsBody),
+  });
+};
+
+export const getPostApiMpTermSheetsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpTermSheets>>,
+    TError,
+    { data: BodyType<PostApiMpTermSheetsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMpTermSheets>>,
+  TError,
+  { data: BodyType<PostApiMpTermSheetsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiMpTermSheets"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMpTermSheets>>,
+    { data: BodyType<PostApiMpTermSheetsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiMpTermSheets(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiMpTermSheetsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiMpTermSheets>>
+>;
+export type PostApiMpTermSheetsMutationBody = BodyType<PostApiMpTermSheetsBody>;
+export type PostApiMpTermSheetsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create term sheet (equityPct auto-calculated)
+ */
+export const usePostApiMpTermSheets = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpTermSheets>>,
+    TError,
+    { data: BodyType<PostApiMpTermSheetsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMpTermSheets>>,
+  TError,
+  { data: BodyType<PostApiMpTermSheetsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiMpTermSheetsMutationOptions(options));
+};
+
+/**
+ * @summary Update term sheet
+ */
+export const getPutApiMpTermSheetsIdUrl = (id: number) => {
+  return `/api/api/mp/term-sheets/${id}`;
+};
+
+export const putApiMpTermSheetsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiMpTermSheetsIdUrl(id), {
+    ...options,
+    method: "PUT",
+  });
+};
+
+export const getPutApiMpTermSheetsIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["putApiMpTermSheetsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return putApiMpTermSheetsId(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiMpTermSheetsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiMpTermSheetsId>>
+>;
+
+export type PutApiMpTermSheetsIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update term sheet
+ */
+export const usePutApiMpTermSheetsId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPutApiMpTermSheetsIdMutationOptions(options));
+};
+
+/**
+ * @summary List diligence checklists
+ */
+export const getGetApiDiligenceChecklistsUrl = () => {
+  return `/api/api/diligence/checklists`;
+};
+
+export const getApiDiligenceChecklists = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiDiligenceChecklistsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiDiligenceChecklistsQueryKey = () => {
+  return [`/api/api/diligence/checklists`] as const;
+};
+
+export const getGetApiDiligenceChecklistsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiDiligenceChecklistsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiDiligenceChecklists>>
+  > = ({ signal }) => getApiDiligenceChecklists({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiDiligenceChecklistsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiDiligenceChecklists>>
+>;
+export type GetApiDiligenceChecklistsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List diligence checklists
+ */
+
+export function useGetApiDiligenceChecklists<
+  TData = Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiDiligenceChecklistsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create diligence checklist for a deal
+ */
+export const getPostApiDiligenceChecklistsUrl = () => {
+  return `/api/api/diligence/checklists`;
+};
+
+export const postApiDiligenceChecklists = async (
+  postApiDiligenceChecklistsBody: PostApiDiligenceChecklistsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiDiligenceChecklistsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiDiligenceChecklistsBody),
+  });
+};
+
+export const getPostApiDiligenceChecklistsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+    TError,
+    { data: BodyType<PostApiDiligenceChecklistsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+  TError,
+  { data: BodyType<PostApiDiligenceChecklistsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiDiligenceChecklists"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+    { data: BodyType<PostApiDiligenceChecklistsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiDiligenceChecklists(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiDiligenceChecklistsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiDiligenceChecklists>>
+>;
+export type PostApiDiligenceChecklistsMutationBody =
+  BodyType<PostApiDiligenceChecklistsBody>;
+export type PostApiDiligenceChecklistsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create diligence checklist for a deal
+ */
+export const usePostApiDiligenceChecklists = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+    TError,
+    { data: BodyType<PostApiDiligenceChecklistsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+  TError,
+  { data: BodyType<PostApiDiligenceChecklistsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiDiligenceChecklistsMutationOptions(options));
+};
+
+/**
+ * @summary Get diligence checklist with items
+ */
+export const getGetApiDiligenceChecklistsIdUrl = (id: number) => {
+  return `/api/api/diligence/checklists/${id}`;
+};
+
+export const getApiDiligenceChecklistsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiDiligenceChecklistsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiDiligenceChecklistsIdQueryKey = (id: number) => {
+  return [`/api/api/diligence/checklists/${id}`] as const;
+};
+
+export const getGetApiDiligenceChecklistsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiDiligenceChecklistsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>
+  > = ({ signal }) =>
+    getApiDiligenceChecklistsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiDiligenceChecklistsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>
+>;
+export type GetApiDiligenceChecklistsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get diligence checklist with items
+ */
+
+export function useGetApiDiligenceChecklistsId<
+  TData = Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiDiligenceChecklistsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update diligence item status
+ */
+export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdUrl = (
+  checklistId: number,
+  itemId: number,
+) => {
+  return `/api/api/diligence/checklists/${checklistId}/items/${itemId}`;
+};
+
+export const patchApiDiligenceChecklistsChecklistIdItemsItemId = async (
+  checklistId: number,
+  itemId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getPatchApiDiligenceChecklistsChecklistIdItemsItemIdUrl(
+      checklistId,
+      itemId,
+    ),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions =
+  <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+      >,
+      TError,
+      { checklistId: number; itemId: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }): UseMutationOptions<
+    Awaited<
+      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+    >,
+    TError,
+    { checklistId: number; itemId: number },
+    TContext
+  > => {
+    const mutationKey = ["patchApiDiligenceChecklistsChecklistIdItemsItemId"];
+    const { mutation: mutationOptions, request: requestOptions } = options
+      ? options.mutation &&
+        "mutationKey" in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey }, request: undefined };
+
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+      >,
+      { checklistId: number; itemId: number }
+    > = (props) => {
+      const { checklistId, itemId } = props ?? {};
+
+      return patchApiDiligenceChecklistsChecklistIdItemsItemId(
+        checklistId,
+        itemId,
+        requestOptions,
+      );
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type PatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationResult =
+  NonNullable<
+    Awaited<
+      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+    >
+  >;
+
+export type PatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationError =
+  ErrorType<unknown>;
+
+/**
+ * @summary Update diligence item status
+ */
+export const usePatchApiDiligenceChecklistsChecklistIdItemsItemId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<
+      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+    >,
+    TError,
+    { checklistId: number; itemId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>>,
+  TError,
+  { checklistId: number; itemId: number },
+  TContext
+> => {
+  return useMutation(
+    getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions(
+      options,
+    ),
+  );
+};
+
+/**
+ * @summary List closing checklists
+ */
+export const getGetApiClosingChecklistsUrl = () => {
+  return `/api/api/closing/checklists`;
+};
+
+export const getApiClosingChecklists = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiClosingChecklistsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiClosingChecklistsQueryKey = () => {
+  return [`/api/api/closing/checklists`] as const;
+};
+
+export const getGetApiClosingChecklistsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiClosingChecklists>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiClosingChecklistsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiClosingChecklists>>
+  > = ({ signal }) => getApiClosingChecklists({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiClosingChecklistsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiClosingChecklists>>
+>;
+export type GetApiClosingChecklistsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List closing checklists
+ */
+
+export function useGetApiClosingChecklists<
+  TData = Awaited<ReturnType<typeof getApiClosingChecklists>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiClosingChecklistsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create closing checklist for a deal (seeds default items)
+ */
+export const getPostApiClosingChecklistsUrl = () => {
+  return `/api/api/closing/checklists`;
+};
+
+export const postApiClosingChecklists = async (
+  postApiClosingChecklistsBody: PostApiClosingChecklistsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiClosingChecklistsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiClosingChecklistsBody),
+  });
+};
+
+export const getPostApiClosingChecklistsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiClosingChecklists>>,
+    TError,
+    { data: BodyType<PostApiClosingChecklistsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiClosingChecklists>>,
+  TError,
+  { data: BodyType<PostApiClosingChecklistsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiClosingChecklists"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiClosingChecklists>>,
+    { data: BodyType<PostApiClosingChecklistsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiClosingChecklists(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiClosingChecklistsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiClosingChecklists>>
+>;
+export type PostApiClosingChecklistsMutationBody =
+  BodyType<PostApiClosingChecklistsBody>;
+export type PostApiClosingChecklistsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create closing checklist for a deal (seeds default items)
+ */
+export const usePostApiClosingChecklists = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiClosingChecklists>>,
+    TError,
+    { data: BodyType<PostApiClosingChecklistsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiClosingChecklists>>,
+  TError,
+  { data: BodyType<PostApiClosingChecklistsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiClosingChecklistsMutationOptions(options));
+};
+
+/**
+ * @summary Get closing checklist with items
+ */
+export const getGetApiClosingChecklistsIdUrl = (id: number) => {
+  return `/api/api/closing/checklists/${id}`;
+};
+
+export const getApiClosingChecklistsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiClosingChecklistsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiClosingChecklistsIdQueryKey = (id: number) => {
+  return [`/api/api/closing/checklists/${id}`] as const;
+};
+
+export const getGetApiClosingChecklistsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiClosingChecklistsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiClosingChecklistsId>>
+  > = ({ signal }) =>
+    getApiClosingChecklistsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiClosingChecklistsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiClosingChecklistsId>>
+>;
+export type GetApiClosingChecklistsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get closing checklist with items
+ */
+
+export function useGetApiClosingChecklistsId<
+  TData = Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiClosingChecklistsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Mark closing checklist item complete/incomplete
+ */
+export const getPatchApiClosingChecklistsChecklistIdItemsItemIdUrl = (
+  checklistId: number,
+  itemId: number,
+) => {
+  return `/api/api/closing/checklists/${checklistId}/items/${itemId}`;
+};
+
+export const patchApiClosingChecklistsChecklistIdItemsItemId = async (
+  checklistId: number,
+  itemId: number,
+  patchApiClosingChecklistsChecklistIdItemsItemIdBody: PatchApiClosingChecklistsChecklistIdItemsItemIdBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getPatchApiClosingChecklistsChecklistIdItemsItemIdUrl(checklistId, itemId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(patchApiClosingChecklistsChecklistIdItemsItemIdBody),
+    },
+  );
+};
+
+export const getPatchApiClosingChecklistsChecklistIdItemsItemIdMutationOptions =
+  <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>
+      >,
+      TError,
+      {
+        checklistId: number;
+        itemId: number;
+        data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  }): UseMutationOptions<
+    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+    TError,
+    {
+      checklistId: number;
+      itemId: number;
+      data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+    },
+    TContext
+  > => {
+    const mutationKey = ["patchApiClosingChecklistsChecklistIdItemsItemId"];
+    const { mutation: mutationOptions, request: requestOptions } = options
+      ? options.mutation &&
+        "mutationKey" in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey }, request: undefined };
+
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>
+      >,
+      {
+        checklistId: number;
+        itemId: number;
+        data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+      }
+    > = (props) => {
+      const { checklistId, itemId, data } = props ?? {};
+
+      return patchApiClosingChecklistsChecklistIdItemsItemId(
+        checklistId,
+        itemId,
+        data,
+        requestOptions,
+      );
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>
+  >;
+export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationBody =
+  BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationError =
+  ErrorType<unknown>;
+
+/**
+ * @summary Mark closing checklist item complete/incomplete
+ */
+export const usePatchApiClosingChecklistsChecklistIdItemsItemId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+    TError,
+    {
+      checklistId: number;
+      itemId: number;
+      data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+  TError,
+  {
+    checklistId: number;
+    itemId: number;
+    data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+  },
+  TContext
+> => {
+  return useMutation(
+    getPatchApiClosingChecklistsChecklistIdItemsItemIdMutationOptions(options),
+  );
+};
+
+/**
+ * @summary List board meetings
+ */
+export const getGetApiBoardMeetingsUrl = () => {
+  return `/api/api/board/meetings`;
+};
+
+export const getApiBoardMeetings = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiBoardMeetingsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiBoardMeetingsQueryKey = () => {
+  return [`/api/api/board/meetings`] as const;
+};
+
+export const getGetApiBoardMeetingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiBoardMeetings>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiBoardMeetingsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiBoardMeetings>>
+  > = ({ signal }) => getApiBoardMeetings({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiBoardMeetingsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiBoardMeetings>>
+>;
+export type GetApiBoardMeetingsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List board meetings
+ */
+
+export function useGetApiBoardMeetings<
+  TData = Awaited<ReturnType<typeof getApiBoardMeetings>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiBoardMeetingsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create board meeting
+ */
+export const getPostApiBoardMeetingsUrl = () => {
+  return `/api/api/board/meetings`;
+};
+
+export const postApiBoardMeetings = async (
+  postApiBoardMeetingsBody: PostApiBoardMeetingsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiBoardMeetingsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiBoardMeetingsBody),
+  });
+};
+
+export const getPostApiBoardMeetingsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiBoardMeetings>>,
+    TError,
+    { data: BodyType<PostApiBoardMeetingsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiBoardMeetings>>,
+  TError,
+  { data: BodyType<PostApiBoardMeetingsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiBoardMeetings"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiBoardMeetings>>,
+    { data: BodyType<PostApiBoardMeetingsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiBoardMeetings(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiBoardMeetingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiBoardMeetings>>
+>;
+export type PostApiBoardMeetingsMutationBody =
+  BodyType<PostApiBoardMeetingsBody>;
+export type PostApiBoardMeetingsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create board meeting
+ */
+export const usePostApiBoardMeetings = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiBoardMeetings>>,
+    TError,
+    { data: BodyType<PostApiBoardMeetingsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiBoardMeetings>>,
+  TError,
+  { data: BodyType<PostApiBoardMeetingsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiBoardMeetingsMutationOptions(options));
+};
+
+/**
+ * @summary Get board meeting with materials
+ */
+export const getGetApiBoardMeetingsIdUrl = (id: number) => {
+  return `/api/api/board/meetings/${id}`;
+};
+
+export const getApiBoardMeetingsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiBoardMeetingsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiBoardMeetingsIdQueryKey = (id: number) => {
+  return [`/api/api/board/meetings/${id}`] as const;
+};
+
+export const getGetApiBoardMeetingsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiBoardMeetingsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiBoardMeetingsId>>
+  > = ({ signal }) => getApiBoardMeetingsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiBoardMeetingsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiBoardMeetingsId>>
+>;
+export type GetApiBoardMeetingsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get board meeting with materials
+ */
+
+export function useGetApiBoardMeetingsId<
+  TData = Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiBoardMeetingsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update board meeting
+ */
+export const getPutApiBoardMeetingsIdUrl = (id: number) => {
+  return `/api/api/board/meetings/${id}`;
+};
+
+export const putApiBoardMeetingsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiBoardMeetingsIdUrl(id), {
+    ...options,
+    method: "PUT",
+  });
+};
+
+export const getPutApiBoardMeetingsIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["putApiBoardMeetingsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return putApiBoardMeetingsId(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiBoardMeetingsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiBoardMeetingsId>>
+>;
+
+export type PutApiBoardMeetingsIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update board meeting
+ */
+export const usePutApiBoardMeetingsId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPutApiBoardMeetingsIdMutationOptions(options));
+};
+
+/**
+ * @summary Upload board material
+ */
+export const getPostApiBoardMaterialsUrl = () => {
+  return `/api/api/board/materials`;
+};
+
+export const postApiBoardMaterials = async (
+  postApiBoardMaterialsBody: PostApiBoardMaterialsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiBoardMaterialsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiBoardMaterialsBody),
+  });
+};
+
+export const getPostApiBoardMaterialsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiBoardMaterials>>,
+    TError,
+    { data: BodyType<PostApiBoardMaterialsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiBoardMaterials>>,
+  TError,
+  { data: BodyType<PostApiBoardMaterialsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiBoardMaterials"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiBoardMaterials>>,
+    { data: BodyType<PostApiBoardMaterialsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiBoardMaterials(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiBoardMaterialsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiBoardMaterials>>
+>;
+export type PostApiBoardMaterialsMutationBody =
+  BodyType<PostApiBoardMaterialsBody>;
+export type PostApiBoardMaterialsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Upload board material
+ */
+export const usePostApiBoardMaterials = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiBoardMaterials>>,
+    TError,
+    { data: BodyType<PostApiBoardMaterialsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiBoardMaterials>>,
+  TError,
+  { data: BodyType<PostApiBoardMaterialsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiBoardMaterialsMutationOptions(options));
+};
+
+/**
+ * @summary Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
+ */
+export const getGetApiMpFundsFundIdMetricsUrl = (fundId: number) => {
+  return `/api/api/mp/funds/${fundId}/metrics`;
+};
+
+export const getApiMpFundsFundIdMetrics = async (
+  fundId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpFundsFundIdMetricsUrl(fundId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpFundsFundIdMetricsQueryKey = (fundId: number) => {
+  return [`/api/api/mp/funds/${fundId}/metrics`] as const;
+};
+
+export const getGetApiMpFundsFundIdMetricsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiMpFundsFundIdMetricsQueryKey(fundId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>
+  > = ({ signal }) =>
+    getApiMpFundsFundIdMetrics(fundId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!fundId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpFundsFundIdMetricsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>
+>;
+export type GetApiMpFundsFundIdMetricsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
+ */
+
+export function useGetApiMpFundsFundIdMetrics<
+  TData = Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpFundsFundIdMetricsQueryOptions(
+    fundId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Record fund metrics snapshot
+ */
+export const getPostApiMpFundsFundIdMetricsUrl = (fundId: number) => {
+  return `/api/api/mp/funds/${fundId}/metrics`;
+};
+
+export const postApiMpFundsFundIdMetrics = async (
+  fundId: number,
+  postApiMpFundsFundIdMetricsBody: PostApiMpFundsFundIdMetricsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiMpFundsFundIdMetricsUrl(fundId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiMpFundsFundIdMetricsBody),
+  });
+};
+
+export const getPostApiMpFundsFundIdMetricsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+    TError,
+    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+  TError,
+  { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiMpFundsFundIdMetrics"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> }
+  > = (props) => {
+    const { fundId, data } = props ?? {};
+
+    return postApiMpFundsFundIdMetrics(fundId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiMpFundsFundIdMetricsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>
+>;
+export type PostApiMpFundsFundIdMetricsMutationBody =
+  BodyType<PostApiMpFundsFundIdMetricsBody>;
+export type PostApiMpFundsFundIdMetricsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Record fund metrics snapshot
+ */
+export const usePostApiMpFundsFundIdMetrics = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+    TError,
+    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+  TError,
+  { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiMpFundsFundIdMetricsMutationOptions(options));
+};
+
+/**
+ * @summary List capital calls
+ */
+export const getGetApiMpCapitalCallsUrl = () => {
+  return `/api/api/mp/capital-calls`;
+};
+
+export const getApiMpCapitalCalls = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpCapitalCallsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpCapitalCallsQueryKey = () => {
+  return [`/api/api/mp/capital-calls`] as const;
+};
+
+export const getGetApiMpCapitalCallsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiMpCapitalCallsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpCapitalCalls>>
+  > = ({ signal }) => getApiMpCapitalCalls({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpCapitalCallsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpCapitalCalls>>
+>;
+export type GetApiMpCapitalCallsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List capital calls
+ */
+
+export function useGetApiMpCapitalCalls<
+  TData = Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpCapitalCallsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create capital call
+ */
+export const getPostApiMpCapitalCallsUrl = () => {
+  return `/api/api/mp/capital-calls`;
+};
+
+export const postApiMpCapitalCalls = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiMpCapitalCallsUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getPostApiMpCapitalCallsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postApiMpCapitalCalls"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    void
+  > = () => {
+    return postApiMpCapitalCalls(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiMpCapitalCallsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiMpCapitalCalls>>
+>;
+
+export type PostApiMpCapitalCallsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create capital call
+ */
+export const usePostApiMpCapitalCalls = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(getPostApiMpCapitalCallsMutationOptions(options));
+};
+
+/**
+ * @summary Generate pro-rata LP allocations for a capital call
+ */
+export const getPostApiMpCapitalCallsIdGenerateAllocationsUrl = (
+  id: number,
+) => {
+  return `/api/api/mp/capital-calls/${id}/generate-allocations`;
+};
+
+export const postApiMpCapitalCallsIdGenerateAllocations = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getPostApiMpCapitalCallsIdGenerateAllocationsUrl(id),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getPostApiMpCapitalCallsIdGenerateAllocationsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["postApiMpCapitalCallsIdGenerateAllocations"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postApiMpCapitalCallsIdGenerateAllocations(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiMpCapitalCallsIdGenerateAllocationsMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>
+  >;
+
+export type PostApiMpCapitalCallsIdGenerateAllocationsMutationError =
+  ErrorType<unknown>;
+
+/**
+ * @summary Generate pro-rata LP allocations for a capital call
+ */
+export const usePostApiMpCapitalCallsIdGenerateAllocations = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(
+    getPostApiMpCapitalCallsIdGenerateAllocationsMutationOptions(options),
+  );
+};
+
+/**
+ * @summary LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
+ */
+export const getGetApiLpFundSummaryUrl = () => {
+  return `/api/api/lp/fund-summary`;
+};
+
+export const getApiLpFundSummary = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiLpFundSummaryUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiLpFundSummaryQueryKey = () => {
+  return [`/api/api/lp/fund-summary`] as const;
+};
+
+export const getGetApiLpFundSummaryQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiLpFundSummary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiLpFundSummaryQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiLpFundSummary>>
+  > = ({ signal }) => getApiLpFundSummary({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiLpFundSummaryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiLpFundSummary>>
+>;
+export type GetApiLpFundSummaryQueryError = ErrorType<unknown>;
+
+/**
+ * @summary LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
+ */
+
+export function useGetApiLpFundSummary<
+  TData = Awaited<ReturnType<typeof getApiLpFundSummary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiLpFundSummaryQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary LP quarterly updates
+ */
+export const getGetApiLpQuarterlyUpdatesUrl = () => {
+  return `/api/api/lp/quarterly-updates`;
+};
+
+export const getApiLpQuarterlyUpdates = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiLpQuarterlyUpdatesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiLpQuarterlyUpdatesQueryKey = () => {
+  return [`/api/api/lp/quarterly-updates`] as const;
+};
+
+export const getGetApiLpQuarterlyUpdatesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiLpQuarterlyUpdatesQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>
+  > = ({ signal }) => getApiLpQuarterlyUpdates({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiLpQuarterlyUpdatesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>
+>;
+export type GetApiLpQuarterlyUpdatesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary LP quarterly updates
+ */
+
+export function useGetApiLpQuarterlyUpdates<
+  TData = Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiLpQuarterlyUpdatesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Download K-1 link for a given tax year
+ */
+export const getGetApiLpK1YearUrl = (year: number) => {
+  return `/api/api/lp/k1/${year}`;
+};
+
+export const getApiLpK1Year = async (
+  year: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiLpK1YearUrl(year), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiLpK1YearQueryKey = (year: number) => {
+  return [`/api/api/lp/k1/${year}`] as const;
+};
+
+export const getGetApiLpK1YearQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiLpK1Year>>,
+  TError = ErrorType<unknown>,
+>(
+  year: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiLpK1Year>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiLpK1YearQueryKey(year);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLpK1Year>>> = ({
+    signal,
+  }) => getApiLpK1Year(year, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!year,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiLpK1Year>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiLpK1YearQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiLpK1Year>>
+>;
+export type GetApiLpK1YearQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Download K-1 link for a given tax year
+ */
+
+export function useGetApiLpK1Year<
+  TData = Awaited<ReturnType<typeof getApiLpK1Year>>,
+  TError = ErrorType<unknown>,
+>(
+  year: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiLpK1Year>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiLpK1YearQueryOptions(year, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Portfolio cap table overview
+ */
+export const getGetApiMpCapTableUrl = () => {
+  return `/api/api/mp/cap-table`;
+};
+
+export const getApiMpCapTable = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpCapTableUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpCapTableQueryKey = () => {
+  return [`/api/api/mp/cap-table`] as const;
+};
+
+export const getGetApiMpCapTableQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpCapTable>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiMpCapTableQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpCapTable>>
+  > = ({ signal }) => getApiMpCapTable({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpCapTableQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpCapTable>>
+>;
+export type GetApiMpCapTableQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Portfolio cap table overview
+ */
+
+export function useGetApiMpCapTable<
+  TData = Awaited<ReturnType<typeof getApiMpCapTable>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpCapTableQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update cap table entry
+ */
+export const getPutApiMpCapTableIdUrl = (id: number) => {
+  return `/api/api/mp/cap-table/${id}`;
+};
+
+export const putApiMpCapTableId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiMpCapTableIdUrl(id), {
+    ...options,
+    method: "PUT",
+  });
+};
+
+export const getPutApiMpCapTableIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiMpCapTableId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["putApiMpCapTableId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return putApiMpCapTableId(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiMpCapTableIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiMpCapTableId>>
+>;
+
+export type PutApiMpCapTableIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update cap table entry
+ */
+export const usePutApiMpCapTableId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiMpCapTableId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPutApiMpCapTableIdMutationOptions(options));
+};
+
+/**
+ * @summary List IC meeting packets
+ */
+export const getGetApiIcMeetingsUrl = () => {
+  return `/api/api/ic/meetings`;
+};
+
+export const getApiIcMeetings = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiIcMeetingsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiIcMeetingsQueryKey = () => {
+  return [`/api/api/ic/meetings`] as const;
+};
+
+export const getGetApiIcMeetingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiIcMeetings>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiIcMeetingsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiIcMeetings>>
+  > = ({ signal }) => getApiIcMeetings({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiIcMeetingsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiIcMeetings>>
+>;
+export type GetApiIcMeetingsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List IC meeting packets
+ */
+
+export function useGetApiIcMeetings<
+  TData = Awaited<ReturnType<typeof getApiIcMeetings>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiIcMeetingsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create IC meeting packet
+ */
+export const getPostApiIcMeetingsUrl = () => {
+  return `/api/api/ic/meetings`;
+};
+
+export const postApiIcMeetings = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiIcMeetingsUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getPostApiIcMeetingsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiIcMeetings>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postApiIcMeetings"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    void
+  > = () => {
+    return postApiIcMeetings(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiIcMeetingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiIcMeetings>>
+>;
+
+export type PostApiIcMeetingsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create IC meeting packet
+ */
+export const usePostApiIcMeetings = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiIcMeetings>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(getPostApiIcMeetingsMutationOptions(options));
 };

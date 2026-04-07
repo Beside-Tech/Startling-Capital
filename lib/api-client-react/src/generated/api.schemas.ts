@@ -377,3 +377,128 @@ export type AdminGetStartupsParams = {
   programId?: string;
   cohortId?: string;
 };
+
+export type PutApiIcDealsIdBody = {
+  notes?: string;
+  decisionDate?: string;
+  sector?: string;
+  stage?: string;
+  amountSoughtCad?: number;
+  instrument?: string;
+};
+
+export type PatchApiDealsIdStageBodyToStage =
+  (typeof PatchApiDealsIdStageBodyToStage)[keyof typeof PatchApiDealsIdStageBodyToStage];
+
+export const PatchApiDealsIdStageBodyToStage = {
+  sourced: "sourced",
+  interested: "interested",
+  due_diligence: "due_diligence",
+  ready_for_ic: "ready_for_ic",
+  ic_approved: "ic_approved",
+  ic_rejected: "ic_rejected",
+  closing: "closing",
+  invested: "invested",
+  passed: "passed",
+  deal_dead: "deal_dead",
+} as const;
+
+export type PatchApiDealsIdStageBody = {
+  toStage: PatchApiDealsIdStageBodyToStage;
+};
+
+export type PostApiIcDealsIdVoteBodyVote =
+  (typeof PostApiIcDealsIdVoteBodyVote)[keyof typeof PostApiIcDealsIdVoteBodyVote];
+
+export const PostApiIcDealsIdVoteBodyVote = {
+  approve: "approve",
+  reject: "reject",
+  abstain: "abstain",
+} as const;
+
+export type PostApiIcDealsIdVoteBody = {
+  vote: PostApiIcDealsIdVoteBodyVote;
+  comment?: string;
+};
+
+export type PostApiIcDealsIdVote200IcVote = { [key: string]: unknown };
+
+export type PostApiIcDealsIdVote200Tally = { [key: string]: unknown };
+
+export type PostApiIcDealsIdVote200 = {
+  icVote?: PostApiIcDealsIdVote200IcVote;
+  tally?: PostApiIcDealsIdVote200Tally;
+  autoAdvancedTo?: string | null;
+};
+
+export type PostApiMpTermSheetsBody = {
+  dealId: number;
+  valuationCapCad?: number;
+  investmentAmountCad?: number;
+  instrument?: string;
+  discountRate?: number;
+  maturityDate?: string;
+  boardSeat?: boolean;
+  proRataRights?: boolean;
+  status?: string;
+};
+
+export type PostApiDiligenceChecklistsBody = {
+  dealId: number;
+  name?: string;
+};
+
+export type PostApiClosingChecklistsBody = {
+  dealId: number;
+  name?: string;
+  notes?: string;
+};
+
+export type PatchApiClosingChecklistsChecklistIdItemsItemIdBody = {
+  isComplete?: boolean;
+  notes?: string;
+};
+
+export type PostApiBoardMeetingsBody = {
+  companyName: string;
+  title: string;
+  scheduledAt?: string;
+  agenda?: string;
+  founderId?: number;
+};
+
+export type PostApiBoardMaterialsBodyFileType =
+  (typeof PostApiBoardMaterialsBodyFileType)[keyof typeof PostApiBoardMaterialsBodyFileType];
+
+export const PostApiBoardMaterialsBodyFileType = {
+  deck: "deck",
+  financials: "financials",
+  legal: "legal",
+  update: "update",
+  other: "other",
+} as const;
+
+export type PostApiBoardMaterialsBody = {
+  boardMeetingId?: number;
+  founderId?: number;
+  title: string;
+  fileUrl?: string;
+  fileType?: PostApiBoardMaterialsBodyFileType;
+  isConfidential?: boolean;
+  notes?: string;
+};
+
+export type PostApiMpFundsFundIdMetricsBody = {
+  snapshotDate: string;
+  quarter: number;
+  year: number;
+  navCad?: number;
+  calledCapitalCad?: number;
+  distributedCapitalCad?: number;
+  tvpi?: number;
+  dpi?: number;
+  rvpi?: number;
+  irr?: number;
+  portfolioCount?: number;
+  notes?: string;
+};

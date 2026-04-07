@@ -33,6 +33,10 @@ import diligenceRouter from "./diligence";
 import founderAsksRouter from "./founder-asks";
 import fundsRouter from "./funds";
 import lpPortalRouter from "./lp-portal";
+import closingRouter from "./closing";
+import boardMaterialsRouter from "./board-materials";
+import fundMetricsRouter from "./fund-metrics";
+import diligenceChecklistsRouter from "./diligence-checklists";
 
 const router: IRouter = Router();
 
@@ -70,5 +74,9 @@ router.use(diligenceRouter);
 router.use(founderAsksRouter);
 router.use(fundsRouter);
 router.use(lpPortalRouter);
+router.use(closingRouter);
+router.use(boardMaterialsRouter);
+router.use(fundMetricsRouter);
+router.use(diligenceChecklistsRouter);
 
 export default router;

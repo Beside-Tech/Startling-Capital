@@ -13,7 +13,11 @@ export const dealFlowTable = pgTable("deal_flow", {
   amountSoughtCad: numeric("amount_sought_cad", { precision: 15, scale: 2 }),
   instrument: text("instrument").notNull().default("SAFE"),
   pipelineStage: text("pipeline_stage", {
-    enum: ["sourced", "screening", "due_diligence", "ic_review", "term_sheet", "closed", "passed"],
+    enum: [
+      "sourced", "interested", "due_diligence", "ready_for_ic",
+      "ic_approved", "ic_rejected", "closing", "invested", "passed", "deal_dead",
+      "screening", "ic_review", "term_sheet", "closed",
+    ],
   }).notNull().default("sourced"),
   source: text("source"),
   assignedToId: integer("assigned_to_id").references(() => usersTable.id),
