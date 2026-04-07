@@ -27,6 +27,12 @@ import lpRouter from "./lp";
 import mpRouter from "./mp";
 import capitalCallsRouter from "./capital-calls";
 import capTableRouter from "./cap-table";
+import icMeetingsRouter from "./ic-meetings";
+import termSheetsRouter from "./term-sheets";
+import diligenceRouter from "./diligence";
+import founderAsksRouter from "./founder-asks";
+import fundsRouter from "./funds";
+import lpPortalRouter from "./lp-portal";
 
 const router: IRouter = Router();
 
@@ -58,5 +64,11 @@ router.use(lpRouter);
 router.use(mpRouter);
 router.use(capitalCallsRouter);
 router.use(capTableRouter);
+router.use(icMeetingsRouter);
+router.use(termSheetsRouter);
+router.use(diligenceRouter);
+router.use(founderAsksRouter);
+router.use(fundsRouter);
+router.use(lpPortalRouter);
 
 export default router;

@@ -55,6 +55,14 @@ import MPDealFlow from "@/pages/mp/deal-flow";
 import MPAdvisory from "@/pages/mp/advisory";
 import MPCapitalCalls from "@/pages/mp/capital-calls";
 import MPFundMetrics from "@/pages/mp/fund-metrics";
+import MPICMeetings from "@/pages/mp/ic-meetings";
+import MPTermSheet from "@/pages/mp/term-sheet";
+import MPFunds from "@/pages/mp/funds";
+import MPFounderAsks from "@/pages/mp/founder-asks";
+import MPLPPortal from "@/pages/mp/lp-portal";
+import ICMeetings from "@/pages/ic/meetings";
+import FounderAsks from "@/pages/founder/asks";
+import LPPortal from "@/pages/lp/portal";
 
 import { PrivacyPage, TermsPage, CookiesPage } from "@/pages/legal";
 
@@ -119,12 +127,14 @@ function Router() {
       <Route path="/founder/qa" component={FounderQA} />
       <Route path="/founder/advisory" component={FounderAdvisory} />
       <Route path="/founder/profile" component={FounderProfile} />
+      <Route path="/founder/asks" component={FounderAsks} />
 
       {/* Investment Committee */}
       <Route path="/ic/dashboard" component={ICDashboard} />
       <Route path="/ic/deals" component={ICDeals} />
       <Route path="/ic/portfolio" component={ICPortfolio} />
       <Route path="/ic/packets" component={ICPackets} />
+      <Route path="/ic/meetings" component={ICMeetings} />
 
       {/* LP */}
       <Route path="/lp/dashboard" component={LPDashboard} />
@@ -132,6 +142,7 @@ function Router() {
       <Route path="/lp/founders" component={LPFounders} />
       <Route path="/lp/data-room/:founderId" component={LPDataRoom} />
       <Route path="/lp/capital-calls" component={LPCapitalCalls} />
+      <Route path="/lp/portal" component={LPPortal} />
 
       {/* Managing Partner */}
       <Route path="/mp/dashboard" component={MPDashboard} />
@@ -141,6 +152,11 @@ function Router() {
       <Route path="/mp/advisory" component={MPAdvisory} />
       <Route path="/mp/capital-calls" component={MPCapitalCalls} />
       <Route path="/mp/fund-metrics" component={MPFundMetrics} />
+      <Route path="/mp/ic-meetings" component={MPICMeetings} />
+      <Route path="/mp/term-sheet" component={MPTermSheet} />
+      <Route path="/mp/funds" component={MPFunds} />
+      <Route path="/mp/founder-asks" component={MPFounderAsks} />
+      <Route path="/mp/lp-portal" component={MPLPPortal} />
 
       {/* Legal */}
       <Route path="/legal/privacy" component={PrivacyPage} />

@@ -5,17 +5,23 @@ import { useTheme } from "@/lib/theme";
 import {
   LayoutDashboard, GitBranch, Briefcase, Users, CalendarCheck,
   LogOut, Sun, Moon, Menu, X, ChevronRight, DollarSign, TrendingUp, Table2,
+  FileSignature, Building2, HelpCircle, BookOpen, Vote,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard",      path: "/mp/dashboard"      },
-  { icon: GitBranch,       label: "Deal Flow",       path: "/mp/deal-flow"      },
-  { icon: Briefcase,       label: "Portfolio",       path: "/mp/investments"    },
-  { icon: Users,           label: "Limited Partners",path: "/mp/lps"            },
-  { icon: DollarSign,      label: "Capital Calls",   path: "/mp/capital-calls"  },
-  { icon: Table2,          label: "Cap Table",       path: "/admin/cap-table"   },
-  { icon: TrendingUp,      label: "Fund Metrics",    path: "/mp/fund-metrics"   },
-  { icon: CalendarCheck,   label: "Advisory",        path: "/mp/advisory"       },
+  { icon: LayoutDashboard, label: "Dashboard",       path: "/mp/dashboard"      },
+  { icon: GitBranch,       label: "Deal Flow",        path: "/mp/deal-flow"      },
+  { icon: Vote,            label: "IC Meetings",      path: "/mp/ic-meetings"    },
+  { icon: FileSignature,   label: "Term Sheets",      path: "/mp/term-sheet"     },
+  { icon: Briefcase,       label: "Portfolio",        path: "/mp/investments"    },
+  { icon: HelpCircle,      label: "Founder Asks",     path: "/mp/founder-asks"   },
+  { icon: Users,           label: "Limited Partners", path: "/mp/lps"            },
+  { icon: DollarSign,      label: "Capital Calls",    path: "/mp/capital-calls"  },
+  { icon: BookOpen,        label: "LP Portal",        path: "/mp/lp-portal"      },
+  { icon: Building2,       label: "Funds",            path: "/mp/funds"          },
+  { icon: Table2,          label: "Cap Table",        path: "/admin/cap-table"   },
+  { icon: TrendingUp,      label: "Fund Metrics",     path: "/mp/fund-metrics"   },
+  { icon: CalendarCheck,   label: "Advisory",         path: "/mp/advisory"       },
 ];
 
 function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {

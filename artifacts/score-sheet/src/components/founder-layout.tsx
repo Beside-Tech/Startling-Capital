@@ -13,6 +13,7 @@ import {
   LogOut,
   Sun,
   Moon,
+  HelpCircle,
   Menu,
   X,
   Rocket,
@@ -32,7 +33,8 @@ const NAV_ITEMS = [
   { icon: Database, label: "Data Room", path: "/founder/data-room" },
   { icon: MessageSquare, label: "Q&A", path: "/founder/qa" },
   { icon: ExternalLink, label: "Advisory Services", path: "/founder/advisory" },
-  { icon: User, label: "My Profile", path: "/founder/profile" },
+  { icon: HelpCircle,   label: "My Asks",           path: "/founder/asks"     },
+  { icon: User,         label: "My Profile",         path: "/founder/profile"  },
 ];
 
 function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {

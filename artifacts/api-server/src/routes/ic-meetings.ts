@@ -1,0 +1,164 @@
+import { Router } from "express";
+import { db } from "@workspace/db";
+import {
+  icMeetingsTable, icMeetingDealsTable, dealFlowTable, usersTable, icVotesTable,
+} from "@workspace/db";
+import { eq, desc, count } from "drizzle-orm";
+import { requireIC, requireManagingPartner } from "../lib/auth";
+
+const router = Router();
+
+router.get("/ic/meetings", requireIC, async (req, res) => {
+  try {
+    const meetings = await db
+      .select({
+        id: icMeetingsTable.id,
+        title: icMeetingsTable.title,
+        scheduledAt: icMeetingsTable.scheduledAt,
+        status: icMeetingsTable.status,
+        quorumReached: icMeetingsTable.quorumReached,
+        agenda: icMeetingsTable.agenda,
+        notes: icMeetingsTable.notes,
+        createdAt: icMeetingsTable.createdAt,
+        createdByName: usersTable.name,
+      })
+      .from(icMeetingsTable)
+      .leftJoin(usersTable, eq(icMeetingsTable.createdById, usersTable.id))
+      .orderBy(desc(icMeetingsTable.scheduledAt));
+
+    res.json({ meetings });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch meetings" });
+  }
+});
+
+router.post("/ic/meetings", requireManagingPartner, async (req, res) => {
+  try {
+    const { title, scheduledAt, agenda, status, notes } = req.body;
+    if (!title) return res.status(400).json({ error: "title is required" });
+
+    const [meeting] = await db.insert(icMeetingsTable).values({
+      title,
+      scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+      agenda: agenda || null,
+      status: status || "draft",
+      notes: notes || null,
+      createdById: req.user!.userId,
+    }).returning();
+
+    res.status(201).json({ meeting });
+  } catch {
+    res.status(500).json({ error: "Failed to create meeting" });
+  }
+});
+
+router.get("/ic/meetings/:id", requireIC, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const [meeting] = await db
+      .select({
+        id: icMeetingsTable.id,
+        title: icMeetingsTable.title,
+        scheduledAt: icMeetingsTable.scheduledAt,
+        status: icMeetingsTable.status,
+        quorumReached: icMeetingsTable.quorumReached,
+        agenda: icMeetingsTable.agenda,
+        notes: icMeetingsTable.notes,
+        minutesUrl: icMeetingsTable.minutesUrl,
+        createdAt: icMeetingsTable.createdAt,
+        updatedAt: icMeetingsTable.updatedAt,
+        createdByName: usersTable.name,
+      })
+      .from(icMeetingsTable)
+      .leftJoin(usersTable, eq(icMeetingsTable.createdById, usersTable.id))
+      .where(eq(icMeetingsTable.id, id))
+      .limit(1);
+
+    if (!meeting) return res.status(404).json({ error: "Meeting not found" });
+
+    const deals = await db
+      .select({
+        id: icMeetingDealsTable.id,
+        dealId: icMeetingDealsTable.dealId,
+        packetUrl: icMeetingDealsTable.packetUrl,
+        recommendation: icMeetingDealsTable.recommendation,
+        decisionReached: icMeetingDealsTable.decisionReached,
+        decisionNotes: icMeetingDealsTable.decisionNotes,
+        companyName: dealFlowTable.companyName,
+        sector: dealFlowTable.sector,
+        pipelineStage: dealFlowTable.pipelineStage,
+        amountSoughtCad: dealFlowTable.amountSoughtCad,
+        presenterName: usersTable.name,
+      })
+      .from(icMeetingDealsTable)
+      .leftJoin(dealFlowTable, eq(icMeetingDealsTable.dealId, dealFlowTable.id))
+      .leftJoin(usersTable, eq(icMeetingDealsTable.presentedById, usersTable.id))
+      .where(eq(icMeetingDealsTable.meetingId, id));
+
+    res.json({ meeting, deals });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch meeting" });
+  }
+});
+
+router.put("/ic/meetings/:id", requireManagingPartner, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const { title, scheduledAt, agenda, status, notes, quorumReached, minutesUrl } = req.body;
+
+    const [updated] = await db.update(icMeetingsTable).set({
+      ...(title !== undefined && { title }),
+      ...(scheduledAt !== undefined && { scheduledAt: scheduledAt ? new Date(scheduledAt) : null }),
+      ...(agenda !== undefined && { agenda }),
+      ...(status !== undefined && { status }),
+      ...(notes !== undefined && { notes }),
+      ...(quorumReached !== undefined && { quorumReached }),
+      ...(minutesUrl !== undefined && { minutesUrl }),
+      updatedAt: new Date(),
+    }).where(eq(icMeetingsTable.id, id)).returning();
+
+    res.json({ meeting: updated });
+  } catch {
+    res.status(500).json({ error: "Failed to update meeting" });
+  }
+});
+
+router.post("/ic/meetings/:id/deals", requireManagingPartner, async (req, res) => {
+  try {
+    const meetingId = Number(String(req.params.id));
+    const { dealId, packetUrl, recommendation, presentedById } = req.body;
+    if (!dealId) return res.status(400).json({ error: "dealId is required" });
+
+    const [entry] = await db.insert(icMeetingDealsTable).values({
+      meetingId,
+      dealId: Number(dealId),
+      packetUrl: packetUrl || null,
+      recommendation: recommendation || null,
+      presentedById: presentedById ? Number(presentedById) : null,
+    }).returning();
+
+    res.status(201).json({ entry });
+  } catch {
+    res.status(500).json({ error: "Failed to add deal to meeting" });
+  }
+});
+
+router.put("/ic/meetings/:id/deals/:dealEntryId", requireManagingPartner, async (req, res) => {
+  try {
+    const dealEntryId = Number(String(req.params.dealEntryId));
+    const { recommendation, decisionReached, decisionNotes, packetUrl } = req.body;
+
+    const [updated] = await db.update(icMeetingDealsTable).set({
+      ...(recommendation !== undefined && { recommendation }),
+      ...(decisionReached !== undefined && { decisionReached }),
+      ...(decisionNotes !== undefined && { decisionNotes }),
+      ...(packetUrl !== undefined && { packetUrl }),
+    }).where(eq(icMeetingDealsTable.id, dealEntryId)).returning();
+
+    res.json({ entry: updated });
+  } catch {
+    res.status(500).json({ error: "Failed to update deal entry" });
+  }
+});
+
+export default router;
