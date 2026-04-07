@@ -13,6 +13,7 @@ export const lpQuarterlyUpdatesTable = pgTable("lp_quarterly_updates", {
   body: text("body").notNull(),
   tvpi: numeric("tvpi", { precision: 8, scale: 4 }),
   dpi: numeric("dpi", { precision: 8, scale: 4 }),
+  rvpi: numeric("rvpi", { precision: 8, scale: 4 }),
   irr: numeric("irr", { precision: 8, scale: 4 }),
   nav: numeric("nav", { precision: 18, scale: 2 }),
   totalDeployedCad: numeric("total_deployed_cad", { precision: 18, scale: 2 }),

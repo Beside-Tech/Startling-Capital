@@ -197,4 +197,42 @@ router.get("/lp/capital-calls", requireAuth, async (req, res) => {
   }
 });
 
+router.post("/mp/capital-calls/:id/generate-allocations", requireAuth, async (req, res) => {
+  if (!MP_ROLES.includes(req.user?.role ?? "")) return res.status(403).json({ error: "Forbidden" });
+  const callId = parseInt(String(req.params.id));
+
+  try {
+    const [call] = await db.select().from(capitalCallsTable).where(eq(capitalCallsTable.id, callId));
+    if (!call) return res.status(404).json({ error: "Capital call not found" });
+
+    const totalAmount = parseFloat(call.totalAmountCad ?? "0");
+    if (totalAmount <= 0) return res.status(400).json({ error: "Capital call has no total amount set" });
+
+    const lps = await db.select().from(lpProfilesTable).where(eq(lpProfilesTable.active, true));
+    if (lps.length === 0) return res.json({ message: "No active LPs found", allocations: [] });
+
+    const totalCommitted = lps.reduce((sum, lp) => sum + parseFloat(lp.commitmentCad ?? "0"), 0);
+    if (totalCommitted <= 0) return res.status(400).json({ error: "Total committed capital is zero" });
+
+    await db.delete(capitalCallAllocationsTable).where(eq(capitalCallAllocationsTable.capitalCallId, callId));
+
+    const newAllocations = lps.map(lp => {
+      const lpCommit = parseFloat(lp.commitmentCad ?? "0");
+      const proRata = lpCommit / totalCommitted;
+      const allocated = (totalAmount * proRata).toFixed(2);
+      return {
+        capitalCallId: callId,
+        lpProfileId: lp.id,
+        allocatedAmountCad: allocated,
+        notes: `Pro-rata ${(proRata * 100).toFixed(2)}% of ${totalCommitted.toLocaleString()} total committed`,
+      };
+    });
+
+    const created = await db.insert(capitalCallAllocationsTable).values(newAllocations).returning();
+    res.status(201).json({ allocations: created, totalAllocated: totalAmount, lpCount: created.length });
+  } catch {
+    res.status(500).json({ error: "Failed to generate allocations" });
+  }
+});
+
 export default router;

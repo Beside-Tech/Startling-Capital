@@ -4,7 +4,21 @@ import {
   dealFlowTable, icVotesTable, investmentsTable, foundersTable, usersTable,
 } from "@workspace/db";
 import { eq, desc, count, sql } from "drizzle-orm";
-import { requireIC } from "../lib/auth";
+import { requireIC, requireManagingPartner } from "../lib/auth";
+
+type PipelineStage = "sourced" | "screening" | "due_diligence" | "ic_review" | "term_sheet" | "closed" | "passed";
+
+const VALID_TRANSITIONS: Record<PipelineStage, PipelineStage[]> = {
+  sourced:       ["screening", "passed"],
+  screening:     ["due_diligence", "passed"],
+  due_diligence: ["ic_review", "passed"],
+  ic_review:     ["term_sheet", "passed"],
+  term_sheet:    ["closed", "passed"],
+  closed:        [],
+  passed:        [],
+};
+
+const MP_ONLY_TARGETS: PipelineStage[] = ["ic_review", "term_sheet", "closed"];
 
 const router = Router();
 
@@ -95,6 +109,39 @@ router.get("/ic/deal/:id", requireIC, async (req, res) => {
   }
 });
 
+router.patch("/deals/:id/stage", requireIC, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const { stage } = req.body as { stage: PipelineStage };
+    if (!stage) return res.status(400).json({ error: "stage is required" });
+
+    const [current] = await db.select({ pipelineStage: dealFlowTable.pipelineStage })
+      .from(dealFlowTable).where(eq(dealFlowTable.id, id)).limit(1);
+    if (!current) return res.status(404).json({ error: "Deal not found" });
+
+    const from = current.pipelineStage as PipelineStage;
+    const allowed = VALID_TRANSITIONS[from] ?? [];
+    if (!allowed.includes(stage)) {
+      return res.status(422).json({
+        error: `Invalid transition: ${from} → ${stage}. Allowed: ${allowed.join(", ") || "none"}`,
+      });
+    }
+
+    const role = req.user?.role ?? "";
+    if (MP_ONLY_TARGETS.includes(stage) && role !== "ManagingPartner" && role !== "SuperAdmin") {
+      return res.status(403).json({ error: `Advancing to '${stage}' requires Managing Partner role` });
+    }
+
+    const [updated] = await db.update(dealFlowTable)
+      .set({ pipelineStage: stage, decisionDate: new Date().toISOString().slice(0, 10), updatedAt: new Date() })
+      .where(eq(dealFlowTable.id, id)).returning();
+
+    res.json({ deal: updated });
+  } catch {
+    res.status(500).json({ error: "Failed to advance deal stage" });
+  }
+});
+
 router.put("/ic/deals/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
@@ -144,7 +191,31 @@ router.post("/ic/deals/:id/vote", requireIC, async (req, res) => {
       result = created;
     }
 
-    res.json({ vote: result });
+    const allVotes = await db.select().from(icVotesTable).where(eq(icVotesTable.dealId, dealId));
+    const total = allVotes.length;
+    const approves = allVotes.filter(v => v.vote === "approve").length;
+    const rejects  = allVotes.filter(v => v.vote === "reject").length;
+
+    let autoAdvancedTo: string | null = null;
+    if (total >= 2) {
+      const [currentDeal] = await db.select({ pipelineStage: dealFlowTable.pipelineStage })
+        .from(dealFlowTable).where(eq(dealFlowTable.id, dealId)).limit(1);
+
+      if (currentDeal?.pipelineStage === "ic_review") {
+        let newStage: PipelineStage | null = null;
+        if (approves > total / 2) newStage = "term_sheet";
+        else if (rejects > total / 2) newStage = "passed";
+
+        if (newStage) {
+          await db.update(dealFlowTable)
+            .set({ pipelineStage: newStage, decisionDate: new Date().toISOString().slice(0, 10), updatedAt: new Date() })
+            .where(eq(dealFlowTable.id, dealId));
+          autoAdvancedTo = newStage;
+        }
+      }
+    }
+
+    res.json({ vote: result, tally: { total, approves, rejects }, autoAdvancedTo });
   } catch (err) {
     res.status(500).json({ error: "Failed to cast vote" });
   }

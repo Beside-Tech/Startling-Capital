@@ -54,13 +54,23 @@ router.get("/term-sheets/deal/:dealId", requireIC, async (req, res) => {
   }
 });
 
+function calcEquityPct(preMoney?: string | null, investment?: string | null): string | null {
+  const pre = parseFloat(preMoney ?? "");
+  const inv = parseFloat(investment ?? "");
+  if (!isNaN(pre) && !isNaN(inv) && pre + inv > 0) {
+    return ((inv / (pre + inv)) * 100).toFixed(4);
+  }
+  return null;
+}
+
 router.post("/term-sheets", requireManagingPartner, async (req, res) => {
   try {
     const {
-      dealId, instrument, valuationPreMoneyCad, investmentAmountCad, equityPct,
+      dealId, instrument, valuationPreMoneyCad, investmentAmountCad,
       discountRate, valuationCap, proRataRights, boardSeat, informationRights,
       closingConditions, expiryDate, notes,
     } = req.body;
+    const equityPct = calcEquityPct(valuationPreMoneyCad, investmentAmountCad);
     if (!dealId) return res.status(400).json({ error: "dealId is required" });
 
     const existing = await db.select({ cnt: termSheetsTable.version })
@@ -98,7 +108,7 @@ router.put("/term-sheets/:id", requireManagingPartner, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const {
-      status, instrument, valuationPreMoneyCad, investmentAmountCad, equityPct,
+      status, instrument, valuationPreMoneyCad, investmentAmountCad,
       discountRate, valuationCap, proRataRights, boardSeat, informationRights,
       closingConditions, expiryDate, notes,
     } = req.body;
@@ -108,7 +118,15 @@ router.put("/term-sheets/:id", requireManagingPartner, async (req, res) => {
     if (instrument !== undefined) updates.instrument = instrument;
     if (valuationPreMoneyCad !== undefined) updates.valuationPreMoneyCad = valuationPreMoneyCad;
     if (investmentAmountCad !== undefined) updates.investmentAmountCad = investmentAmountCad;
-    if (equityPct !== undefined) updates.equityPct = equityPct;
+    if (valuationPreMoneyCad !== undefined || investmentAmountCad !== undefined) {
+      const [existing] = await db.select({ v: termSheetsTable.valuationPreMoneyCad, i: termSheetsTable.investmentAmountCad })
+        .from(termSheetsTable).where(eq(termSheetsTable.id, id)).limit(1);
+      const calc = calcEquityPct(
+        valuationPreMoneyCad ?? existing?.v,
+        investmentAmountCad ?? existing?.i,
+      );
+      if (calc) updates.equityPct = calc;
+    }
     if (discountRate !== undefined) updates.discountRate = discountRate;
     if (valuationCap !== undefined) updates.valuationCap = valuationCap;
     if (proRataRights !== undefined) updates.proRataRights = proRataRights;

@@ -3,14 +3,14 @@ import { LPLayout } from "@/components/lp-layout";
 import { ProtectedRoute } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, TrendingUp, DollarSign, BarChart3, BookOpen } from "lucide-react";
+import { Loader2, TrendingUp, DollarSign, BarChart3, BookOpen, Building2, FileText } from "lucide-react";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const fmtMultiple = (v: any) => v != null ? `${Number(v).toFixed(2)}x` : "—";
 const fmtPct = (v: any) => v != null ? `${Number(v).toFixed(1)}%` : "—";
-const fmtCad = (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—";
+const fmtCad = (v: any) => v != null ? `CAD $${Number(v).toLocaleString()}` : "—";
 
 export default function LPPortal() {
   return (
@@ -23,20 +23,26 @@ export default function LPPortal() {
 function LPPortalInner() {
   const [updates, setUpdates] = useState<any[]>([]);
   const [selected, setSelected] = useState<any>(null);
+  const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${BASE}/api/lp/quarterly-updates`, { headers: { Authorization: `Bearer ${token()}` } })
-      .then(r => r.ok ? r.json() : { updates: [] })
-      .then(d => {
-        const list = d.updates ?? [];
-        setUpdates(list);
-        if (list.length > 0) setSelected(list[0]);
-      })
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch(`${BASE}/api/lp/quarterly-updates`, { headers: { Authorization: `Bearer ${token()}` } })
+        .then(r => r.ok ? r.json() : { updates: [] }),
+      fetch(`${BASE}/api/lp/fund-summary`, { headers: { Authorization: `Bearer ${token()}` } })
+        .then(r => r.ok ? r.json() : null),
+    ]).then(([updatesData, summaryData]) => {
+      const list = updatesData.updates ?? [];
+      setUpdates(list);
+      if (list.length > 0) setSelected(list[0]);
+      setSummary(summaryData);
+    }).finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="text-center py-16"><Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" /></div>;
+
+  const profile = summary?.profile;
 
   return (
     <div className="space-y-6">
@@ -44,6 +50,67 @@ function LPPortalInner() {
         <h1 className="text-2xl font-bold font-display">LP Portal</h1>
         <p className="text-muted-foreground mt-1">Quarterly updates, fund performance, and portfolio transparency.</p>
       </div>
+
+      {profile && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Building2 className="h-4 w-4 text-violet-600" />
+              Your Capital Commitment
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid sm:grid-cols-4 gap-4">
+              <div>
+                <p className="text-xs text-muted-foreground">Investor</p>
+                <p className="font-semibold mt-0.5">{profile.firmName ?? profile.contactName ?? "—"}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Capital Commitment</p>
+                <p className="font-semibold mt-0.5 text-violet-700">{fmtCad(profile.commitmentCad)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Capital Called</p>
+                <p className="font-semibold mt-0.5">{fmtCad(profile.totalCalledCad)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Investor Type</p>
+                <p className="font-semibold mt-0.5 capitalize">{profile.investorType?.replace(/_/g, " ") ?? "—"}</p>
+              </div>
+            </div>
+            {(summary?.funds ?? []).length > 0 && (
+              <div className="mt-4 pt-4 border-t">
+                <p className="text-xs text-muted-foreground font-medium mb-2">Active Funds</p>
+                <div className="flex flex-wrap gap-3">
+                  {summary.funds.map((f: any) => (
+                    <div key={f.id} className="text-xs border rounded-lg px-3 py-2 bg-muted/30 space-y-0.5">
+                      <p className="font-medium">{f.name} <span className="text-muted-foreground">({f.vintage})</span></p>
+                      <div className="flex gap-3 text-muted-foreground">
+                        {f.tvpi && <span>TVPI {fmtMultiple(f.tvpi)}</span>}
+                        {f.dpi && <span>DPI {fmtMultiple(f.dpi)}</span>}
+                        {f.rvpi && <span>RVPI {fmtMultiple(f.rvpi)}</span>}
+                        {f.irr && <span>IRR {fmtPct(f.irr)}</span>}
+                      </div>
+                      <Badge variant="outline" className="text-[10px] mt-1">{f.status}</Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="mt-3 flex gap-2">
+              <a
+                href={`${BASE}/api/lp/k1/2024`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <FileText className="h-3 w-3" />
+                K-1 (2024)
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {selected && (
         <div className="grid sm:grid-cols-4 gap-4">

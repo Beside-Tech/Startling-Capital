@@ -1,5 +1,6 @@
 import { db } from "@workspace/db";
-import { siteSettingsTable } from "@workspace/db";
+import { siteSettingsTable, lpProfilesTable, usersTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
 import { logger } from "./logger";
 
 const DEFAULT_SETTINGS = [
@@ -90,5 +91,26 @@ export async function seedDefaultSettings(): Promise<void> {
     logger.info("Default site settings seeded");
   } catch (err) {
     logger.warn({ err }, "Could not seed default settings (table may not exist yet)");
+  }
+
+  try {
+    const [lpUser] = await db.select({ id: usersTable.id })
+      .from(usersTable)
+      .where(eq(usersTable.email, "lp@nobellum.com"))
+      .limit(1);
+
+    if (lpUser) {
+      await db.insert(lpProfilesTable).values({
+        userId: lpUser.id,
+        firmName: "Demo LP Ventures",
+        contactName: "Demo LP",
+        commitmentCad: "2500000.00",
+        investorType: "family_office",
+        active: true,
+        notes: "Demo LP account for platform testing",
+      }).onConflictDoNothing();
+    }
+  } catch (err) {
+    logger.warn({ err }, "Could not seed demo LP profile");
   }
 }
