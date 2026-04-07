@@ -27,6 +27,7 @@ export const icMeetingDealsTable = pgTable("ic_meeting_deals", {
   meetingId: integer("meeting_id").notNull().references(() => icMeetingsTable.id, { onDelete: "cascade" }),
   dealId: integer("deal_id").notNull().references(() => dealFlowTable.id, { onDelete: "cascade" }),
   packetUrl: text("packet_url"),
+  shareToken: text("share_token").unique(),
   presentedById: integer("presented_by_id").references(() => usersTable.id),
   recommendation: text("recommendation", {
     enum: ["invest", "pass", "more_diligence", "defer"],

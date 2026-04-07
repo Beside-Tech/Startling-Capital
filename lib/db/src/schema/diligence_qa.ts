@@ -5,10 +5,12 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { dealFlowTable } from "./deal_flow";
 import { usersTable } from "./users";
+import { dataRoomFilesTable } from "./data_room";
 
 export const diligenceQaThreadsTable = pgTable("diligence_qa_threads", {
   id: serial("id").primaryKey(),
   dealId: integer("deal_id").notNull().references(() => dealFlowTable.id, { onDelete: "cascade" }),
+  fileId: integer("file_id").references(() => dataRoomFilesTable.id, { onDelete: "set null" }),
   subject: text("subject").notNull(),
   category: text("category", {
     enum: ["financial", "legal", "technical", "market", "team", "other"],

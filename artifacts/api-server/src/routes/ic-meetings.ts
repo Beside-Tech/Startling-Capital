@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { randomBytes } from "crypto";
 import { db } from "@workspace/db";
 import {
   icMeetingsTable, icMeetingDealsTable, dealFlowTable, usersTable, icVotesTable,
@@ -81,6 +82,7 @@ router.get("/ic/meetings/:id", requireIC, async (req, res) => {
         id: icMeetingDealsTable.id,
         dealId: icMeetingDealsTable.dealId,
         packetUrl: icMeetingDealsTable.packetUrl,
+        shareToken: icMeetingDealsTable.shareToken,
         recommendation: icMeetingDealsTable.recommendation,
         decisionReached: icMeetingDealsTable.decisionReached,
         decisionNotes: icMeetingDealsTable.decisionNotes,
@@ -129,10 +131,13 @@ router.post("/ic/meetings/:id/deals", requireManagingPartner, async (req, res) =
     const { dealId, packetUrl, recommendation, presentedById } = req.body;
     if (!dealId) return res.status(400).json({ error: "dealId is required" });
 
+    const shareToken = randomBytes(32).toString("hex");
+
     const [entry] = await db.insert(icMeetingDealsTable).values({
       meetingId,
       dealId: Number(dealId),
       packetUrl: packetUrl || null,
+      shareToken,
       recommendation: recommendation || null,
       presentedById: presentedById ? Number(presentedById) : null,
     }).returning();
@@ -140,6 +145,54 @@ router.post("/ic/meetings/:id/deals", requireManagingPartner, async (req, res) =
     res.status(201).json({ entry });
   } catch {
     res.status(500).json({ error: "Failed to add deal to meeting" });
+  }
+});
+
+// POST /api/ic/meetings/:id/deals/:dealEntryId/generate-token — regenerate share token
+router.post("/ic/meetings/:id/deals/:dealEntryId/generate-token", requireManagingPartner, async (req, res) => {
+  try {
+    const dealEntryId = Number(String(req.params.dealEntryId));
+    const shareToken = randomBytes(32).toString("hex");
+    const [updated] = await db.update(icMeetingDealsTable)
+      .set({ shareToken })
+      .where(eq(icMeetingDealsTable.id, dealEntryId))
+      .returning();
+    if (!updated) return res.status(404).json({ error: "Deal entry not found" });
+    res.json({ shareToken: updated.shareToken, packetUrl: updated.packetUrl });
+  } catch {
+    res.status(500).json({ error: "Failed to generate token" });
+  }
+});
+
+// GET /api/ic/packets/:shareToken — public read-only packet access (no auth required)
+router.get("/ic/packets/:shareToken", async (req, res) => {
+  try {
+    const { shareToken } = req.params;
+    const [entry] = await db
+      .select({
+        id: icMeetingDealsTable.id,
+        packetUrl: icMeetingDealsTable.packetUrl,
+        recommendation: icMeetingDealsTable.recommendation,
+        decisionNotes: icMeetingDealsTable.decisionNotes,
+        companyName: dealFlowTable.companyName,
+        sector: dealFlowTable.sector,
+        pipelineStage: dealFlowTable.pipelineStage,
+        amountSoughtCad: dealFlowTable.amountSoughtCad,
+        meetingTitle: icMeetingsTable.title,
+        meetingScheduledAt: icMeetingsTable.scheduledAt,
+        presenterName: usersTable.name,
+      })
+      .from(icMeetingDealsTable)
+      .leftJoin(dealFlowTable, eq(icMeetingDealsTable.dealId, dealFlowTable.id))
+      .leftJoin(icMeetingsTable, eq(icMeetingDealsTable.meetingId, icMeetingsTable.id))
+      .leftJoin(usersTable, eq(icMeetingDealsTable.presentedById, usersTable.id))
+      .where(eq(icMeetingDealsTable.shareToken, shareToken))
+      .limit(1);
+
+    if (!entry) return res.status(404).json({ error: "Packet not found or link expired" });
+    res.json({ packet: entry });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch packet" });
   }
 });
 

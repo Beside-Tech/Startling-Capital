@@ -21,6 +21,7 @@ export * from "./ventures";
 export * from "./qa";
 export * from "./advisory";
 export * from "./lp_profiles";
+export * from "./lp_accounts";
 export * from "./deal_flow";
 export * from "./capital_calls";
 export * from "./cap_table";

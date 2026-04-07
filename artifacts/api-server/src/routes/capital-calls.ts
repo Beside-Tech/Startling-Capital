@@ -44,7 +44,7 @@ router.get("/mp/capital-calls", requireAuth, async (req, res) => {
         return { ...c, allocations };
       })
     );
-    res.json(result);
+    res.json({ capitalCalls: result });
   } catch {
     res.status(500).json({ error: "Failed to fetch capital calls" });
   }

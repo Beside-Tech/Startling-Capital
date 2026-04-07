@@ -37,19 +37,25 @@ router.get("/diligence/threads", requireIC, async (_req, res) => {
 router.get("/diligence/threads/deal/:dealId", requireIC, async (req, res) => {
   try {
     const dealId = Number(String(req.params.dealId));
+    const fileId = req.query.fileId ? Number(String(req.query.fileId)) : null;
+    const whereClause = fileId
+      ? eq(diligenceQaThreadsTable.fileId, fileId)
+      : eq(diligenceQaThreadsTable.dealId, dealId);
+
     const threads = await db
       .select({
         id: diligenceQaThreadsTable.id,
         subject: diligenceQaThreadsTable.subject,
         category: diligenceQaThreadsTable.category,
         status: diligenceQaThreadsTable.status,
+        fileId: diligenceQaThreadsTable.fileId,
         isPrivate: diligenceQaThreadsTable.isPrivate,
         createdAt: diligenceQaThreadsTable.createdAt,
         createdByName: usersTable.name,
       })
       .from(diligenceQaThreadsTable)
       .leftJoin(usersTable, eq(diligenceQaThreadsTable.createdById, usersTable.id))
-      .where(eq(diligenceQaThreadsTable.dealId, dealId))
+      .where(whereClause)
       .orderBy(desc(diligenceQaThreadsTable.createdAt));
 
     res.json({ threads });
@@ -60,11 +66,12 @@ router.get("/diligence/threads/deal/:dealId", requireIC, async (req, res) => {
 
 router.post("/diligence/threads", requireIC, async (req, res) => {
   try {
-    const { dealId, subject, category, isPrivate } = req.body;
+    const { dealId, fileId, subject, category, isPrivate } = req.body;
     if (!dealId || !subject) return res.status(400).json({ error: "dealId and subject are required" });
 
     const [thread] = await db.insert(diligenceQaThreadsTable).values({
       dealId: Number(dealId),
+      fileId: fileId ? Number(fileId) : null,
       subject,
       category: category || "other",
       isPrivate: isPrivate ?? false,
