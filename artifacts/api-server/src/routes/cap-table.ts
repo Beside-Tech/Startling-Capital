@@ -134,6 +134,112 @@ router.delete("/admin/cap-table/entry/:id", requireAuth, requireAdminOrMP, async
   }
 });
 
+// GET /api/mp/cap-table/portfolio — per-company ownership, dilution, implied valuation, estimated value
+router.get("/mp/cap-table/portfolio", requireAuth, requireAdminOrMP, async (req, res) => {
+  try {
+    const rows = await db
+      .select({
+        id: capTableEntriesTable.id,
+        founderId: capTableEntriesTable.founderId,
+        investorName: capTableEntriesTable.investorName,
+        instrument: capTableEntriesTable.instrument,
+        equityPct: capTableEntriesTable.equityPct,
+        investmentAmountCad: capTableEntriesTable.investmentAmountCad,
+        roundName: capTableEntriesTable.roundName,
+        shares: capTableEntriesTable.shares,
+        date: capTableEntriesTable.date,
+        companyName: foundersTable.companyName,
+        companyStage: foundersTable.stage,
+      })
+      .from(capTableEntriesTable)
+      .leftJoin(foundersTable, eq(capTableEntriesTable.founderId, foundersTable.id));
+
+    // Group by founderId/company and compute per-company metrics
+    const byCompany = new Map<number, {
+      founderId: number;
+      companyName: string | null;
+      companyStage: string | null;
+      rounds: string[];
+      instruments: string[];
+      totalEquityPct: number;
+      totalInvestedCad: number;
+      totalShares: number;
+      firstInvestmentDate: string | null;
+    }>();
+
+    for (const row of rows) {
+      if (!row.founderId) continue;
+      const existing = byCompany.get(row.founderId);
+      const equity = parseFloat(row.equityPct ?? "0");
+      const invested = parseFloat(row.investmentAmountCad ?? "0");
+      const shares = parseFloat(row.shares ?? "0");
+
+      if (!existing) {
+        byCompany.set(row.founderId, {
+          founderId: row.founderId,
+          companyName: row.companyName ?? null,
+          companyStage: row.companyStage ?? null,
+          rounds: row.roundName ? [row.roundName] : [],
+          instruments: row.instrument ? [row.instrument] : [],
+          totalEquityPct: equity,
+          totalInvestedCad: invested,
+          totalShares: shares,
+          firstInvestmentDate: row.date ?? null,
+        });
+      } else {
+        existing.totalEquityPct += equity;
+        existing.totalInvestedCad += invested;
+        existing.totalShares += shares;
+        if (row.roundName && !existing.rounds.includes(row.roundName)) existing.rounds.push(row.roundName);
+        if (row.instrument && !existing.instruments.includes(row.instrument)) existing.instruments.push(row.instrument);
+        if (row.date && (!existing.firstInvestmentDate || row.date < existing.firstInvestmentDate)) {
+          existing.firstInvestmentDate = row.date;
+        }
+      }
+    }
+
+    // Compute derived metrics per company
+    const portfolio = Array.from(byCompany.values()).map(co => {
+      // Implied post-money valuation = totalInvested / totalEquityPct * 100
+      const impliedValuationCad = co.totalEquityPct > 0
+        ? co.totalInvestedCad / co.totalEquityPct * 100
+        : null;
+      // Conservative estimated current value = cost basis (investmentAmountCad)
+      // In production this would use current FMV from quarterly marks
+      const estimatedCurrentValueCad = co.totalInvestedCad;
+      const moic = co.totalInvestedCad > 0
+        ? (estimatedCurrentValueCad / co.totalInvestedCad).toFixed(2)
+        : null;
+
+      return {
+        founderId: co.founderId,
+        companyName: co.companyName,
+        companyStage: co.companyStage,
+        rounds: co.rounds,
+        instruments: co.instruments,
+        totalEquityPct: co.totalEquityPct.toFixed(4),
+        totalInvestedCad: co.totalInvestedCad.toFixed(2),
+        totalShares: co.totalShares,
+        impliedValuationCad: impliedValuationCad ? impliedValuationCad.toFixed(2) : null,
+        estimatedCurrentValueCad: estimatedCurrentValueCad.toFixed(2),
+        moic,
+        firstInvestmentDate: co.firstInvestmentDate,
+        note: "estimatedCurrentValue uses cost basis; update with FMV from quarterly portfolio marks",
+      };
+    });
+
+    const totals = {
+      totalCompanies: portfolio.length,
+      totalInvestedCad: portfolio.reduce((s, c) => s + parseFloat(c.totalInvestedCad), 0).toFixed(2),
+      totalEstimatedValueCad: portfolio.reduce((s, c) => s + parseFloat(c.estimatedCurrentValueCad), 0).toFixed(2),
+    };
+
+    res.json({ portfolio, totals });
+  } catch {
+    res.status(500).json({ error: "Failed to compute portfolio" });
+  }
+});
+
 // GET /api/mp/cap-table — list all cap table entries for MP (with computed ownership %)
 router.get("/mp/cap-table", requireAuth, requireAdminOrMP, async (req, res) => {
   try {

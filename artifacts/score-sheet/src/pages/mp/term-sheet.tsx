@@ -64,7 +64,7 @@ function MPTermSheetInner() {
 
   const load = () => {
     Promise.all([
-      fetch(`${BASE}/api/term-sheets`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.ok ? r.json() : { sheets: [] }),
+      fetch(`${BASE}/api/mp/term-sheets`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.ok ? r.json() : { sheets: [] }),
       fetch(`${BASE}/api/ic/deals`, { headers: { Authorization: `Bearer ${token()}` } }).then(r => r.ok ? r.json() : { deals: [] }),
     ]).then(([s, d]) => {
       setSheets(s.sheets ?? []);
@@ -78,7 +78,7 @@ function MPTermSheetInner() {
     e.preventDefault();
     if (!form.dealId) return;
     setSaving(true);
-    await fetch(`${BASE}/api/term-sheets`, {
+    await fetch(`${BASE}/api/mp/term-sheets`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
       body: JSON.stringify({
@@ -94,7 +94,7 @@ function MPTermSheetInner() {
   }
 
   async function updateStatus(id: number, status: string) {
-    await fetch(`${BASE}/api/term-sheets/${id}`, {
+    await fetch(`${BASE}/api/mp/term-sheets/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
       body: JSON.stringify({ status }),

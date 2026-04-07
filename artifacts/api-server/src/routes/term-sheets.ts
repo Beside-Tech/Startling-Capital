@@ -6,7 +6,7 @@ import { requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
-router.get("/term-sheets", requireIC, async (_req, res) => {
+router.get("/mp/term-sheets", requireIC, async (_req, res) => {
   try {
     const sheets = await db
       .select({
@@ -39,7 +39,7 @@ router.get("/term-sheets", requireIC, async (_req, res) => {
   }
 });
 
-router.get("/term-sheets/deal/:dealId", requireIC, async (req, res) => {
+router.get("/mp/term-sheets/deal/:dealId", requireIC, async (req, res) => {
   try {
     const dealId = Number(String(req.params.dealId));
     const sheets = await db
@@ -63,7 +63,7 @@ function calcEquityPct(preMoney?: string | null, investment?: string | null): st
   return null;
 }
 
-router.post("/term-sheets", requireManagingPartner, async (req, res) => {
+router.post("/mp/term-sheets", requireManagingPartner, async (req, res) => {
   try {
     const {
       dealId, instrument, valuationPreMoneyCad, investmentAmountCad,
@@ -104,7 +104,7 @@ router.post("/term-sheets", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.put("/term-sheets/:id", requireManagingPartner, async (req, res) => {
+router.put("/mp/term-sheets/:id", requireManagingPartner, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const {
@@ -146,7 +146,7 @@ router.put("/term-sheets/:id", requireManagingPartner, async (req, res) => {
 });
 
 // POST /api/term-sheets/:id/submit-to-ic — submit term sheet to IC + advance deal stage
-router.post("/term-sheets/:id/submit-to-ic", requireManagingPartner, async (req, res) => {
+router.post("/mp/term-sheets/:id/submit-to-ic", requireManagingPartner, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const [sheet] = await db.select().from(termSheetsTable).where(eq(termSheetsTable.id, id)).limit(1);

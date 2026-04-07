@@ -149,9 +149,9 @@ router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (re
       .where(eq(closingChecklistsTable.id, id))
       .returning();
 
-    // Advance deal stage to closed
+    // Advance deal stage to invested (canonical VC lifecycle terminal: closing → invested)
     await db.update(dealFlowTable)
-      .set({ pipelineStage: "closed", updatedAt: new Date() })
+      .set({ pipelineStage: "invested", updatedAt: new Date() })
       .where(eq(dealFlowTable.id, checklist.dealId));
 
     // Get deal + associated term sheet for cap table entry

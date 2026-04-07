@@ -16,7 +16,7 @@ const VALID_TRANSITIONS: Record<string, PipelineStage[]> = {
   ready_for_ic:  ["ic_approved", "ic_rejected", "deal_dead"],
   ic_approved:   ["closing", "deal_dead"],
   ic_rejected:   ["deal_dead"],
-  closing:       ["invested", "deal_dead"],
+  closing:       ["invested", "passed", "deal_dead"],
   invested:      [],
   passed:        [],
   deal_dead:     [],
