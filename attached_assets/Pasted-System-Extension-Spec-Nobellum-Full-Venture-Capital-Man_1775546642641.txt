@@ -1,0 +1,33 @@
+System Extension Spec: Nobellum Full Venture Capital Management Workflow
+​Context: > We are expanding the "Nobellum Ventures" module. The system already pipes founders from the Accelerator into the Ventures deal flow. Now, we need a complete, professional Venture Capital Management System. The Managing Partner acts as the Super Admin for this side of the platform.
+​1. Refined Ventures RBAC (Role-Based Access Control)
+​Ensure the middleware isolates these roles from the accelerator operations:
+​Managing Partner (Ventures Super Admin): Full control over fund operations, capital calls, IC scheduling, and LP reporting.
+​Investment Committee (IC): Read-access to diligence rooms, write-access for deal scoring and voting.
+​Venture Associate: Deal captains. They manage the diligence checklists and draft memos.
+​Limited Partner (LP): Read-only access to a specific portal showing fund performance and their specific capital accounts.
+​2. Phase 1: Deep Due Diligence (DD) & Deal Structuring
+​Moving a startup from "interested" to "ready for IC."
+​Structured Data Rooms: Expand the data room from a simple file dump into categorized folders (Legal, Financial, Technical, Team).
+​Diligence Q&A Tracker: A communication thread attached to specific documents. The Venture Associate can highlight a line in a cap table and ask the Founder a question directly in the platform, keeping a legal paper trail.
+​Term Sheet Modeler: Before the IC meets, the Venture Associate drafts the proposed terms (Valuation, Investment Amount, Instrument Type like SAFE or Priced Round). This feeds the Cap Table Scenario Modeler.
+​3. Phase 2: IC Operations & The Close
+​Handling the actual decision and legal execution.
+​IC Meeting Management: The Managing Partner can group multiple Deal Memos into an "IC Meeting Packet." The system generates a private link for IC members to review everything before the call.
+​Recorded Voting & Minutes: A dedicated interface during the IC meeting to record official votes, log dissent, and store the meeting minutes for compliance.
+​Closing Checklist: Once approved, a workflow triggers for the Managing Partner: Send Term Sheet -> Capture Signatures (via API integration like DocuSign) -> Wire Funds.
+​4. Phase 3: Portfolio Operations (Post-Investment)
+​Managing the companies after the check is written.
+​The Cap Table Ledger: The system must act as the source of truth for Nobellum's ownership. It tracks the original investment, subsequent dilution from new funding rounds, and current estimated value.
+​Board Management: For deals where Nobellum takes a board seat, a secure folder for the Managing Partner to store board decks and meeting notes.
+​Founder "Asks" Pipeline: A ticketing system where portfolio founders can request specific help from the VC (e.g., "Need an intro to a Series A lead" or "Looking for a VP of Sales").
+​5. Phase 4: Fund Administration & LP Reporting
+​The Managing Partner needs tools to run the actual fund.
+​Fund Performance Dashboard: Auto-calculating standard VC metrics: TVPI (Total Value to Paid-In), DPI (Distributions to Paid-In), and Gross IRR based on the Portfolio Operations data.
+​Capital Calls Engine: When Nobellum needs money to fund a deal, the Managing Partner generates a "Capital Call Notice." The system emails the LPs with exactly how much they need to wire to the fund's bank account based on their commitment percentage.
+​LP Portal: A dedicated, stripped-down dashboard for Limited Partners. They log in to see the fund's overall performance, read quarterly update letters from the Managing Partner, and view their individual tax documents (K-1s).
+​Execution Plan (Your Instructions):
+​I am in plan mode. Do not write frontend code yet.
+​Step 1: Map out the database schema additions. I need to see the tables for Fund_Metrics, LP_Accounts, Capital_Calls, Diligence_Checklists, and IC_Meetings. Ensure these link correctly to the existing Ventures_Pipeline and Users tables.
+Step 2: Outline the state machine logic for a deal moving through Phase 1 to Phase 3.
+Step 3: Wait for my approval on the schema before detailing the API routes
