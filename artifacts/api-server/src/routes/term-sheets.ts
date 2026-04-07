@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { termSheetsTable, dealFlowTable, usersTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
-import { requireIC, requireManagingPartner } from "../lib/auth";
+import { requireIC, requireICOrVA, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
@@ -63,7 +63,7 @@ function calcEquityPct(preMoney?: string | null, investment?: string | null): st
   return null;
 }
 
-router.post("/mp/term-sheets", requireManagingPartner, async (req, res) => {
+router.post("/mp/term-sheets", requireICOrVA, async (req, res) => {
   try {
     const {
       dealId, instrument, valuationPreMoneyCad, investmentAmountCad,
@@ -104,7 +104,7 @@ router.post("/mp/term-sheets", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.put("/mp/term-sheets/:id", requireManagingPartner, async (req, res) => {
+router.put("/mp/term-sheets/:id", requireICOrVA, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const {
@@ -157,9 +157,9 @@ router.post("/mp/term-sheets/:id/submit-to-ic", requireManagingPartner, async (r
       .where(eq(termSheetsTable.id, id))
       .returning();
 
-    // Advance deal stage to ic_review
+    // Advance deal stage to ready_for_ic (canonical) or ic_review (legacy compat)
     const [deal] = await db.update(dealFlowTable)
-      .set({ pipelineStage: "ic_review", updatedAt: new Date() })
+      .set({ pipelineStage: "ready_for_ic", updatedAt: new Date() })
       .where(eq(dealFlowTable.id, sheet.dealId))
       .returning({ pipelineStage: dealFlowTable.pipelineStage, companyName: dealFlowTable.companyName });
 

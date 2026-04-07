@@ -18,8 +18,8 @@ router.get("/mp/dashboard", requireManagingPartner, async (req, res) => {
 
     const [dealStats] = await db.select({
       totalDeals: count(dealFlowTable.id),
-      icReview: sql<string>`COUNT(CASE WHEN ${dealFlowTable.pipelineStage} = 'ic_review' THEN 1 END)`,
-      termSheet: sql<string>`COUNT(CASE WHEN ${dealFlowTable.pipelineStage} = 'term_sheet' THEN 1 END)`,
+      icReview: sql<string>`COUNT(CASE WHEN ${dealFlowTable.pipelineStage} IN ('ic_review','ready_for_ic','ic_approved','ic_rejected') THEN 1 END)`,
+      termSheet: sql<string>`COUNT(CASE WHEN ${dealFlowTable.pipelineStage} IN ('term_sheet','closing') THEN 1 END)`,
     }).from(dealFlowTable);
 
     const [lpStats] = await db.select({
