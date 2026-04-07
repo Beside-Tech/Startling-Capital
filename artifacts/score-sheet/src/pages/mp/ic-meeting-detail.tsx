@@ -42,10 +42,10 @@ interface MeetingDeal {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-700",
-  scheduled: "bg-blue-100 text-blue-700",
-  completed: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
+  draft: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
+  scheduled: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  completed: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  cancelled: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
 };
 
 const VOTE_ICONS: Record<string, React.ReactNode> = {
@@ -190,7 +190,7 @@ function ICMeetingDetailInner() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className={STATUS_COLORS[meeting.status] ?? "bg-gray-100 text-gray-700"}>{meeting.status}</Badge>
+          <Badge className={STATUS_COLORS[meeting.status] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}>{meeting.status}</Badge>
           {meeting.status === "scheduled" && (
             <Button size="sm" onClick={markComplete} disabled={updating}>
               {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Mark Complete"}
@@ -214,7 +214,7 @@ function ICMeetingDetailInner() {
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <Badge className={meeting.quorumReached ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}>
+            <Badge className={meeting.quorumReached ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"}>
               {meeting.quorumReached ? "Quorum Reached" : "No Quorum"}
             </Badge>
           </CardContent>

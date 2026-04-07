@@ -12,19 +12,19 @@ const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STAGE_COLOR: Record<string, string> = {
   "Pre-Seed": "bg-violet-100 text-violet-700",
-  "Seed": "bg-blue-100 text-blue-700",
-  "Series A": "bg-emerald-100 text-emerald-700",
-  "Series B": "bg-amber-100 text-amber-700",
+  "Seed": "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  "Series A": "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  "Series B": "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
 };
 
 const PIPELINE_COLOR: Record<string, string> = {
-  sourced: "bg-gray-100 text-gray-600",
-  screening: "bg-blue-100 text-blue-700",
+  sourced: "bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300",
+  screening: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
   "first-meeting": "bg-violet-100 text-violet-700",
-  "ic-review": "bg-amber-100 text-amber-700",
-  "term-sheet": "bg-orange-100 text-orange-700",
-  invested: "bg-green-100 text-green-700",
-  passed: "bg-red-100 text-red-700",
+  "ic-review": "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  "term-sheet": "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300",
+  invested: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  passed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
 };
 
 const VOTE_ICON = {
@@ -127,8 +127,8 @@ function ICPacketsInner() {
                         <CardTitle className="text-base">{deal.companyName}</CardTitle>
                         <div className="flex flex-wrap items-center gap-2 mt-0.5">
                           {deal.sector && <span className="text-sm text-muted-foreground">{deal.sector}</span>}
-                          {deal.stage && <Badge className={`text-xs ${STAGE_COLOR[deal.stage] ?? "bg-gray-100 text-gray-700"}`}>{deal.stage}</Badge>}
-                          {deal.pipelineStage && <Badge className={`text-xs ${PIPELINE_COLOR[deal.pipelineStage] ?? "bg-gray-100 text-gray-700"}`}>{deal.pipelineStage}</Badge>}
+                          {deal.stage && <Badge className={`text-xs ${STAGE_COLOR[deal.stage] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}`}>{deal.stage}</Badge>}
+                          {deal.pipelineStage && <Badge className={`text-xs ${PIPELINE_COLOR[deal.pipelineStage] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}`}>{deal.pipelineStage}</Badge>}
                         </div>
                       </div>
                     </div>

@@ -61,7 +61,7 @@ function FoundersInner() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-sm font-semibold">{founder.name}</span>
-                      <Badge className="bg-green-100 text-green-800 border-green-200 border text-xs">Portfolio</Badge>
+                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 border text-xs dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50">Portfolio</Badge>
                     </div>
                     {founder.companyName && <p className="text-sm font-medium text-foreground">{founder.companyName}</p>}
                     <p className="text-xs text-muted-foreground">{[founder.sector, founder.stage, founder.country].filter(Boolean).join(" · ")}</p>

@@ -83,10 +83,10 @@ const TYPE_LABEL: Record<CourseType, string> = {
 };
 
 const TYPE_COLOR: Record<CourseType, string> = {
-  video: "bg-blue-100 text-blue-700",
-  workshop: "bg-purple-100 text-purple-700",
-  reading: "bg-amber-100 text-amber-700",
-  live_session: "bg-green-100 text-green-700",
+  video: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  workshop: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  reading: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  live_session: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
 };
 
 const STATUS_CONFIG: Record<

@@ -84,7 +84,7 @@ function LPDashboardInner() {
                     <p className="text-sm font-medium">{inv.startupName}</p>
                     <p className="text-xs text-muted-foreground">{[inv.sector, inv.stage, inv.country].filter(Boolean).join(" · ")}</p>
                   </div>
-                  <Badge className="bg-green-100 text-green-800 border-green-200 border text-xs">{inv.instrument}</Badge>
+                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 border text-xs dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50">{inv.instrument}</Badge>
                   {inv.amountCad && <span className="text-xs font-medium text-foreground">CAD {Number(inv.amountCad).toLocaleString()}</span>}
                 </div>
               ))}

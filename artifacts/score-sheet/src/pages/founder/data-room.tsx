@@ -50,13 +50,13 @@ function catLabel(val: string) {
 
 function catColor(cat: string) {
   const map: Record<string, string> = {
-    pitch_deck: "bg-blue-100 text-blue-800 border-blue-200",
-    financial_model: "bg-green-100 text-green-800 border-green-200",
-    legal: "bg-amber-100 text-amber-800 border-amber-200",
+    pitch_deck: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200",
+    financial_model: "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50",
+    legal: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50",
     product: "bg-violet-100 text-violet-800 border-violet-200",
     team: "bg-pink-100 text-pink-800 border-pink-200",
     market_research: "bg-cyan-100 text-cyan-800 border-cyan-200",
-    other: "bg-gray-100 text-gray-800 border-gray-200",
+    other: "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:bg-gray-700/40 dark:text-gray-300 dark:border-gray-600",
   };
   return map[cat] ?? map.other;
 }

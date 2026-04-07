@@ -57,7 +57,7 @@ function PortfolioInner() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-semibold">{inv.startupName}</span>
-                      <Badge className="bg-green-100 text-green-800 border-green-200 border text-xs">{inv.instrument}</Badge>
+                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 border text-xs dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50">{inv.instrument}</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">{[inv.sector, inv.stage, inv.country].filter(Boolean).join(" · ")}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">Invested: {inv.investmentDate}</p>

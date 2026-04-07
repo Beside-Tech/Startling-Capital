@@ -12,13 +12,13 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STAGE_COLORS: Record<string, string> = {
-  sourced:        "bg-gray-100 text-gray-700",
-  screening:      "bg-blue-100 text-blue-700",
-  due_diligence:  "bg-amber-100 text-amber-700",
+  sourced:        "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
+  screening:      "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  due_diligence:  "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
   ic_review:      "bg-violet-100 text-violet-700",
-  term_sheet:     "bg-green-100 text-green-700",
-  closed:         "bg-emerald-100 text-emerald-700",
-  passed:         "bg-red-100 text-red-700",
+  term_sheet:     "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  closed:         "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  passed:         "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
 };
 
 export default function ICDashboard() {
@@ -88,7 +88,7 @@ function ICDashboardInner() {
           </CardHeader>
           <CardContent className="space-y-3">
             {icReview.slice(0, 5).map((deal: any) => (
-              <div key={deal.id} className="flex items-center justify-between bg-white rounded-xl p-3 border border-amber-100">
+              <div key={deal.id} className="flex items-center justify-between bg-white rounded-xl p-3 border border-amber-100 dark:border-amber-800/50">
                 <div>
                   <p className="text-sm font-semibold text-foreground">{deal.companyName}</p>
                   <p className="text-xs text-muted-foreground">{deal.sector} · {deal.stage}</p>
@@ -115,7 +115,7 @@ function ICDashboardInner() {
             <div className="space-y-2">
               {data.deals.slice(0, 8).map((deal: any) => (
                 <div key={deal.id} className="flex items-center gap-3 py-2">
-                  <Badge className={`text-xs ${STAGE_COLORS[deal.pipelineStage] || "bg-gray-100"}`}>
+                  <Badge className={`text-xs ${STAGE_COLORS[deal.pipelineStage] || "bg-gray-100 dark:bg-gray-700/40"}`}>
                     {deal.pipelineStage?.replace("_", " ")}
                   </Badge>
                   <span className="text-sm font-medium flex-1">{deal.companyName}</span>

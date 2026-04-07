@@ -47,13 +47,13 @@ interface QaMessage {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  legal: "bg-blue-100 text-blue-700",
-  financial: "bg-green-100 text-green-700",
-  technical: "bg-purple-100 text-purple-700",
-  team: "bg-orange-100 text-orange-700",
-  market: "bg-cyan-100 text-cyan-700",
-  product: "bg-pink-100 text-pink-700",
-  other: "bg-gray-100 text-gray-700",
+  legal: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  financial: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  technical: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  team: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300",
+  market: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300",
+  product: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300",
+  other: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
 };
 
 export default function MPDiligenceDetail() {
@@ -216,7 +216,7 @@ function DiligenceDetailInner() {
         <Card key={cat}>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <Badge className={CATEGORY_COLORS[cat] ?? "bg-gray-100 text-gray-700"}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</Badge>
+              <Badge className={CATEGORY_COLORS[cat] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</Badge>
               <span className="text-muted-foreground font-normal text-sm">{catItems.filter(i => i.status === "complete").length}/{catItems.length} complete</span>
             </CardTitle>
           </CardHeader>
@@ -304,7 +304,7 @@ function DiligenceDetailInner() {
                   onClick={() => toggleThread(thread.id)}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <Badge className={`text-xs shrink-0 ${CATEGORY_COLORS[thread.category] ?? "bg-gray-100 text-gray-700"}`}>
+                    <Badge className={`text-xs shrink-0 ${CATEGORY_COLORS[thread.category] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}`}>
                       {thread.category}
                     </Badge>
                     <span className="text-sm font-medium truncate">{thread.subject}</span>

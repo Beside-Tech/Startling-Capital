@@ -155,9 +155,9 @@ function scoreColor(avg: string | null) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  active: "bg-green-100 text-green-700 border-green-200",
-  exited: "bg-blue-100 text-blue-700 border-blue-200",
-  written_off: "bg-red-100 text-red-700 border-red-200",
+  active: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50",
+  exited: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700/50",
+  written_off: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50",
 };
 
 const INSTRUMENT_OPTIONS = ["SAFE", "Equity", "Convertible Note", "Revenue Share", "Grant"];
@@ -270,7 +270,7 @@ function AdminVenturesDetailInner() {
               {investment.status === "written_off" ? "Written Off" : investment.status.charAt(0).toUpperCase() + investment.status.slice(1)}
             </Badge>
             {investment.isLead && (
-              <Badge className="bg-amber-100 text-amber-700 border border-amber-200 text-xs">
+              <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 text-xs dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50">
                 <Star className="h-2.5 w-2.5 mr-1" />
                 Lead Investor
               </Badge>
@@ -293,10 +293,10 @@ function AdminVenturesDetailInner() {
       {/* Investment details grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Amount (CAD)", value: fmtMoney(investment.amountCad, "CA$"), icon: DollarSign, color: "text-green-600", bg: "bg-green-100" },
+          { label: "Amount (CAD)", value: fmtMoney(investment.amountCad, "CA$"), icon: DollarSign, color: "text-green-600", bg: "bg-green-100 dark:bg-green-900/40" },
           { label: "Amount (USD)", value: fmtMoney(investment.amountUsd, "US$"), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-100" },
-          { label: "Equity Stake", value: fmtPct(investment.equityPct), icon: Percent, color: "text-purple-600", bg: "bg-purple-100" },
-          { label: "Instrument", value: investment.instrument, icon: Briefcase, color: "text-blue-600", bg: "bg-blue-100" },
+          { label: "Equity Stake", value: fmtPct(investment.equityPct), icon: Percent, color: "text-purple-600", bg: "bg-purple-100 dark:bg-purple-900/40" },
+          { label: "Instrument", value: investment.instrument, icon: Briefcase, color: "text-blue-600", bg: "bg-blue-100 dark:bg-blue-900/40" },
         ].map((item) => (
           <Card key={item.label}>
             <CardContent className="pt-4 pb-3">

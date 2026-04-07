@@ -12,10 +12,10 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 function statusInfo(status: string) {
-  if (status === "scheduled") return { label: "Scheduled", cls: "bg-blue-100 text-blue-800 border-blue-200", icon: <CalendarCheck className="h-3 w-3" /> };
-  if (status === "completed") return { label: "Completed", cls: "bg-green-100 text-green-800 border-green-200", icon: <CheckCircle2 className="h-3 w-3" /> };
-  if (status === "cancelled") return { label: "Cancelled", cls: "bg-gray-100 text-gray-800 border-gray-200", icon: <XIcon className="h-3 w-3" /> };
-  return { label: "Requested", cls: "bg-amber-100 text-amber-800 border-amber-200", icon: <Clock className="h-3 w-3" /> };
+  if (status === "scheduled") return { label: "Scheduled", cls: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200", icon: <CalendarCheck className="h-3 w-3" /> };
+  if (status === "completed") return { label: "Completed", cls: "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50", icon: <CheckCircle2 className="h-3 w-3" /> };
+  if (status === "cancelled") return { label: "Cancelled", cls: "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:bg-gray-700/40 dark:text-gray-300 dark:border-gray-600", icon: <XIcon className="h-3 w-3" /> };
+  return { label: "Requested", cls: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50", icon: <Clock className="h-3 w-3" /> };
 }
 
 const TOPIC_LABELS: Record<string, string> = {

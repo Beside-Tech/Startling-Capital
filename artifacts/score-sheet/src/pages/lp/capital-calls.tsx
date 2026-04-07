@@ -9,10 +9,10 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STATUS_COLOR: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-700",
-  sent: "bg-blue-100 text-blue-700",
-  partial: "bg-amber-100 text-amber-700",
-  complete: "bg-green-100 text-green-700",
+  draft: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
+  sent: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  partial: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  complete: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
 };
 
 export default function LPCapitalCalls() {
@@ -114,9 +114,9 @@ function LPCapitalCallsInner() {
                       <p className="font-bold text-lg">${Number(c.allocatedAmountCad).toLocaleString()} <span className="text-xs font-normal text-muted-foreground">CAD</span></p>
                     )}
                     {c.paidAt ? (
-                      <Badge className="bg-green-100 text-green-700 gap-1 mt-1"><CheckCircle className="h-3 w-3" /> Paid</Badge>
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 gap-1 mt-1"><CheckCircle className="h-3 w-3" /> Paid</Badge>
                     ) : (
-                      <Badge className="bg-amber-100 text-amber-700 mt-1">Pending</Badge>
+                      <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 mt-1 dark:bg-amber-900/40 dark:text-amber-300">Pending</Badge>
                     )}
                   </div>
                 </div>

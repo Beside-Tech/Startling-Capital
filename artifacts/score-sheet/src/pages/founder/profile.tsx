@@ -159,7 +159,7 @@ function ProfileInner() {
             <div className="flex items-center gap-3 flex-wrap mb-1">
               <h2 className="text-xl font-bold text-foreground">{profile.name}</h2>
               {profile.onboardingComplete && (
-                <Badge className="bg-green-100 text-green-800 border-green-200 border text-xs gap-1">
+                <Badge className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 border text-xs dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 gap-1 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50">
                   <CheckCircle2 className="h-3 w-3" /> Onboarded
                 </Badge>
               )}

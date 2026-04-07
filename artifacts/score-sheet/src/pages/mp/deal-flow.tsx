@@ -23,16 +23,16 @@ interface Deal {
 }
 
 const STAGES = [
-  { value: "sourced",        label: "Sourced",        color: "bg-gray-100 text-gray-700 border-gray-200"      },
+  { value: "sourced",        label: "Sourced",        color: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:bg-gray-700/40 dark:text-gray-300 dark:border-gray-600"      },
   { value: "interested",     label: "Interested",     color: "bg-sky-100 text-sky-700 border-sky-200"          },
-  { value: "due_diligence",  label: "Due Diligence",  color: "bg-amber-100 text-amber-700 border-amber-200"    },
+  { value: "due_diligence",  label: "Due Diligence",  color: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50"    },
   { value: "ready_for_ic",   label: "Ready for IC",   color: "bg-violet-100 text-violet-700 border-violet-200" },
-  { value: "ic_approved",    label: "IC Approved",    color: "bg-teal-100 text-teal-700 border-teal-200"       },
-  { value: "ic_rejected",    label: "IC Rejected",    color: "bg-orange-100 text-orange-700 border-orange-200" },
-  { value: "closing",        label: "Closing",        color: "bg-green-100 text-green-700 border-green-200"    },
-  { value: "invested",       label: "Invested",       color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+  { value: "ic_approved",    label: "IC Approved",    color: "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border-teal-200 dark:bg-teal-900/40 dark:text-teal-300 dark:border-teal-700/50"       },
+  { value: "ic_rejected",    label: "IC Rejected",    color: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 border-orange-200" },
+  { value: "closing",        label: "Closing",        color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50"    },
+  { value: "invested",       label: "Invested",       color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-200" },
   { value: "deal_dead",      label: "Deal Dead",      color: "bg-neutral-100 text-neutral-500 border-neutral-200" },
-  { value: "passed",         label: "Passed",         color: "bg-red-100 text-red-700 border-red-200"          },
+  { value: "passed",         label: "Passed",         color: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50"          },
 ] as const;
 
 type StageValue = typeof STAGES[number]["value"];
@@ -101,7 +101,7 @@ function DealFlowInner() {
 
   const filtered = filterStage === "all" ? deals : deals.filter(d => d.pipelineStage === filterStage);
 
-  const stageColor = (val: string) => STAGES.find(s => s.value === val)?.color ?? "bg-gray-100 text-gray-700";
+  const stageColor = (val: string) => STAGES.find(s => s.value === val)?.color ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300";
   const stageLabel = (val: string) => STAGES.find(s => s.value === val)?.label ?? val.replace(/_/g, " ");
 
   return (

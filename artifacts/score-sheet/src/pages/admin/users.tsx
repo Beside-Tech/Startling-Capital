@@ -61,9 +61,9 @@ type SysUser = {
 };
 
 const ROLE_META: Record<string, { label: string; color: string; icon: typeof ShieldCheck }> = {
-  SuperAdmin:      { label: "Super Admin",      color: "bg-amber-100 text-amber-800 border-amber-200",   icon: ShieldCheck },
-  Admin:           { label: "Admin",            color: "bg-blue-100 text-blue-800 border-blue-200",     icon: Shield },
-  Judge:           { label: "Judge",            color: "bg-purple-100 text-purple-800 border-purple-200", icon: UserCog },
+  SuperAdmin:      { label: "Super Admin",      color: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50",   icon: ShieldCheck },
+  Admin:           { label: "Admin",            color: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200",     icon: Shield },
+  Judge:           { label: "Judge",            color: "bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200", icon: UserCog },
   Founder:         { label: "Founder",          color: "bg-teal-100 text-teal-800 border-teal-200",     icon: Users },
   IC:              { label: "IC Member",        color: "bg-violet-100 text-violet-800 border-violet-200", icon: Shield },
   ManagingPartner: { label: "Managing Partner", color: "bg-emerald-100 text-emerald-800 border-emerald-200", icon: ShieldCheck },
@@ -71,7 +71,7 @@ const ROLE_META: Record<string, { label: string; color: string; icon: typeof Shi
 };
 
 function roleMeta(role: string) {
-  return ROLE_META[role] ?? { label: role, color: "bg-gray-100 text-gray-800 border-gray-200", icon: UserCog };
+  return ROLE_META[role] ?? { label: role, color: "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:bg-gray-700/40 dark:text-gray-300 dark:border-gray-600", icon: UserCog };
 }
 
 const ROLE_OPTIONS = ["SuperAdmin", "Admin", "Judge", "Founder", "IC", "ManagingPartner", "LP"] as const;
@@ -243,7 +243,7 @@ function AdminUsersInner() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-medium text-sm text-foreground truncate">{u.name}</p>
                         {isSelf && (
-                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-100 border border-amber-200 rounded-full px-1.5 py-0.5">You</span>
+                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-100 border border-amber-200 rounded-full px-1.5 py-0.5 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50">You</span>
                         )}
                         {!u.active && (
                           <span className="text-[10px] font-semibold text-muted-foreground bg-secondary rounded-full px-1.5 py-0.5">Inactive</span>

@@ -149,7 +149,7 @@ function LPsInner() {
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-sm font-semibold">{lp.firmName || lp.contactName || lp.userName}</span>
                       <Badge className="bg-secondary text-secondary-foreground text-xs">{typeLabel(lp.investorType)}</Badge>
-                      {!lp.active && <Badge className="bg-red-100 text-red-800 border-red-200 border text-xs">Inactive</Badge>}
+                      {!lp.active && <Badge className="bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50 border text-xs dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50">Inactive</Badge>}
                     </div>
                     <p className="text-xs text-muted-foreground">{[lp.email, lp.country].filter(Boolean).join(" · ")}</p>
                   </div>

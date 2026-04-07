@@ -45,9 +45,9 @@ const CATEGORIES = [
 ];
 
 function statusBadge(status: string) {
-  if (status === "answered") return "bg-green-100 text-green-800 border-green-200";
-  if (status === "closed") return "bg-gray-100 text-gray-800 border-gray-200";
-  return "bg-amber-100 text-amber-800 border-amber-200";
+  if (status === "answered") return "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50";
+  if (status === "closed") return "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:bg-gray-700/40 dark:text-gray-300 dark:border-gray-600";
+  return "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50";
 }
 
 function statusIcon(status: string) {

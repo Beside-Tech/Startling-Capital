@@ -243,7 +243,7 @@ export default function AdminFounders() {
 
                     {(founder.investmentStatus === "portfolio" || founder.investmentStatus === "exited") && (
                       <div className="mb-3">
-                        <Badge className="text-[10px] bg-amber-100 text-amber-700 border-amber-200 gap-1">
+                        <Badge className="text-[10px] bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50 gap-1">
                           <Briefcase className="h-2.5 w-2.5" />
                           {founder.investmentStatus === "exited" ? "Ventures Alumni" : "Nobellum Ventures"}
                         </Badge>

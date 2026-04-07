@@ -104,9 +104,9 @@ function fmtPct(val: string | null | undefined) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  active: "bg-green-100 text-green-700 border-green-200",
-  exited: "bg-blue-100 text-blue-700 border-blue-200",
-  written_off: "bg-red-100 text-red-700 border-red-200",
+  active: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50",
+  exited: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700/50",
+  written_off: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50",
 };
 
 const INSTRUMENT_OPTIONS = ["SAFE", "Equity", "Convertible Note", "Revenue Share", "Grant"];
@@ -193,7 +193,7 @@ function AdminVenturesInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">Capital committed</p>
               </div>
-              <div className="bg-green-100 rounded-lg p-2">
+              <div className="bg-green-100 rounded-lg p-2 dark:bg-green-900/40">
                 <DollarSign className="h-4 w-4 text-green-600" />
               </div>
             </div>
@@ -212,7 +212,7 @@ function AdminVenturesInner() {
                   {summary ? `${summary.activeCount} active, ${summary.exitedCount} exited` : ""}
                 </p>
               </div>
-              <div className="bg-blue-100 rounded-lg p-2">
+              <div className="bg-blue-100 rounded-lg p-2 dark:bg-blue-900/40">
                 <Building2 className="h-4 w-4 text-blue-600" />
               </div>
             </div>
@@ -229,7 +229,7 @@ function AdminVenturesInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">Across all investments</p>
               </div>
-              <div className="bg-purple-100 rounded-lg p-2">
+              <div className="bg-purple-100 rounded-lg p-2 dark:bg-purple-900/40">
                 <Percent className="h-4 w-4 text-purple-600" />
               </div>
             </div>
@@ -246,7 +246,7 @@ function AdminVenturesInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">In portfolio</p>
               </div>
-              <div className="bg-teal-100 rounded-lg p-2">
+              <div className="bg-teal-100 rounded-lg p-2 dark:bg-teal-900/40">
                 <Users className="h-4 w-4 text-teal-600" />
               </div>
             </div>

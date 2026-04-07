@@ -47,13 +47,13 @@ interface CapSummary {
 }
 
 const STAGE_COLORS: Record<string, string> = {
-  invested: "bg-emerald-100 text-emerald-700",
-  closing: "bg-amber-100 text-amber-700",
-  ic_approved: "bg-green-100 text-green-700",
-  due_diligence: "bg-blue-100 text-blue-700",
+  invested: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  closing: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  ic_approved: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  due_diligence: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
   ready_for_ic: "bg-violet-100 text-violet-700",
-  passed: "bg-red-100 text-red-700",
-  deal_dead: "bg-gray-100 text-gray-700",
+  passed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  deal_dead: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
 };
 
 export default function MPPortfolioDetail() {
@@ -111,7 +111,7 @@ function PortfolioDetailInner() {
         <div>
           <h1 className="text-2xl font-bold">{deal.companyName}</h1>
           <div className="flex items-center gap-2 mt-1">
-            <Badge className={STAGE_COLORS[deal.pipelineStage] ?? "bg-gray-100 text-gray-700"}>
+            <Badge className={STAGE_COLORS[deal.pipelineStage] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}>
               {deal.pipelineStage?.replace(/_/g, " ")}
             </Badge>
             {deal.sector && <span className="text-sm text-muted-foreground">{deal.sector}</span>}

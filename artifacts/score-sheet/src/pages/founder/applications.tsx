@@ -23,10 +23,10 @@ type Application = {
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
   draft:        { label: "Draft",         color: "bg-secondary text-muted-foreground border-border" },
-  submitted:    { label: "Submitted",     color: "bg-blue-100 text-blue-800 border-blue-200" },
-  under_review: { label: "Under Review",  color: "bg-amber-100 text-amber-800 border-amber-200" },
-  accepted:     { label: "Accepted",      color: "bg-green-100 text-green-800 border-green-200" },
-  rejected:     { label: "Not Selected",  color: "bg-red-100 text-red-700 border-red-200" },
+  submitted:    { label: "Submitted",     color: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200" },
+  under_review: { label: "Under Review",  color: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50" },
+  accepted:     { label: "Accepted",      color: "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50" },
+  rejected:     { label: "Not Selected",  color: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700/50" },
 };
 
 function formatDate(d: string | null) {

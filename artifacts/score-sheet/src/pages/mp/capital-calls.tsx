@@ -27,10 +27,10 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STATUS_COLOR: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-700",
-  sent: "bg-blue-100 text-blue-700",
-  partial: "bg-amber-100 text-amber-700",
-  complete: "bg-green-100 text-green-700",
+  draft: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
+  sent: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  partial: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  complete: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
 };
 
 export default function MPCapitalCalls() {
@@ -160,7 +160,7 @@ function MPCapitalCallsInner() {
                           {a.allocatedAmountCad && <span className="ml-2 text-emerald-700 font-semibold">${Number(a.allocatedAmountCad).toLocaleString()}</span>}
                         </div>
                         {a.paidAt ? (
-                          <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle className="h-3 w-3" /> Paid {new Date(a.paidAt).toLocaleDateString()}</Badge>
+                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 gap-1"><CheckCircle className="h-3 w-3" /> Paid {new Date(a.paidAt).toLocaleDateString()}</Badge>
                         ) : (
                           <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => markPaid(c.id, a.id)}>Mark Paid</Button>
                         )}

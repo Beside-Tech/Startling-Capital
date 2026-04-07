@@ -32,10 +32,10 @@ interface CapitalCall {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-700",
-  sent: "bg-blue-100 text-blue-700",
-  partial: "bg-amber-100 text-amber-700",
-  complete: "bg-green-100 text-green-700",
+  draft: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
+  sent: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  partial: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  complete: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
 };
 
 export default function MPFundCapitalCalls() {
@@ -170,7 +170,7 @@ function FundCapitalCallsInner() {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{c.title}</p>
-                      <Badge className={STATUS_COLORS[c.status] ?? "bg-gray-100 text-gray-700"}>{c.status}</Badge>
+                      <Badge className={STATUS_COLORS[c.status] ?? "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300"}>{c.status}</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
                       Call: {c.callDate}

@@ -10,17 +10,17 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const PRIORITY_COLOR: Record<string, string> = {
-  low: "bg-gray-100 text-gray-600",
-  medium: "bg-blue-100 text-blue-700",
-  high: "bg-amber-100 text-amber-700",
-  urgent: "bg-red-100 text-red-700",
+  low: "bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300",
+  medium: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  high: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  urgent: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  open: "bg-blue-100 text-blue-700",
-  in_progress: "bg-amber-100 text-amber-700",
-  fulfilled: "bg-emerald-100 text-emerald-700",
-  closed: "bg-gray-100 text-gray-600",
+  open: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  in_progress: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  fulfilled: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  closed: "bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300",
 };
 
 const CATEGORY_LABELS: Record<string, string> = {

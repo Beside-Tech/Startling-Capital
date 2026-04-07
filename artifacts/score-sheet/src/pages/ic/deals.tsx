@@ -16,17 +16,17 @@ const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STAGES = ["sourced","screening","due_diligence","ic_review","term_sheet","closed","passed"] as const;
 const STAGE_COLORS: Record<string, string> = {
-  sourced: "bg-gray-100 text-gray-700", screening: "bg-blue-100 text-blue-700",
-  due_diligence: "bg-amber-100 text-amber-700", ic_review: "bg-violet-100 text-violet-700",
-  term_sheet: "bg-green-100 text-green-700", closed: "bg-emerald-100 text-emerald-700",
-  passed: "bg-red-100 text-red-700",
+  sourced: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300", screening: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  due_diligence: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300", ic_review: "bg-violet-100 text-violet-700",
+  term_sheet: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300", closed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  passed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
 };
 
 const VOTE_OPTIONS = [
-  { value: "approve",    label: "Approve",    icon: CheckCircle, color: "text-green-600",  cls: "border-green-200 bg-green-50 hover:bg-green-100" },
-  { value: "reject",     label: "Reject",     icon: XCircle,     color: "text-red-600",    cls: "border-red-200 bg-red-50 hover:bg-red-100"     },
-  { value: "more_info",  label: "More Info",  icon: Info,        color: "text-blue-600",   cls: "border-blue-200 bg-blue-50 hover:bg-blue-100"  },
-  { value: "abstain",    label: "Abstain",    icon: HelpCircle,  color: "text-gray-600",   cls: "border-gray-200 bg-gray-50 hover:bg-gray-100"  },
+  { value: "approve",    label: "Approve",    icon: CheckCircle, color: "text-green-600",  cls: "border-green-200 bg-green-50 hover:bg-green-100 dark:border-green-700/50 dark:bg-green-900/30 dark:hover:bg-green-900/50" },
+  { value: "reject",     label: "Reject",     icon: XCircle,     color: "text-red-600",    cls: "border-red-200 bg-red-50 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/30 dark:hover:bg-red-900/50"     },
+  { value: "more_info",  label: "More Info",  icon: Info,        color: "text-blue-600",   cls: "border-blue-200 bg-blue-50 hover:bg-blue-100 dark:border-blue-700/50 dark:bg-blue-900/30 dark:hover:bg-blue-900/50"  },
+  { value: "abstain",    label: "Abstain",    icon: HelpCircle,  color: "text-gray-600",   cls: "border-gray-200 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700/30 dark:hover:bg-gray-700/50"  },
 ];
 
 export default function ICDeals() {

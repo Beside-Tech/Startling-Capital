@@ -76,8 +76,8 @@ function InvestmentsInner() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-sm font-semibold">{inv.startupName}</span>
-                      {inv.isLead && <Badge className="bg-amber-100 text-amber-800 border-amber-200 border text-xs gap-1"><Star className="h-2.5 w-2.5" />Lead</Badge>}
-                      <Badge className={inv.status === "active" ? "bg-green-100 text-green-800 border-green-200 border text-xs" : "bg-gray-100 text-gray-800 border text-xs"}>{inv.status}</Badge>
+                      {inv.isLead && <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50 border text-xs gap-1 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50"><Star className="h-2.5 w-2.5" />Lead</Badge>}
+                      <Badge className={inv.status === "active" ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50 border text-xs dark:bg-green-900/40 dark:text-green-300 dark:border-green-700/50" : "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border text-xs"}>{inv.status}</Badge>
                       <Badge className="bg-secondary text-secondary-foreground text-xs">{inv.instrument}</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">{[inv.founderName, inv.sector, inv.stage].filter(Boolean).join(" · ")}</p>

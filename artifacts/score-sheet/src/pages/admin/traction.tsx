@@ -255,7 +255,7 @@ function AdminTractionInner() {
                   {latestPeriod ? periodLabel(latestPeriod.periodMonth, latestPeriod.periodYear) : "No data"}
                 </p>
               </div>
-              <div className="bg-green-100 rounded-lg p-2">
+              <div className="bg-green-100 rounded-lg p-2 dark:bg-green-900/40">
                 <DollarSign className="h-4 w-4 text-green-600" />
               </div>
             </div>
@@ -278,7 +278,7 @@ function AdminTractionInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">Period-over-period</p>
               </div>
-              <div className="bg-blue-100 rounded-lg p-2">
+              <div className="bg-blue-100 rounded-lg p-2 dark:bg-blue-900/40">
                 <Users className="h-4 w-4 text-blue-600" />
               </div>
             </div>
@@ -295,7 +295,7 @@ function AdminTractionInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">Checked in this period</p>
               </div>
-              <div className="bg-purple-100 rounded-lg p-2">
+              <div className="bg-purple-100 rounded-lg p-2 dark:bg-purple-900/40">
                 <User className="h-4 w-4 text-purple-600" />
               </div>
             </div>
@@ -314,7 +314,7 @@ function AdminTractionInner() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">No check-in / &gt;45 days</p>
               </div>
-              <div className="bg-amber-100 rounded-lg p-2">
+              <div className="bg-amber-100 rounded-lg p-2 dark:bg-amber-900/40">
                 <AlertTriangle className="h-4 w-4 text-amber-600" />
               </div>
             </div>

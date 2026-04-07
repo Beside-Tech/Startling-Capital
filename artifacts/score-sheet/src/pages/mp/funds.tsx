@@ -12,10 +12,10 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STATUS_COLOR: Record<string, string> = {
-  fundraising: "bg-blue-100 text-blue-700",
-  investing: "bg-emerald-100 text-emerald-700",
-  harvesting: "bg-amber-100 text-amber-700",
-  closed: "bg-gray-100 text-gray-700",
+  fundraising: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  investing: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  harvesting: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  closed: "bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300",
 };
 
 const fmt = (v: any) => v != null ? Number(v).toLocaleString() : "—";

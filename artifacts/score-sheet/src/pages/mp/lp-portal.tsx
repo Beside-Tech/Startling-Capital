@@ -178,7 +178,7 @@ function MPLPPortalInner() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold">Q{u.quarter} {u.year}</span>
-                    <Badge className={u.isPublished ? "bg-emerald-100 text-emerald-700 text-xs" : "bg-gray-100 text-gray-600 text-xs"}>
+                    <Badge className={u.isPublished ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 text-xs dark:bg-emerald-900/40 dark:text-emerald-300" : "bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300 text-xs"}>
                       {u.isPublished ? "Published" : "Draft"}
                     </Badge>
                   </div>

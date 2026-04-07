@@ -309,7 +309,7 @@ export default function Login() {
                   {[
                     { role: "SuperAdmin",      email: "team@nobellum.com",    pin: "Nobellum2025!", color: "bg-violet-50 text-violet-700" },
                     { role: "Admin",           email: "admin@nobellum.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700" },
-                    { role: "ManagingPartner", email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700" },
+                    { role: "ManagingPartner", email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
                     { role: "IC",              email: "ic@nobellum.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700" },
                     { role: "Judge",           email: "judge@nobellum.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700" },
                     { role: "Founder",         email: "founder@nobellum.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700" },
