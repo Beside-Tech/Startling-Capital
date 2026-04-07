@@ -1,5 +1,5 @@
 import { db } from "@workspace/db";
-import { siteSettingsTable, lpProfilesTable, usersTable } from "@workspace/db";
+import { siteSettingsTable, lpProfilesTable, foundersTable, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "./logger";
 import { hashPin } from "./auth";
@@ -94,6 +94,62 @@ export async function seedDefaultSettings(): Promise<void> {
     logger.warn({ err }, "Could not seed default settings (table may not exist yet)");
   }
 
+  // Seed all demo accounts if not present
+  const demoUsers = [
+    { email: "team@nobellum.com",    name: "Demo Super Admin",        role: "SuperAdmin",        pin: "Nobellum2025!" },
+    { email: "admin@nobellum.com",   name: "Demo Admin",              role: "Admin",             pin: "Admin1234"     },
+    { email: "mp@nobellum.com",      name: "Demo Managing Partner",   role: "ManagingPartner",   pin: "Partner1234"   },
+    { email: "ic@nobellum.com",      name: "Demo IC Member",          role: "IC",                pin: "IC12341234"    },
+    { email: "judge@nobellum.com",   name: "Demo Judge",              role: "Judge",             pin: "Judge1234"     },
+    { email: "founder@nobellum.com", name: "Demo Founder",            role: "Founder",           pin: "Founder1234"   },
+    { email: "lp@nobellum.com",      name: "Demo LP",                 role: "LP",                pin: "LP12341234"    },
+    { email: "va@nobellum.com",      name: "Demo Venture Associate",  role: "VentureAssociate",  pin: "Associate1234" },
+  ];
+
+  for (const u of demoUsers) {
+    try {
+      const existing = await db.select({ id: usersTable.id })
+        .from(usersTable)
+        .where(eq(usersTable.email, u.email))
+        .limit(1);
+
+      if (existing.length === 0) {
+        const pinHash = await hashPin(u.pin);
+        await db.insert(usersTable).values({
+          email: u.email,
+          name: u.name,
+          role: u.role as any,
+          pinHash,
+          active: true,
+        }).onConflictDoNothing();
+        logger.info(`Demo account seeded: ${u.email}`);
+      }
+    } catch (err) {
+      logger.warn({ err }, `Could not seed demo account: ${u.email}`);
+    }
+  }
+
+  // Seed founder profile for demo founder
+  try {
+    const [founderUser] = await db.select({ id: usersTable.id })
+      .from(usersTable)
+      .where(eq(usersTable.email, "founder@nobellum.com"))
+      .limit(1);
+
+    if (founderUser) {
+      await db.insert(foundersTable).values({
+        userId: founderUser.id,
+        companyName: "Demo Startup Inc.",
+        sector: "Technology",
+        stage: "seed",
+        companyWebsite: "https://demo.example.com",
+      }).onConflictDoNothing();
+    }
+  } catch (err) {
+    logger.warn({ err }, "Could not seed demo founder profile");
+  }
+
+  // Seed LP profile for demo LP
   try {
     const [lpUser] = await db.select({ id: usersTable.id })
       .from(usersTable)
@@ -113,27 +169,5 @@ export async function seedDefaultSettings(): Promise<void> {
     }
   } catch (err) {
     logger.warn({ err }, "Could not seed demo LP profile");
-  }
-
-  // Seed Venture Associate demo account if not present
-  try {
-    const existing = await db.select({ id: usersTable.id })
-      .from(usersTable)
-      .where(eq(usersTable.email, "va@nobellum.com"))
-      .limit(1);
-
-    if (existing.length === 0) {
-      const pinHash = await hashPin("Associate1234");
-      await db.insert(usersTable).values({
-        email: "va@nobellum.com",
-        name: "Demo Venture Associate",
-        role: "VentureAssociate",
-        pinHash,
-        active: true,
-      }).onConflictDoNothing();
-      logger.info("Venture Associate demo account seeded: va@nobellum.com / Associate1234");
-    }
-  } catch (err) {
-    logger.warn({ err }, "Could not seed Venture Associate demo account");
   }
 }
