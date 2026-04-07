@@ -5,13 +5,13 @@ import {
 } from "@workspace/db";
 import { eq, desc, and } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
-import { requireAuth, requireIC, requireManagingPartner } from "../lib/auth";
+import { requireAuth, requireIC, requireManagingPartner, requireICOrVA } from "../lib/auth";
 
 const router = Router();
 
 const assigneeUsers = alias(usersTable, "assignee_users");
 
-router.get("/mp/founder-asks", requireIC, async (_req, res) => {
+router.get("/mp/founder-asks", requireICOrVA, async (_req, res) => {
   try {
     const asks = await db
       .select({

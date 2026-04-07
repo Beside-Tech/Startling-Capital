@@ -6,7 +6,7 @@ import { requireIC, requireICOrVA, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
-router.get("/mp/term-sheets", requireIC, async (_req, res) => {
+router.get("/mp/term-sheets", requireICOrVA, async (_req, res) => {
   try {
     const sheets = await db
       .select({
@@ -39,7 +39,7 @@ router.get("/mp/term-sheets", requireIC, async (_req, res) => {
   }
 });
 
-router.get("/mp/term-sheets/deal/:dealId", requireIC, async (req, res) => {
+router.get("/mp/term-sheets/deal/:dealId", requireICOrVA, async (req, res) => {
   try {
     const dealId = Number(String(req.params.dealId));
     const sheets = await db

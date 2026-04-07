@@ -5,11 +5,11 @@ import {
   icMeetingsTable, icMeetingDealsTable, dealFlowTable, usersTable, icVotesTable,
 } from "@workspace/db";
 import { eq, desc, count, and, inArray } from "drizzle-orm";
-import { requireIC, requireManagingPartner } from "../lib/auth";
+import { requireIC, requireManagingPartner, requireICOrVA } from "../lib/auth";
 
 const router = Router();
 
-router.get("/ic/meetings", requireIC, async (req, res) => {
+router.get("/ic/meetings", requireICOrVA, async (req, res) => {
   try {
     const meetings = await db
       .select({
@@ -53,7 +53,7 @@ router.post("/ic/meetings", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.get("/ic/meetings/:id", requireIC, async (req, res) => {
+router.get("/ic/meetings/:id", requireICOrVA, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const [meeting] = await db
