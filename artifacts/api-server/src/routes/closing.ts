@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import {
-  closingChecklistsTable, closingChecklistItemsTable, dealFlowTable, usersTable,
+  closingChecklistsTable, closingChecklistItemsTable, dealFlowTable, capTableEntriesTable,
+  termSheetsTable,
 } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import { requireIC, requireManagingPartner } from "../lib/auth";
@@ -124,6 +125,66 @@ router.patch("/closing/checklists/:checklistId/items/:itemId", requireIC, async 
     res.json({ item: updated });
   } catch {
     res.status(500).json({ error: "Failed to update checklist item" });
+  }
+});
+
+// POST /api/closing/checklists/:id/confirm — mark checklist complete + create cap table entry
+router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const [checklist] = await db.select()
+      .from(closingChecklistsTable)
+      .where(eq(closingChecklistsTable.id, id))
+      .limit(1);
+    if (!checklist) return res.status(404).json({ error: "Checklist not found" });
+
+    // Mark all items complete
+    await db.update(closingChecklistItemsTable)
+      .set({ isComplete: true, completedAt: new Date(), completedById: req.user!.userId })
+      .where(eq(closingChecklistItemsTable.checklistId, id));
+
+    // Update checklist status to complete
+    const [updated] = await db.update(closingChecklistsTable)
+      .set({ status: "complete", updatedAt: new Date() })
+      .where(eq(closingChecklistsTable.id, id))
+      .returning();
+
+    // Advance deal stage to closed
+    await db.update(dealFlowTable)
+      .set({ pipelineStage: "closed", updatedAt: new Date() })
+      .where(eq(dealFlowTable.id, checklist.dealId));
+
+    // Get deal + associated term sheet for cap table entry
+    const [deal] = await db.select()
+      .from(dealFlowTable)
+      .where(eq(dealFlowTable.id, checklist.dealId))
+      .limit(1);
+
+    let capTableEntry = null;
+    if (deal?.founderId) {
+      const [ts] = await db.select()
+        .from(termSheetsTable)
+        .where(eq(termSheetsTable.dealId, deal.id))
+        .orderBy(desc(termSheetsTable.createdAt))
+        .limit(1);
+
+      const [entry] = await db.insert(capTableEntriesTable).values({
+        founderId: deal.founderId,
+        investorName: "Nobellum Ventures",
+        investorType: "investor",
+        instrument: ts?.instrument ?? "SAFE",
+        equityPct: ts?.equityPct ?? null,
+        investmentAmountCad: ts?.investmentAmountCad ?? null,
+        roundName: deal.stage ?? null,
+        date: new Date().toISOString().split("T")[0],
+        notes: `Investment confirmed on closing checklist #${id}`,
+      }).returning();
+      capTableEntry = entry;
+    }
+
+    res.json({ checklist: updated, capTableEntry });
+  } catch {
+    res.status(500).json({ error: "Failed to confirm closing" });
   }
 });
 

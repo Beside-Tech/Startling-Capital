@@ -3,9 +3,11 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
 import { lpProfilesTable } from "./lp_profiles";
+import { fundsTable } from "./funds";
 
 export const capitalCallsTable = pgTable("capital_calls", {
   id: serial("id").primaryKey(),
+  fundId: integer("fund_id").references(() => fundsTable.id, { onDelete: "set null" }),
   title: text("title").notNull(),
   callDate: text("call_date").notNull(),
   dueDate: text("due_date"),

@@ -124,4 +124,17 @@ router.post("/board/materials", requireManagingPartner, async (req, res) => {
   }
 });
 
+router.delete("/board/materials/:id", requireManagingPartner, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const [deleted] = await db.delete(boardMaterialsTable)
+      .where(eq(boardMaterialsTable.id, id))
+      .returning();
+    if (!deleted) return res.status(404).json({ error: "Material not found" });
+    res.json({ success: true });
+  } catch {
+    res.status(500).json({ error: "Failed to delete board material" });
+  }
+});
+
 export default router;

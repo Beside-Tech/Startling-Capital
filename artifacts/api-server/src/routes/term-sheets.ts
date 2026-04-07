@@ -145,4 +145,28 @@ router.put("/term-sheets/:id", requireManagingPartner, async (req, res) => {
   }
 });
 
+// POST /api/term-sheets/:id/submit-to-ic — submit term sheet to IC + advance deal stage
+router.post("/term-sheets/:id/submit-to-ic", requireManagingPartner, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const [sheet] = await db.select().from(termSheetsTable).where(eq(termSheetsTable.id, id)).limit(1);
+    if (!sheet) return res.status(404).json({ error: "Term sheet not found" });
+
+    const [updated] = await db.update(termSheetsTable)
+      .set({ status: "sent", updatedAt: new Date() })
+      .where(eq(termSheetsTable.id, id))
+      .returning();
+
+    // Advance deal stage to ic_review
+    const [deal] = await db.update(dealFlowTable)
+      .set({ pipelineStage: "ic_review", updatedAt: new Date() })
+      .where(eq(dealFlowTable.id, sheet.dealId))
+      .returning({ pipelineStage: dealFlowTable.pipelineStage, companyName: dealFlowTable.companyName });
+
+    res.json({ sheet: updated, deal });
+  } catch {
+    res.status(500).json({ error: "Failed to submit term sheet to IC" });
+  }
+});
+
 export default router;

@@ -7,7 +7,7 @@ export const dataRoomFilesTable = pgTable("data_room_files", {
   id: serial("id").primaryKey(),
   founderId: integer("founder_id").notNull().references(() => foundersTable.id),
   category: text("category", {
-    enum: ["pitch_deck", "financial_model", "legal", "product", "team", "market_research", "other"],
+    enum: ["legal", "financial", "technical", "team", "pitch_deck", "financial_model", "product", "market_research", "other"],
   }).notNull().default("other"),
   fileName: text("file_name").notNull(),
   originalName: text("original_name").notNull(),

@@ -9,8 +9,9 @@ import {
   capitalCallsTable,
   capitalCallAllocationsTable,
   lpProfilesTable,
+  lpAccountsTable,
 } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
 
 const router = Router();
@@ -208,28 +209,46 @@ router.post("/mp/capital-calls/:id/generate-allocations", requireAuth, async (re
     const totalAmount = parseFloat(call.totalAmountCad ?? "0");
     if (totalAmount <= 0) return res.status(400).json({ error: "Capital call has no total amount set" });
 
-    const lps = await db.select().from(lpProfilesTable).where(eq(lpProfilesTable.active, true));
-    if (lps.length === 0) return res.json({ message: "No active LPs found", allocations: [] });
+    let lpEntries: Array<{ profileId: number; commitmentCad: string | null }> = [];
 
-    const totalCommitted = lps.reduce((sum, lp) => sum + parseFloat(lp.commitmentCad ?? "0"), 0);
+    if (call.fundId) {
+      // Fund-scoped: use lp_accounts for the specific fund
+      const fundAccounts = await db
+        .select({
+          lpProfileId: lpAccountsTable.lpProfileId,
+          commitmentCad: lpAccountsTable.commitmentCad,
+        })
+        .from(lpAccountsTable)
+        .where(and(eq(lpAccountsTable.fundId, call.fundId), eq(lpAccountsTable.status, "active")));
+
+      lpEntries = fundAccounts.map(a => ({ profileId: a.lpProfileId, commitmentCad: a.commitmentCad }));
+    } else {
+      // Fallback: all active LP profiles (no fund context)
+      const lps = await db.select().from(lpProfilesTable).where(eq(lpProfilesTable.active, true));
+      lpEntries = lps.map(lp => ({ profileId: lp.id, commitmentCad: lp.commitmentCad }));
+    }
+
+    if (lpEntries.length === 0) return res.json({ message: "No active LPs found for this fund", allocations: [], count: 0 });
+
+    const totalCommitted = lpEntries.reduce((sum, lp) => sum + parseFloat(lp.commitmentCad ?? "0"), 0);
     if (totalCommitted <= 0) return res.status(400).json({ error: "Total committed capital is zero" });
 
     await db.delete(capitalCallAllocationsTable).where(eq(capitalCallAllocationsTable.capitalCallId, callId));
 
-    const newAllocations = lps.map(lp => {
+    const newAllocations = lpEntries.map(lp => {
       const lpCommit = parseFloat(lp.commitmentCad ?? "0");
       const proRata = lpCommit / totalCommitted;
       const allocated = (totalAmount * proRata).toFixed(2);
       return {
         capitalCallId: callId,
-        lpProfileId: lp.id,
+        lpProfileId: lp.profileId,
         allocatedAmountCad: allocated,
-        notes: `Pro-rata ${(proRata * 100).toFixed(2)}% of ${totalCommitted.toLocaleString()} total committed`,
+        notes: `Pro-rata ${(proRata * 100).toFixed(2)}% of ${totalCommitted.toLocaleString()} fund committed`,
       };
     });
 
     const created = await db.insert(capitalCallAllocationsTable).values(newAllocations).returning();
-    res.status(201).json({ allocations: created, totalAllocated: totalAmount, lpCount: created.length });
+    res.status(201).json({ allocations: created, totalAllocated: totalAmount, count: created.length });
   } catch {
     res.status(500).json({ error: "Failed to generate allocations" });
   }
