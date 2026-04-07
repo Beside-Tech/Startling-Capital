@@ -169,9 +169,6 @@ importers:
       '@google-cloud/storage':
         specifier: ^7.16.0
         version: 7.19.0
-      '@types/nodemailer':
-        specifier: ^8.0.0
-        version: 8.0.0
       '@workspace/api-zod':
         specifier: workspace:*
         version: link:../../lib/api-zod
@@ -236,6 +233,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.3.5
+      '@types/nodemailer':
+        specifier: ^8.0.0
+        version: 8.0.0
       esbuild:
         specifier: 0.27.3
         version: 0.27.3

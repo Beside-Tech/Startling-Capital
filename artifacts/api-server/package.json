@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.16.0",
-    "@types/nodemailer": "^8.0.0",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
     "bcryptjs": "^2.4.3",
@@ -28,6 +27,7 @@
     "pino-http": "^10"
   },
   "devDependencies": {
+    "@types/nodemailer": "^8.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",

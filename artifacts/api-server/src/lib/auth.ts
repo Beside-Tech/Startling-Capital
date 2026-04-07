@@ -69,11 +69,13 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction) {
 }
 
 export function requireSuperAdmin(req: Request, res: Response, next: NextFunction) {
-  if (req.user?.role !== "SuperAdmin") {
-    res.status(403).json({ error: "Forbidden", message: "Super Admin access required" });
-    return;
-  }
-  next();
+  requireAuth(req, res, () => {
+    if (req.user?.role !== "SuperAdmin") {
+      res.status(403).json({ error: "Forbidden", message: "Super Admin access required" });
+      return;
+    }
+    next();
+  });
 }
 
 export function requireIC(req: Request, res: Response, next: NextFunction) {
