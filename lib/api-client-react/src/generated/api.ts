@@ -54,12 +54,14 @@ import type {
   PostIcDealsIdVoteBody,
   PostIcVotesDealId200,
   PostIcVotesDealIdBody,
+  PostMpFundsFundIdLpAccountsBody,
   PostMpFundsFundIdMetricsBody,
   PostMpLpAccountsBody,
   PostMpTermSheetsBody,
   Program,
   PutIcDealsIdBody,
   PutIcVotesDealIdDissentBody,
+  PutMpFundsFundIdLpAccountsAccountIdBody,
   ResetPinRequest,
   ResetPinResponse,
   Score,
@@ -4094,6 +4096,90 @@ export function useGetClosingChecklistsId<
 }
 
 /**
+ * @summary Confirm closing checklist — advances deal to 'invested', creates cap table entry
+ */
+export const getPostClosingChecklistsIdConfirmUrl = (id: number) => {
+  return `/api/closing/checklists/${id}/confirm`;
+};
+
+export const postClosingChecklistsIdConfirm = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostClosingChecklistsIdConfirmUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getPostClosingChecklistsIdConfirmMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["postClosingChecklistsIdConfirm"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postClosingChecklistsIdConfirm(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostClosingChecklistsIdConfirmMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>
+>;
+
+export type PostClosingChecklistsIdConfirmMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Confirm closing checklist — advances deal to 'invested', creates cap table entry
+ */
+export const usePostClosingChecklistsIdConfirm = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postClosingChecklistsIdConfirm>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPostClosingChecklistsIdConfirmMutationOptions(options));
+};
+
+/**
  * @summary Mark closing checklist item complete/incomplete
  */
 export const getPatchClosingChecklistsChecklistIdItemsItemIdUrl = (
@@ -4813,6 +4899,500 @@ export const usePostMpFundsFundIdMetrics = <
 };
 
 /**
+ * @summary Compute TVPI/DPI/RVPI/MOIC from ledger data (capital calls, LP accounts, cap table)
+ */
+export const getGetMpFundsFundIdMetricsComputedUrl = (fundId: number) => {
+  return `/api/mp/funds/${fundId}/metrics/computed`;
+};
+
+export const getMpFundsFundIdMetricsComputed = async (
+  fundId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetMpFundsFundIdMetricsComputedUrl(fundId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetMpFundsFundIdMetricsComputedQueryKey = (fundId: number) => {
+  return [`/api/mp/funds/${fundId}/metrics/computed`] as const;
+};
+
+export const getGetMpFundsFundIdMetricsComputedQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetMpFundsFundIdMetricsComputedQueryKey(fundId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>
+  > = ({ signal }) =>
+    getMpFundsFundIdMetricsComputed(fundId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!fundId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetMpFundsFundIdMetricsComputedQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>
+>;
+export type GetMpFundsFundIdMetricsComputedQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Compute TVPI/DPI/RVPI/MOIC from ledger data (capital calls, LP accounts, cap table)
+ */
+
+export function useGetMpFundsFundIdMetricsComputed<
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpFundsFundIdMetricsComputed>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetMpFundsFundIdMetricsComputedQueryOptions(
+    fundId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List LP accounts for a specific fund
+ */
+export const getGetMpFundsFundIdLpAccountsUrl = (fundId: number) => {
+  return `/api/mp/funds/${fundId}/lp-accounts`;
+};
+
+export const getMpFundsFundIdLpAccounts = async (
+  fundId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetMpFundsFundIdLpAccountsUrl(fundId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetMpFundsFundIdLpAccountsQueryKey = (fundId: number) => {
+  return [`/api/mp/funds/${fundId}/lp-accounts`] as const;
+};
+
+export const getGetMpFundsFundIdLpAccountsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetMpFundsFundIdLpAccountsQueryKey(fundId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>
+  > = ({ signal }) =>
+    getMpFundsFundIdLpAccounts(fundId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!fundId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetMpFundsFundIdLpAccountsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>
+>;
+export type GetMpFundsFundIdLpAccountsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List LP accounts for a specific fund
+ */
+
+export function useGetMpFundsFundIdLpAccounts<
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>,
+  TError = ErrorType<unknown>,
+>(
+  fundId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpFundsFundIdLpAccounts>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetMpFundsFundIdLpAccountsQueryOptions(
+    fundId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Add LP account to fund
+ */
+export const getPostMpFundsFundIdLpAccountsUrl = (fundId: number) => {
+  return `/api/mp/funds/${fundId}/lp-accounts`;
+};
+
+export const postMpFundsFundIdLpAccounts = async (
+  fundId: number,
+  postMpFundsFundIdLpAccountsBody: PostMpFundsFundIdLpAccountsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostMpFundsFundIdLpAccountsUrl(fundId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postMpFundsFundIdLpAccountsBody),
+  });
+};
+
+export const getPostMpFundsFundIdLpAccountsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>,
+    TError,
+    { fundId: number; data: BodyType<PostMpFundsFundIdLpAccountsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>,
+  TError,
+  { fundId: number; data: BodyType<PostMpFundsFundIdLpAccountsBody> },
+  TContext
+> => {
+  const mutationKey = ["postMpFundsFundIdLpAccounts"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>,
+    { fundId: number; data: BodyType<PostMpFundsFundIdLpAccountsBody> }
+  > = (props) => {
+    const { fundId, data } = props ?? {};
+
+    return postMpFundsFundIdLpAccounts(fundId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostMpFundsFundIdLpAccountsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>
+>;
+export type PostMpFundsFundIdLpAccountsMutationBody =
+  BodyType<PostMpFundsFundIdLpAccountsBody>;
+export type PostMpFundsFundIdLpAccountsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Add LP account to fund
+ */
+export const usePostMpFundsFundIdLpAccounts = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>,
+    TError,
+    { fundId: number; data: BodyType<PostMpFundsFundIdLpAccountsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postMpFundsFundIdLpAccounts>>,
+  TError,
+  { fundId: number; data: BodyType<PostMpFundsFundIdLpAccountsBody> },
+  TContext
+> => {
+  return useMutation(getPostMpFundsFundIdLpAccountsMutationOptions(options));
+};
+
+/**
+ * @summary Update LP account for fund
+ */
+export const getPutMpFundsFundIdLpAccountsAccountIdUrl = (
+  fundId: number,
+  accountId: number,
+) => {
+  return `/api/mp/funds/${fundId}/lp-accounts/${accountId}`;
+};
+
+export const putMpFundsFundIdLpAccountsAccountId = async (
+  fundId: number,
+  accountId: number,
+  putMpFundsFundIdLpAccountsAccountIdBody: PutMpFundsFundIdLpAccountsAccountIdBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getPutMpFundsFundIdLpAccountsAccountIdUrl(fundId, accountId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(putMpFundsFundIdLpAccountsAccountIdBody),
+    },
+  );
+};
+
+export const getPutMpFundsFundIdLpAccountsAccountIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>,
+    TError,
+    {
+      fundId: number;
+      accountId: number;
+      data: BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>,
+  TError,
+  {
+    fundId: number;
+    accountId: number;
+    data: BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+  },
+  TContext
+> => {
+  const mutationKey = ["putMpFundsFundIdLpAccountsAccountId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>,
+    {
+      fundId: number;
+      accountId: number;
+      data: BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+    }
+  > = (props) => {
+    const { fundId, accountId, data } = props ?? {};
+
+    return putMpFundsFundIdLpAccountsAccountId(
+      fundId,
+      accountId,
+      data,
+      requestOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutMpFundsFundIdLpAccountsAccountIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>
+>;
+export type PutMpFundsFundIdLpAccountsAccountIdMutationBody =
+  BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+export type PutMpFundsFundIdLpAccountsAccountIdMutationError =
+  ErrorType<unknown>;
+
+/**
+ * @summary Update LP account for fund
+ */
+export const usePutMpFundsFundIdLpAccountsAccountId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>,
+    TError,
+    {
+      fundId: number;
+      accountId: number;
+      data: BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putMpFundsFundIdLpAccountsAccountId>>,
+  TError,
+  {
+    fundId: number;
+    accountId: number;
+    data: BodyType<PutMpFundsFundIdLpAccountsAccountIdBody>;
+  },
+  TContext
+> => {
+  return useMutation(
+    getPutMpFundsFundIdLpAccountsAccountIdMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Remove LP account from fund
+ */
+export const getDeleteMpFundsFundIdLpAccountsAccountIdUrl = (
+  fundId: number,
+  accountId: number,
+) => {
+  return `/api/mp/funds/${fundId}/lp-accounts/${accountId}`;
+};
+
+export const deleteMpFundsFundIdLpAccountsAccountId = async (
+  fundId: number,
+  accountId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getDeleteMpFundsFundIdLpAccountsAccountIdUrl(fundId, accountId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getDeleteMpFundsFundIdLpAccountsAccountIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>,
+    TError,
+    { fundId: number; accountId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>,
+  TError,
+  { fundId: number; accountId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteMpFundsFundIdLpAccountsAccountId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>,
+    { fundId: number; accountId: number }
+  > = (props) => {
+    const { fundId, accountId } = props ?? {};
+
+    return deleteMpFundsFundIdLpAccountsAccountId(
+      fundId,
+      accountId,
+      requestOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteMpFundsFundIdLpAccountsAccountIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>
+>;
+
+export type DeleteMpFundsFundIdLpAccountsAccountIdMutationError =
+  ErrorType<unknown>;
+
+/**
+ * @summary Remove LP account from fund
+ */
+export const useDeleteMpFundsFundIdLpAccountsAccountId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>,
+    TError,
+    { fundId: number; accountId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteMpFundsFundIdLpAccountsAccountId>>,
+  TError,
+  { fundId: number; accountId: number },
+  TContext
+> => {
+  return useMutation(
+    getDeleteMpFundsFundIdLpAccountsAccountIdMutationOptions(options),
+  );
+};
+
+/**
  * @summary List capital calls
  */
 export const getGetMpCapitalCallsUrl = () => {
@@ -5357,6 +5937,171 @@ export function useGetMpCapTable<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetMpCapTableQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Per-company portfolio view — ownership %, implied valuation, estimated value, MOIC
+ */
+export const getGetMpCapTablePortfolioUrl = () => {
+  return `/api/mp/cap-table/portfolio`;
+};
+
+export const getMpCapTablePortfolio = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetMpCapTablePortfolioUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetMpCapTablePortfolioQueryKey = () => {
+  return [`/api/mp/cap-table/portfolio`] as const;
+};
+
+export const getGetMpCapTablePortfolioQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpCapTablePortfolio>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getMpCapTablePortfolio>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetMpCapTablePortfolioQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMpCapTablePortfolio>>
+  > = ({ signal }) => getMpCapTablePortfolio({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMpCapTablePortfolio>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetMpCapTablePortfolioQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpCapTablePortfolio>>
+>;
+export type GetMpCapTablePortfolioQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Per-company portfolio view — ownership %, implied valuation, estimated value, MOIC
+ */
+
+export function useGetMpCapTablePortfolio<
+  TData = Awaited<ReturnType<typeof getMpCapTablePortfolio>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getMpCapTablePortfolio>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetMpCapTablePortfolioQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Cap table entries for a specific deal (via founder linkage), with summary totals
+ */
+export const getGetMpCapTableDealDealIdUrl = (dealId: number) => {
+  return `/api/mp/cap-table/deal/${dealId}`;
+};
+
+export const getMpCapTableDealDealId = async (
+  dealId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetMpCapTableDealDealIdUrl(dealId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetMpCapTableDealDealIdQueryKey = (dealId: number) => {
+  return [`/api/mp/cap-table/deal/${dealId}`] as const;
+};
+
+export const getGetMpCapTableDealDealIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpCapTableDealDealId>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpCapTableDealDealId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetMpCapTableDealDealIdQueryKey(dealId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMpCapTableDealDealId>>
+  > = ({ signal }) =>
+    getMpCapTableDealDealId(dealId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!dealId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMpCapTableDealDealId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetMpCapTableDealDealIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpCapTableDealDealId>>
+>;
+export type GetMpCapTableDealDealIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Cap table entries for a specific deal (via founder linkage), with summary totals
+ */
+
+export function useGetMpCapTableDealDealId<
+  TData = Awaited<ReturnType<typeof getMpCapTableDealDealId>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMpCapTableDealDealId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetMpCapTableDealDealIdQueryOptions(dealId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

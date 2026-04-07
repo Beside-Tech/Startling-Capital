@@ -748,6 +748,13 @@ export const GetClosingChecklistsIdParams = zod.object({
 });
 
 /**
+ * @summary Confirm closing checklist — advances deal to 'invested', creates cap table entry
+ */
+export const PostClosingChecklistsIdConfirmParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
  * @summary Mark closing checklist item complete/incomplete
  */
 export const PatchClosingChecklistsChecklistIdItemsItemIdParams = zod.object({
@@ -830,6 +837,58 @@ export const PostMpFundsFundIdMetricsBody = zod.object({
 });
 
 /**
+ * @summary Compute TVPI/DPI/RVPI/MOIC from ledger data (capital calls, LP accounts, cap table)
+ */
+export const GetMpFundsFundIdMetricsComputedParams = zod.object({
+  fundId: zod.coerce.number(),
+});
+
+/**
+ * @summary List LP accounts for a specific fund
+ */
+export const GetMpFundsFundIdLpAccountsParams = zod.object({
+  fundId: zod.coerce.number(),
+});
+
+/**
+ * @summary Add LP account to fund
+ */
+export const PostMpFundsFundIdLpAccountsParams = zod.object({
+  fundId: zod.coerce.number(),
+});
+
+export const PostMpFundsFundIdLpAccountsBody = zod.object({
+  lpProfileId: zod.number(),
+  commitmentCad: zod.number().optional(),
+  status: zod.string().optional(),
+  notes: zod.string().optional(),
+});
+
+/**
+ * @summary Update LP account for fund
+ */
+export const PutMpFundsFundIdLpAccountsAccountIdParams = zod.object({
+  fundId: zod.coerce.number(),
+  accountId: zod.coerce.number(),
+});
+
+export const PutMpFundsFundIdLpAccountsAccountIdBody = zod.object({
+  commitmentCad: zod.number().optional(),
+  capitalCalledCad: zod.number().optional(),
+  distributedCapitalCad: zod.number().optional(),
+  status: zod.string().optional(),
+  notes: zod.string().optional(),
+});
+
+/**
+ * @summary Remove LP account from fund
+ */
+export const DeleteMpFundsFundIdLpAccountsAccountIdParams = zod.object({
+  fundId: zod.coerce.number(),
+  accountId: zod.coerce.number(),
+});
+
+/**
  * @summary Generate pro-rata LP allocations for a capital call
  */
 export const PostMpCapitalCallsIdGenerateAllocationsParams = zod.object({
@@ -841,6 +900,13 @@ export const PostMpCapitalCallsIdGenerateAllocationsParams = zod.object({
  */
 export const GetLpK1YearParams = zod.object({
   year: zod.coerce.number(),
+});
+
+/**
+ * @summary Cap table entries for a specific deal (via founder linkage), with summary totals
+ */
+export const GetMpCapTableDealDealIdParams = zod.object({
+  dealId: zod.coerce.number(),
 });
 
 /**

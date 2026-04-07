@@ -503,6 +503,21 @@ export type PostMpFundsFundIdMetricsBody = {
   notes?: string;
 };
 
+export type PostMpFundsFundIdLpAccountsBody = {
+  lpProfileId: number;
+  commitmentCad?: number;
+  status?: string;
+  notes?: string;
+};
+
+export type PutMpFundsFundIdLpAccountsAccountIdBody = {
+  commitmentCad?: number;
+  capitalCalledCad?: number;
+  distributedCapitalCad?: number;
+  status?: string;
+  notes?: string;
+};
+
 export type PostIcVotesDealIdBodyVote =
   (typeof PostIcVotesDealIdBodyVote)[keyof typeof PostIcVotesDealIdBodyVote];
 

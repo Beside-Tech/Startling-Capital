@@ -79,13 +79,21 @@ function DealsInner() {
     setVoting(v => ({ ...v, [dealId]: false }));
   };
 
-  const updateStage = async (id: number, pipelineStage: string) => {
-    await fetch(`${BASE}/api/ic/deals/${id}`, {
-      method: "PUT",
+  const updateStage = async (id: number, toStage: string) => {
+    const res = await fetch(`${BASE}/api/deals/${id}/stage`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
-      body: JSON.stringify({ pipelineStage }),
+      body: JSON.stringify({ toStage }),
     });
-    setDeals(ds => ds.map(d => d.id === id ? { ...d, pipelineStage } : d));
+    if (res.ok) {
+      const { deal } = await res.json();
+      setDeals(ds => ds.map(d => d.id === id ? { ...d, pipelineStage: deal.pipelineStage } : d));
+    } else {
+      const err = await res.json().catch(() => ({ error: "Transition rejected" }));
+      toast({ title: err.error ?? "Invalid stage transition", variant: "destructive" });
+      // Reload to sync actual server state
+      fetchDeals();
+    }
   };
 
   const createDeal = async () => {
