@@ -94,10 +94,12 @@ router.get("/mp/funds/:fundId/metrics/computed", requireManagingPartner, async (
     // Portfolio companies: count distinct founderId in cap table entries that link to this fund's deals
     // Cost basis NAV = sum of investmentAmountCad in cap table (proxy until FMV marks available)
     // We use fundsTable.navCad if manually updated, else fall back to cost basis
+    // Fund-scoped portfolio entries — only entries attributed to this fund
     const portfolioEntries = await db.select({
       founderId: capTableEntriesTable.founderId,
       investmentAmountCad: capTableEntriesTable.investmentAmountCad,
-    }).from(capTableEntriesTable);
+    }).from(capTableEntriesTable)
+      .where(eq(capTableEntriesTable.fundId, fundId));
 
     const costBasisNav = portfolioEntries.reduce(
       (sum, e) => sum + parseFloat(e.investmentAmountCad ?? "0"),

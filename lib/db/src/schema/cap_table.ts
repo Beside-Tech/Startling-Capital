@@ -2,10 +2,12 @@ import { pgTable, text, serial, timestamp, integer, numeric } from "drizzle-orm/
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { foundersTable } from "./founders";
+import { fundsTable } from "./funds";
 
 export const capTableEntriesTable = pgTable("cap_table_entries", {
   id: serial("id").primaryKey(),
   founderId: integer("founder_id").notNull().references(() => foundersTable.id, { onDelete: "cascade" }),
+  fundId: integer("fund_id").references(() => fundsTable.id, { onDelete: "set null" }),
   investorName: text("investor_name").notNull(),
   investorType: text("investor_type", {
     enum: ["founder", "investor", "employee", "advisor", "other"],

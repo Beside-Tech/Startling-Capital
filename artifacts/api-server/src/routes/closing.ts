@@ -129,9 +129,11 @@ router.patch("/closing/checklists/:checklistId/items/:itemId", requireIC, async 
 });
 
 // POST /api/closing/checklists/:id/confirm — mark checklist complete + create cap table entry
+// Body: { fundId?: number } — if provided, cap table entry is attributed to this fund
 router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
+    const fundId: number | null = req.body?.fundId ? Number(req.body.fundId) : null;
     const [checklist] = await db.select()
       .from(closingChecklistsTable)
       .where(eq(closingChecklistsTable.id, id))
@@ -170,6 +172,7 @@ router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (re
 
       const [entry] = await db.insert(capTableEntriesTable).values({
         founderId: deal.founderId,
+        fundId: fundId,
         investorName: "Nobellum Ventures",
         investorType: "investor",
         instrument: ts?.instrument ?? "SAFE",

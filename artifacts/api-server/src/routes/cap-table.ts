@@ -137,10 +137,14 @@ router.delete("/admin/cap-table/entry/:id", requireAuth, requireAdminOrMP, async
 // GET /api/mp/cap-table/portfolio — per-company ownership, dilution, implied valuation, estimated value
 router.get("/mp/cap-table/portfolio", requireAuth, requireAdminOrMP, async (req, res) => {
   try {
-    const rows = await db
+    // Optional fund filter: ?fundId=N returns only entries attributed to that fund
+    const fundIdFilter = req.query.fundId ? Number(req.query.fundId as string) : null;
+
+    const query = db
       .select({
         id: capTableEntriesTable.id,
         founderId: capTableEntriesTable.founderId,
+        fundId: capTableEntriesTable.fundId,
         investorName: capTableEntriesTable.investorName,
         instrument: capTableEntriesTable.instrument,
         equityPct: capTableEntriesTable.equityPct,
@@ -154,9 +158,14 @@ router.get("/mp/cap-table/portfolio", requireAuth, requireAdminOrMP, async (req,
       .from(capTableEntriesTable)
       .leftJoin(foundersTable, eq(capTableEntriesTable.founderId, foundersTable.id));
 
+    const rows = fundIdFilter
+      ? await query.where(eq(capTableEntriesTable.fundId, fundIdFilter))
+      : await query;
+
     // Group by founderId/company and compute per-company metrics
     const byCompany = new Map<number, {
       founderId: number;
+      fundId: number | null;
       companyName: string | null;
       companyStage: string | null;
       rounds: string[];
@@ -177,6 +186,7 @@ router.get("/mp/cap-table/portfolio", requireAuth, requireAdminOrMP, async (req,
       if (!existing) {
         byCompany.set(row.founderId, {
           founderId: row.founderId,
+          fundId: row.fundId ?? null,
           companyName: row.companyName ?? null,
           companyStage: row.companyStage ?? null,
           rounds: row.roundName ? [row.roundName] : [],
@@ -213,6 +223,7 @@ router.get("/mp/cap-table/portfolio", requireAuth, requireAdminOrMP, async (req,
 
       return {
         founderId: co.founderId,
+        fundId: co.fundId,
         companyName: co.companyName,
         companyStage: co.companyStage,
         rounds: co.rounds,
@@ -247,6 +258,7 @@ router.get("/mp/cap-table", requireAuth, requireAdminOrMP, async (req, res) => {
       .select({
         id: capTableEntriesTable.id,
         founderId: capTableEntriesTable.founderId,
+        fundId: capTableEntriesTable.fundId,
         investorName: capTableEntriesTable.investorName,
         investorType: capTableEntriesTable.investorType,
         instrument: capTableEntriesTable.instrument,
