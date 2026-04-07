@@ -4,7 +4,7 @@ import { db } from "@workspace/db";
 import {
   icMeetingsTable, icMeetingDealsTable, dealFlowTable, usersTable, icVotesTable,
 } from "@workspace/db";
-import { eq, desc, count } from "drizzle-orm";
+import { eq, desc, count, and } from "drizzle-orm";
 import { requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
@@ -211,6 +211,29 @@ router.put("/ic/meetings/:id/deals/:dealEntryId", requireManagingPartner, async 
     res.json({ entry: updated });
   } catch {
     res.status(500).json({ error: "Failed to update deal entry" });
+  }
+});
+
+// DELETE /api/ic/meetings/:id/deals/:dealEntryId — remove a deal from an IC meeting packet
+router.delete("/ic/meetings/:id/deals/:dealEntryId", requireManagingPartner, async (req, res) => {
+  try {
+    const meetingId = Number(String(req.params.id));
+    const dealEntryId = Number(String(req.params.dealEntryId));
+
+    const [deleted] = await db.delete(icMeetingDealsTable)
+      .where(
+        and(
+          eq(icMeetingDealsTable.id, dealEntryId),
+          eq(icMeetingDealsTable.meetingId, meetingId),
+        )
+      )
+      .returning();
+
+    if (!deleted) return res.status(404).json({ error: "Deal entry not found in this meeting" });
+
+    res.json({ deleted });
+  } catch {
+    res.status(500).json({ error: "Failed to remove deal from meeting" });
   }
 });
 

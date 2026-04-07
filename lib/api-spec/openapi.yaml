@@ -1429,6 +1429,76 @@ paths:
       responses:
         "201":
           description: Created
+  /ic/meetings/{id}/deals:
+    post:
+      tags: [ic-operations]
+      summary: Add a deal to an IC meeting packet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dealId]
+              properties:
+                dealId: { type: integer }
+                recommendation: { type: string }
+                packetUrl: { type: string }
+      responses:
+        "201":
+          description: Deal added to meeting packet
+  /ic/meetings/{id}/deals/{dealEntryId}:
+    put:
+      tags: [ic-operations]
+      summary: Update a deal entry in an IC meeting packet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+        - in: path
+          name: dealEntryId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recommendation: { type: string }
+                decisionReached: { type: boolean }
+                decisionNotes: { type: string }
+                packetUrl: { type: string }
+      responses:
+        "200":
+          description: Updated deal entry
+    delete:
+      tags: [ic-operations]
+      summary: Remove a deal from an IC meeting packet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+        - in: path
+          name: dealEntryId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deal removed from meeting packet
+        "404":
+          description: Deal entry not found in this meeting
   /ventures-vc/deals:
     get:
       tags: [deal-flow]

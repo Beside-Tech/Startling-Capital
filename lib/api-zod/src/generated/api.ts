@@ -917,6 +917,42 @@ export const PutMpCapTableIdParams = zod.object({
 });
 
 /**
+ * @summary Add a deal to an IC meeting packet
+ */
+export const PostIcMeetingsIdDealsParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const PostIcMeetingsIdDealsBody = zod.object({
+  dealId: zod.number(),
+  recommendation: zod.string().optional(),
+  packetUrl: zod.string().optional(),
+});
+
+/**
+ * @summary Update a deal entry in an IC meeting packet
+ */
+export const PutIcMeetingsIdDealsDealEntryIdParams = zod.object({
+  id: zod.coerce.number(),
+  dealEntryId: zod.coerce.number(),
+});
+
+export const PutIcMeetingsIdDealsDealEntryIdBody = zod.object({
+  recommendation: zod.string().optional(),
+  decisionReached: zod.boolean().optional(),
+  decisionNotes: zod.string().optional(),
+  packetUrl: zod.string().optional(),
+});
+
+/**
+ * @summary Remove a deal from an IC meeting packet
+ */
+export const DeleteIcMeetingsIdDealsDealEntryIdParams = zod.object({
+  id: zod.coerce.number(),
+  dealEntryId: zod.coerce.number(),
+});
+
+/**
  * @summary Get deal with IC votes
  */
 export const GetVenturesVcDealsIdParams = zod.object({

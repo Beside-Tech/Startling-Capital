@@ -52,6 +52,7 @@ import type {
   PostDiligenceChecklistsBody,
   PostIcDealsIdVote200,
   PostIcDealsIdVoteBody,
+  PostIcMeetingsIdDealsBody,
   PostIcVotesDealId200,
   PostIcVotesDealIdBody,
   PostMpFundsFundIdLpAccountsBody,
@@ -60,6 +61,7 @@ import type {
   PostMpTermSheetsBody,
   Program,
   PutIcDealsIdBody,
+  PutIcMeetingsIdDealsDealEntryIdBody,
   PutIcVotesDealIdDissentBody,
   PutMpFundsFundIdLpAccountsAccountIdBody,
   ResetPinRequest,
@@ -6344,6 +6346,309 @@ export const usePostIcMeetings = <
   TContext
 > => {
   return useMutation(getPostIcMeetingsMutationOptions(options));
+};
+
+/**
+ * @summary Add a deal to an IC meeting packet
+ */
+export const getPostIcMeetingsIdDealsUrl = (id: number) => {
+  return `/api/ic/meetings/${id}/deals`;
+};
+
+export const postIcMeetingsIdDeals = async (
+  id: number,
+  postIcMeetingsIdDealsBody: PostIcMeetingsIdDealsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostIcMeetingsIdDealsUrl(id), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postIcMeetingsIdDealsBody),
+  });
+};
+
+export const getPostIcMeetingsIdDealsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postIcMeetingsIdDeals>>,
+    TError,
+    { id: number; data: BodyType<PostIcMeetingsIdDealsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postIcMeetingsIdDeals>>,
+  TError,
+  { id: number; data: BodyType<PostIcMeetingsIdDealsBody> },
+  TContext
+> => {
+  const mutationKey = ["postIcMeetingsIdDeals"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postIcMeetingsIdDeals>>,
+    { id: number; data: BodyType<PostIcMeetingsIdDealsBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return postIcMeetingsIdDeals(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostIcMeetingsIdDealsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postIcMeetingsIdDeals>>
+>;
+export type PostIcMeetingsIdDealsMutationBody =
+  BodyType<PostIcMeetingsIdDealsBody>;
+export type PostIcMeetingsIdDealsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Add a deal to an IC meeting packet
+ */
+export const usePostIcMeetingsIdDeals = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postIcMeetingsIdDeals>>,
+    TError,
+    { id: number; data: BodyType<PostIcMeetingsIdDealsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postIcMeetingsIdDeals>>,
+  TError,
+  { id: number; data: BodyType<PostIcMeetingsIdDealsBody> },
+  TContext
+> => {
+  return useMutation(getPostIcMeetingsIdDealsMutationOptions(options));
+};
+
+/**
+ * @summary Update a deal entry in an IC meeting packet
+ */
+export const getPutIcMeetingsIdDealsDealEntryIdUrl = (
+  id: number,
+  dealEntryId: number,
+) => {
+  return `/api/ic/meetings/${id}/deals/${dealEntryId}`;
+};
+
+export const putIcMeetingsIdDealsDealEntryId = async (
+  id: number,
+  dealEntryId: number,
+  putIcMeetingsIdDealsDealEntryIdBody?: PutIcMeetingsIdDealsDealEntryIdBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getPutIcMeetingsIdDealsDealEntryIdUrl(id, dealEntryId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(putIcMeetingsIdDealsDealEntryIdBody),
+    },
+  );
+};
+
+export const getPutIcMeetingsIdDealsDealEntryIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>,
+    TError,
+    {
+      id: number;
+      dealEntryId: number;
+      data: BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>,
+  TError,
+  {
+    id: number;
+    dealEntryId: number;
+    data: BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+  },
+  TContext
+> => {
+  const mutationKey = ["putIcMeetingsIdDealsDealEntryId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>,
+    {
+      id: number;
+      dealEntryId: number;
+      data: BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+    }
+  > = (props) => {
+    const { id, dealEntryId, data } = props ?? {};
+
+    return putIcMeetingsIdDealsDealEntryId(
+      id,
+      dealEntryId,
+      data,
+      requestOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutIcMeetingsIdDealsDealEntryIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>
+>;
+export type PutIcMeetingsIdDealsDealEntryIdMutationBody =
+  BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+export type PutIcMeetingsIdDealsDealEntryIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update a deal entry in an IC meeting packet
+ */
+export const usePutIcMeetingsIdDealsDealEntryId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>,
+    TError,
+    {
+      id: number;
+      dealEntryId: number;
+      data: BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putIcMeetingsIdDealsDealEntryId>>,
+  TError,
+  {
+    id: number;
+    dealEntryId: number;
+    data: BodyType<PutIcMeetingsIdDealsDealEntryIdBody>;
+  },
+  TContext
+> => {
+  return useMutation(
+    getPutIcMeetingsIdDealsDealEntryIdMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Remove a deal from an IC meeting packet
+ */
+export const getDeleteIcMeetingsIdDealsDealEntryIdUrl = (
+  id: number,
+  dealEntryId: number,
+) => {
+  return `/api/ic/meetings/${id}/deals/${dealEntryId}`;
+};
+
+export const deleteIcMeetingsIdDealsDealEntryId = async (
+  id: number,
+  dealEntryId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getDeleteIcMeetingsIdDealsDealEntryIdUrl(id, dealEntryId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getDeleteIcMeetingsIdDealsDealEntryIdMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>,
+    TError,
+    { id: number; dealEntryId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>,
+  TError,
+  { id: number; dealEntryId: number },
+  TContext
+> => {
+  const mutationKey = ["deleteIcMeetingsIdDealsDealEntryId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>,
+    { id: number; dealEntryId: number }
+  > = (props) => {
+    const { id, dealEntryId } = props ?? {};
+
+    return deleteIcMeetingsIdDealsDealEntryId(id, dealEntryId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteIcMeetingsIdDealsDealEntryIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>
+>;
+
+export type DeleteIcMeetingsIdDealsDealEntryIdMutationError = ErrorType<void>;
+
+/**
+ * @summary Remove a deal from an IC meeting packet
+ */
+export const useDeleteIcMeetingsIdDealsDealEntryId = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>,
+    TError,
+    { id: number; dealEntryId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteIcMeetingsIdDealsDealEntryId>>,
+  TError,
+  { id: number; dealEntryId: number },
+  TContext
+> => {
+  return useMutation(
+    getDeleteIcMeetingsIdDealsDealEntryIdMutationOptions(options),
+  );
 };
 
 /**

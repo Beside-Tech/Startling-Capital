@@ -2,6 +2,7 @@ import { db } from "@workspace/db";
 import { siteSettingsTable, lpProfilesTable, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "./logger";
+import { hashPin } from "./auth";
 
 const DEFAULT_SETTINGS = [
   { key: "hero_badge", value: "Female-Led · Black Business Ecosystem · Built for Founders", label: "Hero Badge Text", description: "Short badge in the hero section of the homepage", type: "text" },
@@ -112,5 +113,27 @@ export async function seedDefaultSettings(): Promise<void> {
     }
   } catch (err) {
     logger.warn({ err }, "Could not seed demo LP profile");
+  }
+
+  // Seed Venture Associate demo account if not present
+  try {
+    const existing = await db.select({ id: usersTable.id })
+      .from(usersTable)
+      .where(eq(usersTable.email, "va@nobellum.com"))
+      .limit(1);
+
+    if (existing.length === 0) {
+      const pinHash = await hashPin("Associate1234");
+      await db.insert(usersTable).values({
+        email: "va@nobellum.com",
+        name: "Demo Venture Associate",
+        role: "VentureAssociate",
+        pinHash,
+        active: true,
+      }).onConflictDoNothing();
+      logger.info("Venture Associate demo account seeded: va@nobellum.com / Associate1234");
+    }
+  } catch (err) {
+    logger.warn({ err }, "Could not seed Venture Associate demo account");
   }
 }

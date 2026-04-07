@@ -518,6 +518,19 @@ export type PutMpFundsFundIdLpAccountsAccountIdBody = {
   notes?: string;
 };
 
+export type PostIcMeetingsIdDealsBody = {
+  dealId: number;
+  recommendation?: string;
+  packetUrl?: string;
+};
+
+export type PutIcMeetingsIdDealsDealEntryIdBody = {
+  recommendation?: string;
+  decisionReached?: boolean;
+  decisionNotes?: string;
+  packetUrl?: string;
+};
+
 export type PostIcVotesDealIdBodyVote =
   (typeof PostIcVotesDealIdBodyVote)[keyof typeof PostIcVotesDealIdBodyVote];
 
