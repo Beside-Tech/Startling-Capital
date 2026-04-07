@@ -1,10 +1,46 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import {
-  diligenceQaThreadsTable, diligenceQaMessagesTable, dealFlowTable, usersTable,
+  diligenceQaThreadsTable, diligenceQaMessagesTable, dealFlowTable, usersTable, foundersTable,
 } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { requireIC, requireFounderOrIC } from "../lib/auth";
+
+// Returns the founder.id for the requesting user, or null if they have no founder record
+async function getFounderId(userId: number): Promise<number | null> {
+  const [founder] = await db.select({ id: foundersTable.id })
+    .from(foundersTable)
+    .where(eq(foundersTable.userId, userId))
+    .limit(1);
+  return founder?.id ?? null;
+}
+
+// Returns true if a deal with the given dealId is owned by this founderId
+async function founderOwnsDeal(founderId: number, dealId: number): Promise<boolean> {
+  const [deal] = await db.select({ id: dealFlowTable.id })
+    .from(dealFlowTable)
+    .where(and(eq(dealFlowTable.id, dealId), eq(dealFlowTable.founderId, founderId)))
+    .limit(1);
+  return !!deal;
+}
+
+// Returns the dealId for a thread, or null if thread not found
+async function getDealIdForThread(threadId: number): Promise<number | null> {
+  const [thread] = await db.select({ dealId: diligenceQaThreadsTable.dealId, isPrivate: diligenceQaThreadsTable.isPrivate })
+    .from(diligenceQaThreadsTable)
+    .where(eq(diligenceQaThreadsTable.id, threadId))
+    .limit(1);
+  return thread?.dealId ?? null;
+}
+
+// Returns true if a thread is private
+async function isThreadPrivate(threadId: number): Promise<boolean> {
+  const [thread] = await db.select({ isPrivate: diligenceQaThreadsTable.isPrivate })
+    .from(diligenceQaThreadsTable)
+    .where(eq(diligenceQaThreadsTable.id, threadId))
+    .limit(1);
+  return thread?.isPrivate ?? true;
+}
 
 const router = Router();
 
@@ -35,22 +71,21 @@ router.get("/diligence/threads", requireIC, async (_req, res) => {
 });
 
 // GET /api/diligence/threads/deal/:dealId
-// IC/VA: sees all threads including private; Founder: sees only non-private threads for their deal
+// IC/VA/MP: sees all threads including private
+// Founder: must own the deal (foundersTable.userId=req.user.userId → deal.founderId=founder.id)
+//          and sees only non-private threads
 router.get("/diligence/threads/deal/:dealId", requireFounderOrIC, async (req, res) => {
   try {
     const dealId = Number(String(req.params.dealId));
     const fileId = req.query.fileId ? Number(String(req.query.fileId)) : null;
     const role = req.user!.role;
 
-    // If requester is a Founder, verify this deal belongs to them
     if (role === "Founder") {
-      const [deal] = await db.select({ founderId: dealFlowTable.founderId })
-        .from(dealFlowTable).where(eq(dealFlowTable.id, dealId)).limit(1);
-      if (!deal) return res.status(404).json({ error: "Deal not found" });
-      // Look up the founder record that matches this user
-      const [founderUser] = await db.select({ id: usersTable.id })
-        .from(usersTable).where(eq(usersTable.id, req.user!.userId)).limit(1);
-      if (!founderUser) return res.status(403).json({ error: "Founder record not found" });
+      // Resolve founder profile and verify deal ownership
+      const founderId = await getFounderId(req.user!.userId);
+      if (!founderId) return res.status(403).json({ error: "No founder profile associated with this account" });
+      const owns = await founderOwnsDeal(founderId, dealId);
+      if (!owns) return res.status(403).json({ error: "Access denied: this deal is not linked to your founder profile" });
     }
 
     const baseWhere = fileId
@@ -104,10 +139,24 @@ router.post("/diligence/threads", requireIC, async (req, res) => {
   }
 });
 
-// GET /diligence/threads/:id/messages — IC/VA/Founder can all read (founders see non-private threads only)
+// GET /diligence/threads/:id/messages
+// Founders: may only read messages for non-private threads linked to their own deal
 router.get("/diligence/threads/:id/messages", requireFounderOrIC, async (req, res) => {
   try {
     const threadId = Number(String(req.params.id));
+    const role = req.user!.role;
+
+    if (role === "Founder") {
+      const priv = await isThreadPrivate(threadId);
+      if (priv) return res.status(403).json({ error: "Access denied: this thread is internal" });
+      const dealId = await getDealIdForThread(threadId);
+      if (!dealId) return res.status(404).json({ error: "Thread not found" });
+      const founderId = await getFounderId(req.user!.userId);
+      if (!founderId) return res.status(403).json({ error: "No founder profile associated with this account" });
+      const owns = await founderOwnsDeal(founderId, dealId);
+      if (!owns) return res.status(403).json({ error: "Access denied: this thread belongs to a different deal" });
+    }
+
     const messages = await db
       .select({
         id: diligenceQaMessagesTable.id,
@@ -129,6 +178,7 @@ router.get("/diligence/threads/:id/messages", requireFounderOrIC, async (req, re
 });
 
 // POST /diligence/threads/:id/messages — Founders can answer; IC can ask follow-ups
+// Founders: must own the deal linked to this thread, and thread must not be private
 // Founders: isAnswer defaults true (they are responding to questions)
 // IC/VA/MP: isAnswer from body
 router.post("/diligence/threads/:id/messages", requireFounderOrIC, async (req, res) => {
@@ -139,6 +189,18 @@ router.post("/diligence/threads/:id/messages", requireFounderOrIC, async (req, r
 
     // Founders answering questions are marked as answers by default
     const role = req.user!.role;
+
+    if (role === "Founder") {
+      const priv = await isThreadPrivate(threadId);
+      if (priv) return res.status(403).json({ error: "Access denied: this thread is internal" });
+      const dealId = await getDealIdForThread(threadId);
+      if (!dealId) return res.status(404).json({ error: "Thread not found" });
+      const founderId = await getFounderId(req.user!.userId);
+      if (!founderId) return res.status(403).json({ error: "No founder profile associated with this account" });
+      const owns = await founderOwnsDeal(founderId, dealId);
+      if (!owns) return res.status(403).json({ error: "Access denied: this thread belongs to a different deal" });
+    }
+
     const isAnswer = role === "Founder" ? (isAnswerRaw ?? true) : (isAnswerRaw ?? false);
 
     const [message] = await db.insert(diligenceQaMessagesTable).values({
