@@ -42,7 +42,7 @@ router.put("/admin/programs/:id", requireAdmin, async (req, res) => {
     location, format, applicationDeadline, programStartDate, programEndDate,
     maxApplications, eligibility, benefits, tags, applicationFormConfig,
   } = req.body;
-  const setFields: Record<string, unknown> = { name, description, active, updatedAt: new Date() };
+  const setFields: Partial<typeof programsTable.$inferInsert> = { name, description, active, updatedAt: new Date() };
   if (shortDescription !== undefined) setFields.shortDescription = shortDescription;
   if (phase !== undefined) setFields.phase = phase;
   if (location !== undefined) setFields.location = location;
@@ -58,7 +58,7 @@ router.put("/admin/programs/:id", requireAdmin, async (req, res) => {
 
   const [program] = await db
     .update(programsTable)
-    .set(setFields as any)
+    .set(setFields)
     .where(eq(programsTable.id, String(req.params.id)))
     .returning();
   if (!program) {

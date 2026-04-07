@@ -200,7 +200,7 @@ router.put("/admin/testimonials/:id", requireAuth, requireAdmin, async (req, res
   const { isActive, displayOrder } = req.body as { isActive?: boolean; displayOrder?: number };
 
   try {
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    const updates: Partial<typeof testimonialsTable.$inferInsert> = { updatedAt: new Date() };
     if (typeof isActive === "boolean") {
       updates.isActive = isActive;
       if (isActive) updates.approvedAt = new Date();
@@ -209,7 +209,7 @@ router.put("/admin/testimonials/:id", requireAuth, requireAdmin, async (req, res
 
     await db
       .update(testimonialsTable)
-      .set(updates as any)
+      .set(updates)
       .where(eq(testimonialsTable.id, id));
 
     res.json({ success: true });

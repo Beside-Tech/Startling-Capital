@@ -25,6 +25,7 @@ import AdminTraction from "@/pages/admin/traction";
 import AdminVentures from "@/pages/admin/ventures/index";
 import AdminVenturesDetail from "@/pages/admin/ventures/detail";
 import AdminUsers from "@/pages/admin/users";
+import AdminCapTable from "@/pages/admin/cap-table";
 
 import FounderDashboard from "@/pages/founder/dashboard";
 import FounderApply from "@/pages/founder/apply";
@@ -39,17 +40,21 @@ import FounderProfile from "@/pages/founder/profile";
 import ICDashboard from "@/pages/ic/dashboard";
 import ICDeals from "@/pages/ic/deals";
 import ICPortfolio from "@/pages/ic/portfolio";
+import ICPackets from "@/pages/ic/packets";
 
 import LPDashboard from "@/pages/lp/dashboard";
 import LPPortfolio from "@/pages/lp/portfolio";
 import LPFounders from "@/pages/lp/founders";
 import LPDataRoom from "@/pages/lp/data-room";
+import LPCapitalCalls from "@/pages/lp/capital-calls";
 
 import MPDashboard from "@/pages/mp/dashboard";
 import MPInvestments from "@/pages/mp/investments";
 import MPLPs from "@/pages/mp/lps";
 import MPDealFlow from "@/pages/mp/deal-flow";
 import MPAdvisory from "@/pages/mp/advisory";
+import MPCapitalCalls from "@/pages/mp/capital-calls";
+import MPFundMetrics from "@/pages/mp/fund-metrics";
 
 import { PrivacyPage, TermsPage, CookiesPage } from "@/pages/legal";
 
@@ -102,6 +107,7 @@ function Router() {
       <Route path="/admin/ventures/:id" component={AdminVenturesDetail} />
       <Route path="/admin/ventures" component={AdminVentures} />
       <Route path="/admin/users" component={AdminUsers} />
+      <Route path="/admin/cap-table" component={AdminCapTable} />
 
       {/* Founder */}
       <Route path="/founder/dashboard" component={FounderDashboard} />
@@ -118,12 +124,14 @@ function Router() {
       <Route path="/ic/dashboard" component={ICDashboard} />
       <Route path="/ic/deals" component={ICDeals} />
       <Route path="/ic/portfolio" component={ICPortfolio} />
+      <Route path="/ic/packets" component={ICPackets} />
 
       {/* LP */}
       <Route path="/lp/dashboard" component={LPDashboard} />
       <Route path="/lp/portfolio" component={LPPortfolio} />
       <Route path="/lp/founders" component={LPFounders} />
       <Route path="/lp/data-room/:founderId" component={LPDataRoom} />
+      <Route path="/lp/capital-calls" component={LPCapitalCalls} />
 
       {/* Managing Partner */}
       <Route path="/mp/dashboard" component={MPDashboard} />
@@ -131,6 +139,8 @@ function Router() {
       <Route path="/mp/lps" component={MPLPs} />
       <Route path="/mp/deal-flow" component={MPDealFlow} />
       <Route path="/mp/advisory" component={MPAdvisory} />
+      <Route path="/mp/capital-calls" component={MPCapitalCalls} />
+      <Route path="/mp/fund-metrics" component={MPFundMetrics} />
 
       {/* Legal */}
       <Route path="/legal/privacy" component={PrivacyPage} />

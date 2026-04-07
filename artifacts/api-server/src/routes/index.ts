@@ -25,6 +25,8 @@ import founderAdvisoryRouter from "./founder-advisory";
 import icRouter from "./ic";
 import lpRouter from "./lp";
 import mpRouter from "./mp";
+import capitalCallsRouter from "./capital-calls";
+import capTableRouter from "./cap-table";
 
 const router: IRouter = Router();
 
@@ -54,5 +56,7 @@ router.use(founderAdvisoryRouter);
 router.use(icRouter);
 router.use(lpRouter);
 router.use(mpRouter);
+router.use(capitalCallsRouter);
+router.use(capTableRouter);
 
 export default router;

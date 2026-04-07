@@ -66,6 +66,35 @@ router.post("/ic/deals", requireIC, async (req, res) => {
   }
 });
 
+// GET /api/ic/deal/:id — get single deal detail with votes
+router.get("/ic/deal/:id", requireIC, async (req, res) => {
+  try {
+    const id = Number(String(req.params.id));
+    const [deal] = await db
+      .select()
+      .from(dealFlowTable)
+      .where(eq(dealFlowTable.id, id));
+
+    if (!deal) return res.status(404).json({ error: "Deal not found" });
+
+    const votes = await db
+      .select({
+        id: icVotesTable.id,
+        vote: icVotesTable.vote,
+        comment: icVotesTable.comment,
+        voterName: usersTable.name,
+        createdAt: icVotesTable.createdAt,
+      })
+      .from(icVotesTable)
+      .leftJoin(usersTable, eq(icVotesTable.voterId, usersTable.id))
+      .where(eq(icVotesTable.dealId, id));
+
+    res.json({ ...deal, votes });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch deal" });
+  }
+});
+
 router.put("/ic/deals/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));

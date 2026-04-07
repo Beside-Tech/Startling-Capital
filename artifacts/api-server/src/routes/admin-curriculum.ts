@@ -94,7 +94,7 @@ router.put("/admin/courses/:id", requireAuth, requireAdmin, async (req, res) => 
     active?: boolean;
   };
 
-  const updates: Record<string, unknown> = { updatedAt: new Date() };
+  const updates: Partial<typeof coursesTable.$inferInsert> = { updatedAt: new Date() };
   if (title?.trim()) updates.title = title.trim();
   if (description !== undefined) updates.description = description?.trim() ?? null;
   if (type) updates.type = type;
@@ -106,7 +106,7 @@ router.put("/admin/courses/:id", requireAuth, requireAdmin, async (req, res) => 
   try {
     const [course] = await db
       .update(coursesTable)
-      .set(updates as any)
+      .set(updates)
       .where(eq(coursesTable.id, id))
       .returning();
     if (!course) return res.status(404).json({ error: "Course not found" });

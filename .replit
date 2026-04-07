@@ -28,8 +28,8 @@ timeoutMs = 20000
 [userenv]
 
 [userenv.shared]
-JWT_SECRET = "NsZwEYypTsFnFOG8nfpJ5ihXTVgwEUBl5F+EsaffUp+m54CbhCwxPzRfemNvaSV+"
-SUPER_ADMIN_PIN = "Nobellum2025!"
+JWT_SECRET = "15f9fced5428b99b94e30b6c3a0df362b11e252166a0e1ae91cae4c689f8cd90ab955ba40f609af2a542a4856517692a2e22ba2814626574cabc0aac6514fba6"
+SUPER_ADMIN_PIN = "773421"
 
 [nix]
 channel = "stable-25_05"

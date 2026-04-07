@@ -313,7 +313,7 @@ router.put("/admin/ventures/investments/:id", requireAuth, requireAdmin, async (
   };
 
   try {
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    const updates: Partial<typeof investmentsTable.$inferInsert> = { updatedAt: new Date() };
     if (startupName) updates.startupName = startupName;
     if (investmentDate) updates.investmentDate = investmentDate;
     if (amountCad !== undefined) updates.amountCad = amountCad;
@@ -329,7 +329,7 @@ router.put("/admin/ventures/investments/:id", requireAuth, requireAdmin, async (
 
     const [updated] = await db
       .update(investmentsTable)
-      .set(updates as Partial<typeof investmentsTable.$inferInsert>)
+      .set(updates)
       .where(eq(investmentsTable.id, id))
       .returning();
 

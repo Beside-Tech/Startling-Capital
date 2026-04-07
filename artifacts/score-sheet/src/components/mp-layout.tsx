@@ -4,15 +4,18 @@ import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
 import {
   LayoutDashboard, GitBranch, Briefcase, Users, CalendarCheck,
-  LogOut, Sun, Moon, Menu, X, ChevronRight,
+  LogOut, Sun, Moon, Menu, X, ChevronRight, DollarSign, TrendingUp, Table2,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard",      path: "/mp/dashboard"   },
-  { icon: GitBranch,       label: "Deal Flow",       path: "/mp/deal-flow"   },
-  { icon: Briefcase,       label: "Portfolio",       path: "/mp/investments" },
-  { icon: Users,           label: "Limited Partners",path: "/mp/lps"         },
-  { icon: CalendarCheck,   label: "Advisory",        path: "/mp/advisory"    },
+  { icon: LayoutDashboard, label: "Dashboard",      path: "/mp/dashboard"      },
+  { icon: GitBranch,       label: "Deal Flow",       path: "/mp/deal-flow"      },
+  { icon: Briefcase,       label: "Portfolio",       path: "/mp/investments"    },
+  { icon: Users,           label: "Limited Partners",path: "/mp/lps"            },
+  { icon: DollarSign,      label: "Capital Calls",   path: "/mp/capital-calls"  },
+  { icon: Table2,          label: "Cap Table",       path: "/admin/cap-table"   },
+  { icon: TrendingUp,      label: "Fund Metrics",    path: "/mp/fund-metrics"   },
+  { icon: CalendarCheck,   label: "Advisory",        path: "/mp/advisory"       },
 ];
 
 function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {

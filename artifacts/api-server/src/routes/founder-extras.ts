@@ -107,14 +107,14 @@ router.put("/founder/testimonials/:id", requireAuth, async (req, res) => {
     if (!existing) return res.status(404).json({ error: "Testimonial not found" });
     if (existing.isActive) return res.status(400).json({ error: "Cannot edit an approved testimonial" });
 
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    const updates: Partial<typeof testimonialsTable.$inferInsert> = { updatedAt: new Date() };
     if (content?.trim()) updates.content = content.trim();
     if (programName !== undefined) updates.programName = programName || null;
     if (cohortYear !== undefined) updates.cohortYear = cohortYear || null;
 
     await db
       .update(testimonialsTable)
-      .set(updates as any)
+      .set(updates)
       .where(eq(testimonialsTable.id, id));
 
     res.json({ success: true });
@@ -197,7 +197,7 @@ router.put("/founder/profile", requireAuth, async (req, res) => {
     const founderId = await getFounderId(userId);
     if (!founderId) return res.status(404).json({ error: "Founder profile not found" });
 
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    const updates: Partial<typeof foundersTable.$inferInsert> = { updatedAt: new Date() };
     if (companyName !== undefined) updates.companyName = companyName;
     if (companyWebsite !== undefined) updates.companyWebsite = companyWebsite;
     if (sector !== undefined) updates.sector = sector;
@@ -208,7 +208,7 @@ router.put("/founder/profile", requireAuth, async (req, res) => {
     if (bio !== undefined) updates.bio = bio;
     if (linkedinUrl !== undefined) updates.linkedinUrl = linkedinUrl;
 
-    await db.update(foundersTable).set(updates as any).where(eq(foundersTable.id, founderId));
+    await db.update(foundersTable).set(updates).where(eq(foundersTable.id, founderId));
     res.json({ success: true });
   } catch {
     res.status(500).json({ error: "Failed to update profile" });

@@ -4,13 +4,14 @@ import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
 import {
   LayoutDashboard, Users, Database, LogOut, Sun, Moon,
-  Menu, X, ChevronRight, TrendingUp,
+  Menu, X, ChevronRight, TrendingUp, DollarSign,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard",    path: "/lp/dashboard" },
-  { icon: TrendingUp,      label: "Portfolio",     path: "/lp/portfolio" },
-  { icon: Users,           label: "Our Founders",  path: "/lp/founders"  },
+  { icon: LayoutDashboard, label: "Dashboard",    path: "/lp/dashboard"      },
+  { icon: TrendingUp,      label: "Portfolio",     path: "/lp/portfolio"      },
+  { icon: Users,           label: "Our Founders",  path: "/lp/founders"       },
+  { icon: DollarSign,      label: "Capital Calls", path: "/lp/capital-calls"  },
 ];
 
 function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {

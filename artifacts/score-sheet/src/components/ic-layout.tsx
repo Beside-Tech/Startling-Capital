@@ -5,13 +5,14 @@ import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
 import {
   LayoutDashboard, GitBranch, Briefcase, LogOut, Sun, Moon,
-  Menu, X, TrendingUp, ChevronRight,
+  Menu, X, TrendingUp, ChevronRight, FileText,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard",   path: "/ic/dashboard"  },
-  { icon: GitBranch,       label: "Deal Flow",    path: "/ic/deals"      },
-  { icon: Briefcase,       label: "Portfolio",    path: "/ic/portfolio"  },
+  { icon: LayoutDashboard, label: "Dashboard",    path: "/ic/dashboard" },
+  { icon: GitBranch,       label: "Deal Flow",     path: "/ic/deals"     },
+  { icon: Briefcase,       label: "Portfolio",     path: "/ic/portfolio" },
+  { icon: FileText,        label: "IC Packets",    path: "/ic/packets"   },
 ];
 
 function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {

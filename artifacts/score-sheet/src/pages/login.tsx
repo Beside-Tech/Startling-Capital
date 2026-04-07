@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sun, Moon, ArrowLeft, Eye, EyeOff, Lock, Mail, Star } from "lucide-react";
+import { Loader2, Sun, Moon, ArrowLeft, Eye, EyeOff, Lock, Mail, Star, ChevronDown, ChevronUp } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -122,6 +122,7 @@ export default function Login() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const loginMutation = useLogin();
   const [showPin, setShowPin] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -291,6 +292,45 @@ export default function Login() {
                   Apply as a founder
                 </button>
               </p>
+            </div>
+
+            {/* Demo credentials */}
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={() => setShowDemo(!showDemo)}
+                className="w-full flex items-center justify-between text-xs text-muted-foreground border border-dashed border-border/60 rounded-lg px-3 py-2.5 hover:bg-muted/30 transition-colors"
+              >
+                <span className="font-medium text-foreground/70">Demo Accounts</span>
+                {showDemo ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+              </button>
+              {showDemo && (
+                <div className="mt-2 border border-border/50 rounded-lg overflow-hidden text-xs">
+                  {[
+                    { role: "SuperAdmin",      email: "team@nobellum.com",    pin: "Nobellum2025!", color: "bg-violet-50 text-violet-700" },
+                    { role: "Admin",           email: "admin@nobellum.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700" },
+                    { role: "ManagingPartner", email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700" },
+                    { role: "IC",              email: "ic@nobellum.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700" },
+                    { role: "Judge",           email: "judge@nobellum.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700" },
+                    { role: "Founder",         email: "founder@nobellum.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700" },
+                    { role: "LP",              email: "lp@nobellum.com",      pin: "LP12341234",   color: "bg-pink-50 text-pink-700" },
+                  ].map(({ role, email, pin, color }) => (
+                    <button
+                      key={role}
+                      type="button"
+                      onClick={() => {
+                        form.setValue("email", email);
+                        form.setValue("pin", pin);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-muted/40 transition-colors border-b border-border/30 last:border-0 text-left"
+                    >
+                      <span className={`px-1.5 py-0.5 rounded font-semibold text-[10px] flex-shrink-0 ${color}`}>{role}</span>
+                      <span className="text-muted-foreground truncate flex-1">{email}</span>
+                      <span className="text-muted-foreground/60 font-mono flex-shrink-0">{pin}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
