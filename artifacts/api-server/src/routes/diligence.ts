@@ -4,7 +4,7 @@ import {
   diligenceQaThreadsTable, diligenceQaMessagesTable, dealFlowTable, usersTable, foundersTable,
 } from "@workspace/db";
 import { eq, desc, and } from "drizzle-orm";
-import { requireIC, requireICOrVA, requireFounderOrIC } from "../lib/auth";
+import { requireIC, requireFounderOrIC } from "../lib/auth";
 
 // Returns the founder.id for the requesting user, or null if they have no founder record
 async function getFounderId(userId: number): Promise<number | null> {
@@ -44,7 +44,7 @@ async function isThreadPrivate(threadId: number): Promise<boolean> {
 
 const router = Router();
 
-router.get("/diligence/threads", requireICOrVA, async (_req, res) => {
+router.get("/diligence/threads", requireIC, async (_req, res) => {
   try {
     const threads = await db
       .select({
@@ -120,7 +120,7 @@ router.get("/diligence/threads/deal/:dealId", requireFounderOrIC, async (req, re
   }
 });
 
-router.post("/diligence/threads", requireICOrVA, async (req, res) => {
+router.post("/diligence/threads", requireIC, async (req, res) => {
   try {
     const { dealId, fileId, subject, category, isPrivate } = req.body;
     if (!dealId || !subject) return res.status(400).json({ error: "dealId and subject are required" });
@@ -227,7 +227,7 @@ router.post("/diligence/threads/:id/messages", requireFounderOrIC, async (req, r
   }
 });
 
-router.put("/diligence/threads/:id", requireICOrVA, async (req, res) => {
+router.put("/diligence/threads/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const { status } = req.body;

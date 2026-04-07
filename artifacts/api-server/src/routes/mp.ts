@@ -5,7 +5,7 @@ import {
   lpProfilesTable, dealFlowTable, icVotesTable, dataRoomFilesTable, advisorySessionsTable,
 } from "@workspace/db";
 import { eq, desc, count, sql, and } from "drizzle-orm";
-import { requireManagingPartner, requireICOrVA } from "../lib/auth";
+import { requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
@@ -42,7 +42,7 @@ router.get("/mp/dashboard", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.get("/mp/investments", requireICOrVA, async (req, res) => {
+router.get("/mp/investments", requireManagingPartner, async (req, res) => {
   try {
     const investments = await db.select({
       id: investmentsTable.id,
@@ -120,7 +120,7 @@ router.post("/mp/lps", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.get("/mp/deal-flow", requireICOrVA, async (req, res) => {
+router.get("/mp/deal-flow", requireManagingPartner, async (req, res) => {
   try {
     const deals = await db.select({
       id: dealFlowTable.id,
@@ -192,7 +192,7 @@ router.put("/mp/deal-flow/:id", requireManagingPartner, async (req, res) => {
   }
 });
 
-router.get("/mp/advisory", requireICOrVA, async (req, res) => {
+router.get("/mp/advisory", requireManagingPartner, async (req, res) => {
   try {
     const sessions = await db.select({
       id: advisorySessionsTable.id,

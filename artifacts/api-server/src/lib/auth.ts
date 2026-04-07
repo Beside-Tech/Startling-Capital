@@ -14,7 +14,7 @@ const JWT_SECRET: string = process.env.JWT_SECRET;
 export interface JwtPayload {
   userId: number;
   email: string;
-  role: "SuperAdmin" | "Admin" | "Judge" | "Founder" | "IC" | "ManagingPartner" | "LP" | "VentureAssociate";
+  role: "SuperAdmin" | "Admin" | "Judge" | "Founder" | "IC" | "ManagingPartner" | "LP";
   judgeId: number | null;
 }
 
@@ -121,35 +121,11 @@ export function requireFounder(req: Request, res: Response, next: NextFunction) 
   });
 }
 
-// Venture Associate + IC + ManagingPartner + SuperAdmin
-export function requireICOrVA(req: Request, res: Response, next: NextFunction) {
-  requireAuth(req, res, () => {
-    const role = req.user?.role;
-    if (role !== "IC" && role !== "ManagingPartner" && role !== "SuperAdmin" && role !== "VentureAssociate") {
-      res.status(403).json({ error: "Forbidden", message: "IC or Venture Associate access required" });
-      return;
-    }
-    next();
-  });
-}
-
-// Venture Associate only (+ SuperAdmin escalation)
-export function requireVentureAssociate(req: Request, res: Response, next: NextFunction) {
-  requireAuth(req, res, () => {
-    const role = req.user?.role;
-    if (role !== "VentureAssociate" && role !== "SuperAdmin") {
-      res.status(403).json({ error: "Forbidden", message: "Venture Associate access required" });
-      return;
-    }
-    next();
-  });
-}
-
 // Founder or IC (for diligence Q&A participation)
 export function requireFounderOrIC(req: Request, res: Response, next: NextFunction) {
   requireAuth(req, res, () => {
     const role = req.user?.role;
-    if (role !== "Founder" && role !== "IC" && role !== "ManagingPartner" && role !== "SuperAdmin" && role !== "VentureAssociate") {
+    if (role !== "Founder" && role !== "IC" && role !== "ManagingPartner" && role !== "SuperAdmin") {
       res.status(403).json({ error: "Forbidden", message: "Founder or IC access required" });
       return;
     }

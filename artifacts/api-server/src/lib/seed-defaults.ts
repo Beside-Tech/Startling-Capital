@@ -103,7 +103,6 @@ export async function seedDefaultSettings(): Promise<void> {
     { email: "judge@nobellum.com",   name: "Demo Judge",              role: "Judge",             pin: "Judge1234"     },
     { email: "founder@nobellum.com", name: "Demo Founder",            role: "Founder",           pin: "Founder1234"   },
     { email: "lp@nobellum.com",      name: "Demo LP",                 role: "LP",                pin: "LP12341234"    },
-    { email: "va@nobellum.com",      name: "Demo Venture Associate",  role: "VentureAssociate",  pin: "Associate1234" },
   ];
 
   for (const u of demoUsers) {

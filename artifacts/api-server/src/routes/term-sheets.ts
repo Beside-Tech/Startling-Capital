@@ -2,11 +2,11 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { termSheetsTable, dealFlowTable, usersTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
-import { requireIC, requireICOrVA, requireManagingPartner } from "../lib/auth";
+import { requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
-router.get("/mp/term-sheets", requireICOrVA, async (_req, res) => {
+router.get("/mp/term-sheets", requireIC, async (_req, res) => {
   try {
     const sheets = await db
       .select({
@@ -39,7 +39,7 @@ router.get("/mp/term-sheets", requireICOrVA, async (_req, res) => {
   }
 });
 
-router.get("/mp/term-sheets/deal/:dealId", requireICOrVA, async (req, res) => {
+router.get("/mp/term-sheets/deal/:dealId", requireIC, async (req, res) => {
   try {
     const dealId = Number(String(req.params.dealId));
     const sheets = await db
@@ -63,7 +63,7 @@ function calcEquityPct(preMoney?: string | null, investment?: string | null): st
   return null;
 }
 
-router.post("/mp/term-sheets", requireICOrVA, async (req, res) => {
+router.post("/mp/term-sheets", requireIC, async (req, res) => {
   try {
     const {
       dealId, instrument, valuationPreMoneyCad, investmentAmountCad,
@@ -104,7 +104,7 @@ router.post("/mp/term-sheets", requireICOrVA, async (req, res) => {
   }
 });
 
-router.put("/mp/term-sheets/:id", requireICOrVA, async (req, res) => {
+router.put("/mp/term-sheets/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
     const {

@@ -139,7 +139,6 @@ export function getDefaultRoute(role: string | null): string {
   if (isAdminRole(role)) return "/admin/dashboard";
   if (role === "founder") return "/founder/dashboard";
   if (role === "judge") return "/score";
-  if (role === "ventureassociate") return "/mp/deal-flow";
   if (isManagingPartnerRole(role)) return "/mp/dashboard";
   if (isICRole(role)) return "/ic/dashboard";
   if (isLPRole(role)) return "/lp/dashboard";

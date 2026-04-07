@@ -4,11 +4,11 @@ import {
   dealFlowTable, icVotesTable, investmentsTable, foundersTable, usersTable,
 } from "@workspace/db";
 import { eq, desc, count, sql } from "drizzle-orm";
-import { requireIC, requireManagingPartner, requireICOrVA } from "../lib/auth";
+import { requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
 
-router.get("/ic/deals", requireICOrVA, async (req, res) => {
+router.get("/ic/deals", requireIC, async (req, res) => {
   try {
     const deals = await db.select({
       id: dealFlowTable.id,

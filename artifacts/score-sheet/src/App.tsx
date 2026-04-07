@@ -84,7 +84,6 @@ function RootRedirect() {
     else if (role === "founder") navigate("/founder/dashboard");
     else if (role === "ic") navigate("/ic/dashboard");
     else if (role === "managingpartner") navigate("/mp/dashboard");
-    else if (role === "ventureassociate") navigate("/mp/deal-flow");
     else if (role === "lp") navigate("/lp/dashboard");
   }, []);
 
@@ -95,7 +94,6 @@ function RootRedirect() {
   if (role === "founder") return <FounderDashboard />;
   if (role === "ic") return <ICDashboard />;
   if (role === "managingpartner") return <MPDashboard />;
-  if (role === "ventureassociate") return <MPDealFlow />;
   if (role === "lp") return <LPDashboard />;
   return <Landing />;
 }

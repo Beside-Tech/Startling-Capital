@@ -24,15 +24,6 @@ const MP_NAV_ITEMS = [
   { icon: CalendarCheck,   label: "Advisory",         path: "/mp/advisory"       },
 ];
 
-const VA_NAV_ITEMS = [
-  { icon: GitBranch,     label: "Deal Flow",    path: "/mp/deal-flow"    },
-  { icon: Vote,          label: "IC Meetings",  path: "/mp/ic-meetings"  },
-  { icon: FileSignature, label: "Term Sheets",  path: "/mp/term-sheet"   },
-  { icon: Briefcase,     label: "Portfolio",    path: "/mp/investments"  },
-  { icon: HelpCircle,    label: "Founder Asks", path: "/mp/founder-asks" },
-  { icon: CalendarCheck, label: "Advisory",     path: "/mp/advisory"     },
-];
-
 type NavItemDef = { icon: React.ElementType; label: string; path: string };
 
 function NavItem({ item, currentPath }: { item: NavItemDef; currentPath: string }) {
@@ -55,12 +46,11 @@ function NavItem({ item, currentPath }: { item: NavItemDef; currentPath: string 
 }
 
 function Sidebar({ onClose }: { onClose?: () => void }) {
-  const { user, logout, role } = useAuth();
+  const { user, logout } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
   const [location, navigate] = useLocation();
-  const isVA = role === "ventureassociate";
-  const navItems = isVA ? VA_NAV_ITEMS : MP_NAV_ITEMS;
-  const roleLabel = isVA ? "Venture Associate" : "Managing Partner";
+  const navItems = MP_NAV_ITEMS;
+  const roleLabel = "Managing Partner";
   const initials = user?.name ? user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) : "MP";
 
   return (
