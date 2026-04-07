@@ -11,6 +11,41 @@ import { Loader2, ChevronLeft, DollarSign, TrendingUp, Calendar, Building } from
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface Deal {
+  id: number;
+  companyName: string;
+  pipelineStage: string;
+  sector?: string;
+  amountSoughtCad?: string;
+  instrument?: string;
+  stage?: string;
+  decisionDate?: string;
+  notes?: string;
+}
+
+interface Vote {
+  id: number;
+  vote: string;
+  voterName?: string;
+  comment?: string;
+  dissentNote?: string;
+}
+
+interface CapEntry {
+  id: number;
+  investorName: string;
+  instrument: string;
+  equityPct?: string;
+  investmentAmountCad?: string;
+  roundName?: string;
+}
+
+interface CapSummary {
+  totalInvested: string;
+  totalEquityPct: string;
+  entryCount: number;
+}
+
 const STAGE_COLORS: Record<string, string> = {
   invested: "bg-emerald-100 text-emerald-700",
   closing: "bg-amber-100 text-amber-700",
@@ -35,9 +70,10 @@ function PortfolioDetailInner() {
   const [, params] = useRoute("/mp/portfolio/:dealId");
   const dealId = params?.dealId;
   const { toast } = useToast();
-  const [deal, setDeal] = useState<any>(null);
-  const [votes, setVotes] = useState<any[]>([]);
-  const [capTable, setCapTable] = useState<any[]>([]);
+  const [deal, setDeal] = useState<Deal | null>(null);
+  const [votes, setVotes] = useState<Vote[]>([]);
+  const [capTable, setCapTable] = useState<CapEntry[]>([]);
+  const [capSummary, setCapSummary] = useState<CapSummary | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +81,7 @@ function PortfolioDetailInner() {
     Promise.all([
       fetch(`${BASE}/api/ventures-vc/deals/${dealId}`, { headers: { Authorization: `Bearer ${token()}` } })
         .then(r => r.ok ? r.json() : null),
-      fetch(`${BASE}/api/mp/cap-table`, { headers: { Authorization: `Bearer ${token()}` } })
+      fetch(`${BASE}/api/mp/cap-table/deal/${dealId}`, { headers: { Authorization: `Bearer ${token()}` } })
         .then(r => r.ok ? r.json() : null),
     ]).then(([dealData, capData]) => {
       if (dealData) {
@@ -53,7 +89,8 @@ function PortfolioDetailInner() {
         setVotes(dealData.votes ?? []);
       }
       if (capData) {
-        setCapTable((capData.entries ?? []).filter((e: any) => e.dealId === Number(dealId)));
+        setCapTable(capData.entries ?? []);
+        setCapSummary(capData.summary ?? null);
       }
     }).finally(() => setLoading(false));
   }, [dealId]);
@@ -109,6 +146,35 @@ function PortfolioDetailInner() {
         </Card>
       </div>
 
+      {capSummary && capTable.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Cap Table — {capSummary.entryCount} {capSummary.entryCount === 1 ? "Entry" : "Entries"}</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Total invested: ${Number(capSummary.totalInvested).toLocaleString()} CAD ·
+              Total equity: {capSummary.totalEquityPct}%
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {capTable.map(e => (
+                <div key={e.id} className="flex items-center justify-between p-2 rounded border text-sm">
+                  <div>
+                    <span className="font-medium">{e.investorName}</span>
+                    <span className="text-muted-foreground ml-2">{e.instrument}</span>
+                    {e.roundName && <span className="text-xs text-muted-foreground ml-2">· {e.roundName}</span>}
+                  </div>
+                  <div className="text-right">
+                    {e.equityPct && <span className="text-sm font-medium">{e.equityPct}%</span>}
+                    {e.investmentAmountCad && <span className="text-xs text-muted-foreground ml-2">${Number(e.investmentAmountCad).toLocaleString()}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {votes.length > 0 && (
         <Card>
           <CardHeader><CardTitle>IC Votes ({totalVotes})</CardTitle></CardHeader>
@@ -119,7 +185,7 @@ function PortfolioDetailInner() {
               <span className="text-gray-500 font-medium">{totalVotes - approveCount - rejectCount} Abstain/More Info</span>
             </div>
             <div className="space-y-2">
-              {votes.map((v: any) => (
+              {votes.map(v => (
                 <div key={v.id} className="flex items-center gap-3 p-2 rounded border text-sm">
                   <Badge variant="outline" className={v.vote === "approve" ? "text-green-600 border-green-300" : v.vote === "reject" ? "text-red-600 border-red-300" : "text-gray-500"}>
                     {v.vote}

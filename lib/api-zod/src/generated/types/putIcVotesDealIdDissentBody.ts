@@ -6,4 +6,6 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiIcVotesDealId200Tally = { [key: string]: unknown };
+export type PutIcVotesDealIdDissentBody = {
+  dissentNote: string;
+};

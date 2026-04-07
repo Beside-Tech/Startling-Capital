@@ -12,6 +12,24 @@ import { Loader2, ChevronLeft, CheckCircle2 } from "lucide-react";
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface DiligenceChecklist {
+  id: number;
+  companyName?: string;
+  dealId?: number;
+  status?: string;
+  createdAt?: string;
+}
+
+interface DiligenceItem {
+  id: number;
+  title: string;
+  category?: string;
+  status: string;
+  notes?: string;
+  assignedTo?: string;
+  dueDate?: string;
+}
+
 const CATEGORY_COLORS: Record<string, string> = {
   legal: "bg-blue-100 text-blue-700",
   financial: "bg-green-100 text-green-700",
@@ -36,7 +54,7 @@ function DiligenceDetailInner() {
   const [, params] = useRoute("/mp/diligence/:id");
   const checklistId = params?.id;
   const { toast } = useToast();
-  const [data, setData] = useState<{ checklist: any; items: any[] } | null>(null);
+  const [data, setData] = useState<{ checklist: DiligenceChecklist; items: DiligenceItem[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchChecklist = () => {
@@ -74,7 +92,7 @@ function DiligenceDetailInner() {
   const completed = items.filter(i => i.status === "complete").length;
   const pct = items.length > 0 ? Math.round((completed / items.length) * 100) : 0;
 
-  const byCategory = (items as any[]).reduce<Record<string, any[]>>((acc, item: any) => {
+  const byCategory = items.reduce<Record<string, DiligenceItem[]>>((acc, item) => {
     const cat = item.category || "other";
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(item);
@@ -89,7 +107,7 @@ function DiligenceDetailInner() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold">{checklist.companyName ?? "Unknown Company"} — Due Diligence</h1>
-          <p className="text-muted-foreground text-sm">{checklist.name}</p>
+          {checklist.status && <p className="text-muted-foreground text-sm capitalize">{checklist.status}</p>}
         </div>
       </div>
 

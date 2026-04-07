@@ -12,6 +12,25 @@ import { Loader2, ChevronLeft, Plus, DollarSign } from "lucide-react";
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface Fund {
+  id: number;
+  name: string;
+  vintage?: string;
+  currency?: string;
+  status?: string;
+}
+
+interface CapitalCall {
+  id: number;
+  fundId?: number;
+  title: string;
+  status: string;
+  callDate?: string;
+  dueDate?: string;
+  totalAmountCad?: string;
+  notes?: string;
+}
+
 const STATUS_COLORS: Record<string, string> = {
   draft: "bg-gray-100 text-gray-700",
   sent: "bg-blue-100 text-blue-700",
@@ -33,8 +52,8 @@ function FundCapitalCallsInner() {
   const [, params] = useRoute("/mp/funds/:fundId/capital-calls");
   const fundId = params?.fundId;
   const { toast } = useToast();
-  const [fund, setFund] = useState<any>(null);
-  const [calls, setCalls] = useState<any[]>([]);
+  const [fund, setFund] = useState<Fund | null>(null);
+  const [calls, setCalls] = useState<CapitalCall[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: "", callDate: "", dueDate: "", totalAmountCad: "", notes: "" });
@@ -48,9 +67,9 @@ function FundCapitalCallsInner() {
       fetch(`${BASE}/api/mp/capital-calls`, { headers: { Authorization: `Bearer ${token()}` } })
         .then(r => r.ok ? r.json() : null),
     ]).then(([fundsData, callsData]) => {
-      const fund = (fundsData?.funds ?? []).find((f: any) => String(f.id) === fundId);
+      const fund = (fundsData?.funds as Fund[] ?? []).find(f => String(f.id) === fundId);
       setFund(fund ?? null);
-      setCalls((callsData?.capitalCalls ?? []).filter((c: any) => String(c.fundId) === fundId));
+      setCalls((callsData?.capitalCalls as CapitalCall[] ?? []).filter(c => String(c.fundId) === fundId));
     }).finally(() => setLoading(false));
   };
 
@@ -144,7 +163,7 @@ function FundCapitalCallsInner() {
         </Card>
       ) : (
         <div className="space-y-4">
-          {calls.map((c: any) => (
+          {calls.map(c => (
             <Card key={c.id}>
               <CardContent className="p-4">
                 <div className="flex items-start justify-between">

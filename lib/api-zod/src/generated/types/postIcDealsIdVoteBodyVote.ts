@@ -6,12 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiIcVotesDealIdBodyVote =
-  (typeof PostApiIcVotesDealIdBodyVote)[keyof typeof PostApiIcVotesDealIdBodyVote];
+export type PostIcDealsIdVoteBodyVote =
+  (typeof PostIcDealsIdVoteBodyVote)[keyof typeof PostIcDealsIdVoteBodyVote];
 
-export const PostApiIcVotesDealIdBodyVote = {
+export const PostIcDealsIdVoteBodyVote = {
   approve: "approve",
   reject: "reject",
   abstain: "abstain",
-  more_info: "more_info",
 } as const;

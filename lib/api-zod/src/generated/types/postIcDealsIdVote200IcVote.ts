@@ -6,4 +6,4 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiIcDealsIdVote200IcVote = { [key: string]: unknown };
+export type PostIcDealsIdVote200IcVote = { [key: string]: unknown };

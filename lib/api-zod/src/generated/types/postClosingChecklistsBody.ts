@@ -6,4 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiIcVotesDealId200IcVote = { [key: string]: unknown };
+export type PostClosingChecklistsBody = {
+  dealId: number;
+  name?: string;
+  notes?: string;
+};

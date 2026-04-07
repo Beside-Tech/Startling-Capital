@@ -108,7 +108,7 @@ function DealFlowInner() {
             ].map(({ key, label, placeholder }) => (
               <div key={key}>
                 <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</label>
-                <Input className="mt-1" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} placeholder={placeholder} />
+                <Input className="mt-1" value={form[key as keyof typeof form]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} placeholder={placeholder} />
               </div>
             ))}
             <div>

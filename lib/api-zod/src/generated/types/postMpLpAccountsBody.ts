@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiMpLpAccountsBody = {
+export type PostMpLpAccountsBody = {
   firmName: string;
   contactName: string;
   userId?: number;

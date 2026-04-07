@@ -11,6 +11,29 @@ import { Loader2, Plus, FileSignature, DollarSign, Percent, CheckSquare } from "
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface TermSheet {
+  id: number;
+  dealId?: number;
+  companyName?: string;
+  status: string;
+  version?: number;
+  instrument?: string;
+  investmentAmountCad?: string;
+  valuationPreMoneyCad?: string;
+  equityPct?: string;
+  discountRate?: string;
+  proRataRights?: boolean;
+  boardSeat?: boolean;
+  informationRights?: boolean;
+  expiryDate?: string;
+  notes?: string;
+}
+
+interface DealOption {
+  id: number;
+  companyName: string;
+}
+
 const STATUS_COLOR: Record<string, string> = {
   draft: "bg-gray-100 text-gray-700",
   sent: "bg-blue-100 text-blue-700",
@@ -28,8 +51,8 @@ export default function MPTermSheet() {
 }
 
 function MPTermSheetInner() {
-  const [sheets, setSheets] = useState<any[]>([]);
-  const [deals, setDeals] = useState<any[]>([]);
+  const [sheets, setSheets] = useState<TermSheet[]>([]);
+  const [deals, setDeals] = useState<DealOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -107,7 +130,7 @@ function MPTermSheetInner() {
                     className="mt-1 w-full border rounded-md px-3 py-2 text-sm bg-background"
                   >
                     <option value="">Select deal...</option>
-                    {deals.map((d: any) => <option key={d.id} value={d.id}>{d.companyName}</option>)}
+                    {deals.map(d => <option key={d.id} value={d.id}>{d.companyName}</option>)}
                   </select>
                 </div>
                 <div>
@@ -154,7 +177,7 @@ function MPTermSheetInner() {
                   { key: "informationRights", label: "Information Rights" },
                 ].map(({ key, label }) => (
                   <label key={key} className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" checked={(form as any)[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.checked }))} className="rounded" />
+                    <input type="checkbox" checked={!!form[key as keyof typeof form]} onChange={e => setForm(p => ({ ...p, [key]: e.target.checked }))} className="rounded" />
                     {label}
                   </label>
                 ))}
@@ -184,7 +207,7 @@ function MPTermSheetInner() {
             <FileSignature className="h-8 w-8 mx-auto mb-2 opacity-30" />
             No term sheets yet. Create your first one.
           </CardContent></Card>
-        ) : sheets.map((s: any) => (
+        ) : sheets.map(s => (
           <Card key={s.id}>
             <CardContent className="py-4 px-5">
               <div className="flex items-start justify-between gap-4 flex-wrap">

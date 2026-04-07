@@ -5,14 +5,14 @@
  * Nobellum Score Sheet API
  * OpenAPI spec version: 0.1.0
  */
-import type { PostApiBoardMaterialsBodyFileType } from "./postApiBoardMaterialsBodyFileType";
+import type { PostBoardMaterialsBodyFileType } from "./postBoardMaterialsBodyFileType";
 
-export type PostApiBoardMaterialsBody = {
+export type PostBoardMaterialsBody = {
   boardMeetingId?: number;
   founderId?: number;
   title: string;
   fileUrl?: string;
-  fileType?: PostApiBoardMaterialsBodyFileType;
+  fileType?: PostBoardMaterialsBodyFileType;
   isConfidential?: boolean;
   notes?: string;
 };

@@ -172,11 +172,15 @@ router.post("/mp/deal-flow", requireManagingPartner, async (req, res) => {
 
 router.put("/mp/deal-flow/:id", requireManagingPartner, async (req, res) => {
   try {
+    if ("pipelineStage" in req.body) {
+      return res.status(400).json({
+        error: "Direct pipelineStage mutation is not allowed. Use PATCH /api/deals/:id/stage to advance the state machine.",
+      });
+    }
     const id = Number(String(req.params.id));
-    const { pipelineStage, notes, decisionDate } = req.body;
+    const { notes, decisionDate } = req.body;
 
     const [deal] = await db.update(dealFlowTable).set({
-      ...(pipelineStage !== undefined && { pipelineStage }),
       ...(notes !== undefined && { notes }),
       ...(decisionDate !== undefined && { decisionDate }),
       updatedAt: new Date(),

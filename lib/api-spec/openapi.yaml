@@ -800,7 +800,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResponse"
 
-  /api/ic/deals:
+  /ic/deals:
     get:
       tags: [ic-operations]
       summary: List all deals (IC view)
@@ -808,7 +808,7 @@ paths:
       responses:
         "200":
           description: List of deals
-  /api/ic/deals/{id}:
+  /ic/deals/{id}:
     get:
       tags: [ic-operations]
       summary: Get deal detail
@@ -848,7 +848,7 @@ paths:
           description: Updated deal
         "400":
           description: pipelineStage not allowed here
-  /api/deals/{id}/stage:
+  /deals/{id}/stage:
     patch:
       tags: [deal-flow]
       summary: Advance deal pipeline stage via state machine
@@ -886,7 +886,7 @@ paths:
           description: Invalid transition
         "403":
           description: Insufficient role for this transition
-  /api/ic/deals/{id}/vote:
+  /ic/deals/{id}/vote:
     post:
       tags: [ic-operations]
       summary: Cast IC vote; auto-advances stage on majority
@@ -919,7 +919,7 @@ paths:
                   icVote: { type: object }
                   tally: { type: object }
                   autoAdvancedTo: { type: string, nullable: true }
-  /api/mp/term-sheets:
+  /mp/term-sheets:
     get:
       tags: [term-sheets]
       summary: List all term sheets
@@ -951,7 +951,7 @@ paths:
       responses:
         "201":
           description: Term sheet created with equityPct
-  /api/mp/term-sheets/{id}:
+  /mp/term-sheets/{id}:
     put:
       tags: [term-sheets]
       summary: Update term sheet
@@ -964,7 +964,7 @@ paths:
       responses:
         "200":
           description: Updated term sheet
-  /api/diligence/checklists:
+  /diligence/checklists:
     get:
       tags: [diligence]
       summary: List diligence checklists
@@ -989,7 +989,7 @@ paths:
       responses:
         "201":
           description: Checklist created
-  /api/diligence/checklists/{id}:
+  /diligence/checklists/{id}:
     get:
       tags: [diligence]
       summary: Get diligence checklist with items
@@ -1002,7 +1002,7 @@ paths:
       responses:
         "200":
           description: Checklist and items
-  /api/diligence/checklists/{checklistId}/items/{itemId}:
+  /diligence/checklists/{checklistId}/items/{itemId}:
     patch:
       tags: [diligence]
       summary: Update diligence item status
@@ -1019,7 +1019,7 @@ paths:
       responses:
         "200":
           description: Updated item
-  /api/closing/checklists:
+  /closing/checklists:
     get:
       tags: [closing]
       summary: List closing checklists
@@ -1045,7 +1045,7 @@ paths:
       responses:
         "201":
           description: Checklist with default items
-  /api/closing/checklists/{id}:
+  /closing/checklists/{id}:
     get:
       tags: [closing]
       summary: Get closing checklist with items
@@ -1058,7 +1058,7 @@ paths:
       responses:
         "200":
           description: Checklist and items
-  /api/closing/checklists/{checklistId}/items/{itemId}:
+  /closing/checklists/{checklistId}/items/{itemId}:
     patch:
       tags: [closing]
       summary: Mark closing checklist item complete/incomplete
@@ -1084,7 +1084,7 @@ paths:
       responses:
         "200":
           description: Updated item
-  /api/board/meetings:
+  /board/meetings:
     get:
       tags: [board-materials]
       summary: List board meetings
@@ -1112,7 +1112,7 @@ paths:
       responses:
         "201":
           description: Meeting created
-  /api/board/meetings/{id}:
+  /board/meetings/{id}:
     get:
       tags: [board-materials]
       summary: Get board meeting with materials
@@ -1137,7 +1137,7 @@ paths:
       responses:
         "200":
           description: Updated meeting
-  /api/board/materials:
+  /board/materials:
     post:
       tags: [board-materials]
       summary: Upload board material
@@ -1162,7 +1162,7 @@ paths:
       responses:
         "201":
           description: Material uploaded
-  /api/mp/funds/{fundId}/metrics:
+  /mp/funds/{fundId}/metrics:
     get:
       tags: [fund-admin]
       summary: Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
@@ -1207,7 +1207,7 @@ paths:
       responses:
         "201":
           description: Snapshot recorded; fund metrics updated
-  /api/mp/capital-calls:
+  /mp/capital-calls:
     get:
       tags: [capital-calls]
       summary: List capital calls
@@ -1222,7 +1222,7 @@ paths:
       responses:
         "201":
           description: Created
-  /api/mp/capital-calls/{id}/generate-allocations:
+  /mp/capital-calls/{id}/generate-allocations:
     post:
       tags: [capital-calls]
       summary: Generate pro-rata LP allocations for a capital call
@@ -1235,7 +1235,7 @@ paths:
       responses:
         "200":
           description: Allocations generated
-  /api/lp/fund-summary:
+  /lp/fund-summary:
     get:
       tags: [lp-portal]
       summary: LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
@@ -1243,7 +1243,7 @@ paths:
       responses:
         "200":
           description: Fund summary
-  /api/lp/quarterly-updates:
+  /lp/quarterly-updates:
     get:
       tags: [lp-portal]
       summary: LP quarterly updates
@@ -1251,7 +1251,7 @@ paths:
       responses:
         "200":
           description: List
-  /api/lp/k1/{year}:
+  /lp/k1/{year}:
     get:
       tags: [lp-portal]
       summary: Download K-1 link for a given tax year
@@ -1264,7 +1264,7 @@ paths:
       responses:
         "200":
           description: K-1 link
-  /api/mp/cap-table:
+  /mp/cap-table:
     get:
       tags: [cap-table]
       summary: Portfolio cap table overview
@@ -1272,7 +1272,7 @@ paths:
       responses:
         "200":
           description: Cap table rows
-  /api/mp/cap-table/{id}:
+  /mp/cap-table/{id}:
     put:
       tags: [cap-table]
       summary: Update cap table entry
@@ -1285,7 +1285,7 @@ paths:
       responses:
         "200":
           description: Updated entry
-  /api/ic/meetings:
+  /ic/meetings:
     get:
       tags: [ic-operations]
       summary: List IC meeting packets
@@ -1300,7 +1300,7 @@ paths:
       responses:
         "201":
           description: Created
-  /api/ventures-vc/deals:
+  /ventures-vc/deals:
     get:
       tags: [deal-flow]
       summary: List all deals (ventures-vc canonical view)
@@ -1308,7 +1308,7 @@ paths:
       responses:
         "200":
           description: List of deals
-  /api/ventures-vc/deals/{id}:
+  /ventures-vc/deals/{id}:
     get:
       tags: [deal-flow]
       summary: Get deal with IC votes
@@ -1321,7 +1321,7 @@ paths:
       responses:
         "200":
           description: Deal with votes
-  /api/ic/votes/{dealId}:
+  /ic/votes/{dealId}:
     get:
       tags: [ic-operations]
       summary: List IC votes for a deal with tally
@@ -1369,7 +1369,7 @@ paths:
                   icVote: { type: object }
                   tally: { type: object }
                   autoAdvancedTo: { type: string, nullable: true }
-  /api/ic/votes/{dealId}/dissent:
+  /ic/votes/{dealId}/dissent:
     put:
       tags: [ic-operations]
       summary: Update dissent note on existing reject vote
@@ -1391,7 +1391,7 @@ paths:
       responses:
         "200":
           description: Updated vote
-  /api/mp/lp-accounts:
+  /mp/lp-accounts:
     get:
       tags: [lp-portal]
       summary: List all LP accounts (MP view)
@@ -1421,7 +1421,7 @@ paths:
       responses:
         "201":
           description: LP account created
-  /api/mp/lp-accounts/{id}:
+  /mp/lp-accounts/{id}:
     get:
       tags: [lp-portal]
       summary: Get LP account with capital call history
@@ -1446,7 +1446,7 @@ paths:
       responses:
         "200":
           description: Updated account
-  /api/data-room/deals/{dealId}/files:
+  /data-room/deals/{dealId}/files:
     get:
       tags: [diligence]
       summary: Get deal data room files (IC/MP view)
@@ -1486,7 +1486,7 @@ paths:
       responses:
         "201":
           description: File uploaded
-  /api/data-room/founder/{founderId}/files:
+  /data-room/founder/{founderId}/files:
     get:
       tags: [diligence]
       summary: Get founder data room files (IC/MP view)

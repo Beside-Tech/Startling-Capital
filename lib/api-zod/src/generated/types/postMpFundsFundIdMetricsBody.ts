@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiMpFundsFundIdMetricsBody = {
+export type PostMpFundsFundIdMetricsBody = {
   snapshotDate: string;
   quarter: number;
   year: number;

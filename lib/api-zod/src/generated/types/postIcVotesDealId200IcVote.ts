@@ -6,7 +6,4 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiDiligenceChecklistsBody = {
-  dealId: number;
-  name?: string;
-};
+export type PostIcVotesDealId200IcVote = { [key: string]: unknown };

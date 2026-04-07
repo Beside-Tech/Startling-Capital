@@ -5,10 +5,10 @@
  * Nobellum Score Sheet API
  * OpenAPI spec version: 0.1.0
  */
-import type { PostApiIcVotesDealIdBodyVote } from "./postApiIcVotesDealIdBodyVote";
+import type { PostIcVotesDealIdBodyVote } from "./postIcVotesDealIdBodyVote";
 
-export type PostApiIcVotesDealIdBody = {
-  vote: PostApiIcVotesDealIdBodyVote;
+export type PostIcVotesDealIdBody = {
+  vote: PostIcVotesDealIdBodyVote;
   comment?: string;
   /** Only applicable for reject votes */
   dissentNote?: string;

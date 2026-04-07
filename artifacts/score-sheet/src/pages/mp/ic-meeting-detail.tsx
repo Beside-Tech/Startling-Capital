@@ -11,6 +11,34 @@ import { Loader2, ChevronLeft, CheckCircle2, XCircle, MinusCircle, Users } from 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface IcMeeting {
+  id: number;
+  title: string;
+  scheduledAt?: string;
+  status: string;
+  quorumReached: boolean;
+  agenda?: string;
+  notes?: string;
+  minutesUrl?: string;
+}
+
+interface DealVote {
+  id: number;
+  vote: string;
+  voterName?: string;
+  dissentNote?: string;
+}
+
+interface MeetingDeal {
+  id: number;
+  dealId: number;
+  companyName?: string;
+  recommendation?: string;
+  decisionReached: boolean;
+  decisionNotes?: string;
+  votes?: DealVote[];
+}
+
 const STATUS_COLORS: Record<string, string> = {
   draft: "bg-gray-100 text-gray-700",
   scheduled: "bg-blue-100 text-blue-700",
@@ -39,8 +67,8 @@ function ICMeetingDetailInner() {
   const [, params] = useRoute("/mp/ic-meetings/:id");
   const meetingId = params?.id;
   const { toast } = useToast();
-  const [meeting, setMeeting] = useState<any>(null);
-  const [deals, setDeals] = useState<any[]>([]);
+  const [meeting, setMeeting] = useState<IcMeeting | null>(null);
+  const [deals, setDeals] = useState<MeetingDeal[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
@@ -138,7 +166,7 @@ function ICMeetingDetailInner() {
             <p className="text-sm text-muted-foreground">No deals added to this meeting yet</p>
           ) : (
             <div className="space-y-4">
-              {deals.map((d: any) => (
+              {deals.map(d => (
                 <div key={d.id} className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <p className="font-medium">{d.companyName}</p>
@@ -149,7 +177,7 @@ function ICMeetingDetailInner() {
                   {d.votes && d.votes.length > 0 && (
                     <div className="space-y-1">
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Votes</p>
-                      {d.votes.map((v: any) => (
+                      {d.votes.map(v => (
                         <div key={v.id} className="flex items-center gap-2 text-sm">
                           {VOTE_ICONS[v.vote] ?? null}
                           <span className="font-medium">{v.voterName}</span>

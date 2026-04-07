@@ -626,18 +626,18 @@ export const AdminDeleteAssignmentResponse = zod.object({
 /**
  * @summary Get deal detail
  */
-export const GetApiIcDealsIdParams = zod.object({
+export const GetIcDealsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Update deal fields (no pipelineStage)
  */
-export const PutApiIcDealsIdParams = zod.object({
+export const PutIcDealsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
-export const PutApiIcDealsIdBody = zod.object({
+export const PutIcDealsIdBody = zod.object({
   notes: zod.string().optional(),
   decisionDate: zod.string().optional(),
   sector: zod.string().optional(),
@@ -649,11 +649,11 @@ export const PutApiIcDealsIdBody = zod.object({
 /**
  * @summary Advance deal pipeline stage via state machine
  */
-export const PatchApiDealsIdStageParams = zod.object({
+export const PatchDealsIdStageParams = zod.object({
   id: zod.coerce.number(),
 });
 
-export const PatchApiDealsIdStageBody = zod.object({
+export const PatchDealsIdStageBody = zod.object({
   toStage: zod.enum([
     "sourced",
     "interested",
@@ -671,16 +671,16 @@ export const PatchApiDealsIdStageBody = zod.object({
 /**
  * @summary Cast IC vote; auto-advances stage on majority
  */
-export const PostApiIcDealsIdVoteParams = zod.object({
+export const PostIcDealsIdVoteParams = zod.object({
   id: zod.coerce.number(),
 });
 
-export const PostApiIcDealsIdVoteBody = zod.object({
+export const PostIcDealsIdVoteBody = zod.object({
   vote: zod.enum(["approve", "reject", "abstain"]),
   comment: zod.string().optional(),
 });
 
-export const PostApiIcDealsIdVoteResponse = zod.object({
+export const PostIcDealsIdVoteResponse = zod.object({
   icVote: zod.object({}).passthrough().optional(),
   tally: zod.object({}).passthrough().optional(),
   autoAdvancedTo: zod.string().nullish(),
@@ -689,7 +689,7 @@ export const PostApiIcDealsIdVoteResponse = zod.object({
 /**
  * @summary Create term sheet (equityPct auto-calculated)
  */
-export const PostApiMpTermSheetsBody = zod.object({
+export const PostMpTermSheetsBody = zod.object({
   dealId: zod.number(),
   valuationCapCad: zod.number().optional(),
   investmentAmountCad: zod.number().optional(),
@@ -704,14 +704,14 @@ export const PostApiMpTermSheetsBody = zod.object({
 /**
  * @summary Update term sheet
  */
-export const PutApiMpTermSheetsIdParams = zod.object({
+export const PutMpTermSheetsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Create diligence checklist for a deal
  */
-export const PostApiDiligenceChecklistsBody = zod.object({
+export const PostDiligenceChecklistsBody = zod.object({
   dealId: zod.number(),
   name: zod.string().optional(),
 });
@@ -719,23 +719,22 @@ export const PostApiDiligenceChecklistsBody = zod.object({
 /**
  * @summary Get diligence checklist with items
  */
-export const GetApiDiligenceChecklistsIdParams = zod.object({
+export const GetDiligenceChecklistsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Update diligence item status
  */
-export const PatchApiDiligenceChecklistsChecklistIdItemsItemIdParams =
-  zod.object({
-    checklistId: zod.coerce.number(),
-    itemId: zod.coerce.number(),
-  });
+export const PatchDiligenceChecklistsChecklistIdItemsItemIdParams = zod.object({
+  checklistId: zod.coerce.number(),
+  itemId: zod.coerce.number(),
+});
 
 /**
  * @summary Create closing checklist for a deal (seeds default items)
  */
-export const PostApiClosingChecklistsBody = zod.object({
+export const PostClosingChecklistsBody = zod.object({
   dealId: zod.number(),
   name: zod.string().optional(),
   notes: zod.string().optional(),
@@ -744,21 +743,19 @@ export const PostApiClosingChecklistsBody = zod.object({
 /**
  * @summary Get closing checklist with items
  */
-export const GetApiClosingChecklistsIdParams = zod.object({
+export const GetClosingChecklistsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Mark closing checklist item complete/incomplete
  */
-export const PatchApiClosingChecklistsChecklistIdItemsItemIdParams = zod.object(
-  {
-    checklistId: zod.coerce.number(),
-    itemId: zod.coerce.number(),
-  },
-);
+export const PatchClosingChecklistsChecklistIdItemsItemIdParams = zod.object({
+  checklistId: zod.coerce.number(),
+  itemId: zod.coerce.number(),
+});
 
-export const PatchApiClosingChecklistsChecklistIdItemsItemIdBody = zod.object({
+export const PatchClosingChecklistsChecklistIdItemsItemIdBody = zod.object({
   isComplete: zod.boolean().optional(),
   notes: zod.string().optional(),
 });
@@ -766,7 +763,7 @@ export const PatchApiClosingChecklistsChecklistIdItemsItemIdBody = zod.object({
 /**
  * @summary Create board meeting
  */
-export const PostApiBoardMeetingsBody = zod.object({
+export const PostBoardMeetingsBody = zod.object({
   companyName: zod.string(),
   title: zod.string(),
   scheduledAt: zod.string().optional(),
@@ -777,21 +774,21 @@ export const PostApiBoardMeetingsBody = zod.object({
 /**
  * @summary Get board meeting with materials
  */
-export const GetApiBoardMeetingsIdParams = zod.object({
+export const GetBoardMeetingsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Update board meeting
  */
-export const PutApiBoardMeetingsIdParams = zod.object({
+export const PutBoardMeetingsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Upload board material
  */
-export const PostApiBoardMaterialsBody = zod.object({
+export const PostBoardMaterialsBody = zod.object({
   boardMeetingId: zod.number().optional(),
   founderId: zod.number().optional(),
   title: zod.string(),
@@ -806,18 +803,18 @@ export const PostApiBoardMaterialsBody = zod.object({
 /**
  * @summary Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
  */
-export const GetApiMpFundsFundIdMetricsParams = zod.object({
+export const GetMpFundsFundIdMetricsParams = zod.object({
   fundId: zod.coerce.number(),
 });
 
 /**
  * @summary Record fund metrics snapshot
  */
-export const PostApiMpFundsFundIdMetricsParams = zod.object({
+export const PostMpFundsFundIdMetricsParams = zod.object({
   fundId: zod.coerce.number(),
 });
 
-export const PostApiMpFundsFundIdMetricsBody = zod.object({
+export const PostMpFundsFundIdMetricsBody = zod.object({
   snapshotDate: zod.string(),
   quarter: zod.number(),
   year: zod.number(),
@@ -835,46 +832,46 @@ export const PostApiMpFundsFundIdMetricsBody = zod.object({
 /**
  * @summary Generate pro-rata LP allocations for a capital call
  */
-export const PostApiMpCapitalCallsIdGenerateAllocationsParams = zod.object({
+export const PostMpCapitalCallsIdGenerateAllocationsParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Download K-1 link for a given tax year
  */
-export const GetApiLpK1YearParams = zod.object({
+export const GetLpK1YearParams = zod.object({
   year: zod.coerce.number(),
 });
 
 /**
  * @summary Update cap table entry
  */
-export const PutApiMpCapTableIdParams = zod.object({
+export const PutMpCapTableIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Get deal with IC votes
  */
-export const GetApiVenturesVcDealsIdParams = zod.object({
+export const GetVenturesVcDealsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary List IC votes for a deal with tally
  */
-export const GetApiIcVotesDealIdParams = zod.object({
+export const GetIcVotesDealIdParams = zod.object({
   dealId: zod.coerce.number(),
 });
 
 /**
  * @summary Cast or update IC vote with optional dissent note (v2)
  */
-export const PostApiIcVotesDealIdParams = zod.object({
+export const PostIcVotesDealIdParams = zod.object({
   dealId: zod.coerce.number(),
 });
 
-export const PostApiIcVotesDealIdBody = zod.object({
+export const PostIcVotesDealIdBody = zod.object({
   vote: zod.enum(["approve", "reject", "abstain", "more_info"]),
   comment: zod.string().optional(),
   dissentNote: zod
@@ -883,7 +880,7 @@ export const PostApiIcVotesDealIdBody = zod.object({
     .describe("Only applicable for reject votes"),
 });
 
-export const PostApiIcVotesDealIdResponse = zod.object({
+export const PostIcVotesDealIdResponse = zod.object({
   icVote: zod.object({}).passthrough().optional(),
   tally: zod.object({}).passthrough().optional(),
   autoAdvancedTo: zod.string().nullish(),
@@ -892,18 +889,18 @@ export const PostApiIcVotesDealIdResponse = zod.object({
 /**
  * @summary Update dissent note on existing reject vote
  */
-export const PutApiIcVotesDealIdDissentParams = zod.object({
+export const PutIcVotesDealIdDissentParams = zod.object({
   dealId: zod.coerce.number(),
 });
 
-export const PutApiIcVotesDealIdDissentBody = zod.object({
+export const PutIcVotesDealIdDissentBody = zod.object({
   dissentNote: zod.string(),
 });
 
 /**
  * @summary Create LP account
  */
-export const PostApiMpLpAccountsBody = zod.object({
+export const PostMpLpAccountsBody = zod.object({
   firmName: zod.string(),
   contactName: zod.string(),
   userId: zod.number().optional(),
@@ -916,32 +913,32 @@ export const PostApiMpLpAccountsBody = zod.object({
 /**
  * @summary Get LP account with capital call history
  */
-export const GetApiMpLpAccountsIdParams = zod.object({
+export const GetMpLpAccountsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Update LP account
  */
-export const PutApiMpLpAccountsIdParams = zod.object({
+export const PutMpLpAccountsIdParams = zod.object({
   id: zod.coerce.number(),
 });
 
 /**
  * @summary Get deal data room files (IC/MP view)
  */
-export const GetApiDataRoomDealsDealIdFilesParams = zod.object({
+export const GetDataRoomDealsDealIdFilesParams = zod.object({
   dealId: zod.coerce.number(),
 });
 
 /**
  * @summary Upload file to deal data room
  */
-export const PostApiDataRoomDealsDealIdFilesParams = zod.object({
+export const PostDataRoomDealsDealIdFilesParams = zod.object({
   dealId: zod.coerce.number(),
 });
 
-export const PostApiDataRoomDealsDealIdFilesBody = zod.object({
+export const PostDataRoomDealsDealIdFilesBody = zod.object({
   fileName: zod.string(),
   originalName: zod.string().optional(),
   storageKey: zod.string(),
@@ -954,6 +951,6 @@ export const PostApiDataRoomDealsDealIdFilesBody = zod.object({
 /**
  * @summary Get founder data room files (IC/MP view)
  */
-export const GetApiDataRoomFounderFounderIdFilesParams = zod.object({
+export const GetDataRoomFounderFounderIdFilesParams = zod.object({
   founderId: zod.coerce.number(),
 });

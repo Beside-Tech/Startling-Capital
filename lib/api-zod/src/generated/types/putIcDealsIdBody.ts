@@ -6,8 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiClosingChecklistsBody = {
-  dealId: number;
-  name?: string;
+export type PutIcDealsIdBody = {
   notes?: string;
+  decisionDate?: string;
+  sector?: string;
+  stage?: string;
+  amountSoughtCad?: number;
+  instrument?: string;
 };

@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiDataRoomDealsDealIdFilesBody = {
+export type PostDataRoomDealsDealIdFilesBody = {
   fileName: string;
   originalName?: string;
   storageKey: string;

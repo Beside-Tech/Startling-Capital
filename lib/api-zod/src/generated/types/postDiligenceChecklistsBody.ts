@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PutApiIcVotesDealIdDissentBody = {
-  dissentNote: string;
+export type PostDiligenceChecklistsBody = {
+  dealId: number;
+  name?: string;
 };

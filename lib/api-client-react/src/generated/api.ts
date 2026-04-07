@@ -43,23 +43,23 @@ import type {
   LoginRequest,
   LoginResponse,
   MeResponse,
-  PatchApiClosingChecklistsChecklistIdItemsItemIdBody,
-  PatchApiDealsIdStageBody,
-  PostApiBoardMaterialsBody,
-  PostApiBoardMeetingsBody,
-  PostApiClosingChecklistsBody,
-  PostApiDataRoomDealsDealIdFilesBody,
-  PostApiDiligenceChecklistsBody,
-  PostApiIcDealsIdVote200,
-  PostApiIcDealsIdVoteBody,
-  PostApiIcVotesDealId200,
-  PostApiIcVotesDealIdBody,
-  PostApiMpFundsFundIdMetricsBody,
-  PostApiMpLpAccountsBody,
-  PostApiMpTermSheetsBody,
+  PatchClosingChecklistsChecklistIdItemsItemIdBody,
+  PatchDealsIdStageBody,
+  PostBoardMaterialsBody,
+  PostBoardMeetingsBody,
+  PostClosingChecklistsBody,
+  PostDataRoomDealsDealIdFilesBody,
+  PostDiligenceChecklistsBody,
+  PostIcDealsIdVote200,
+  PostIcDealsIdVoteBody,
+  PostIcVotesDealId200,
+  PostIcVotesDealIdBody,
+  PostMpFundsFundIdMetricsBody,
+  PostMpLpAccountsBody,
+  PostMpTermSheetsBody,
   Program,
-  PutApiIcDealsIdBody,
-  PutApiIcVotesDealIdDissentBody,
+  PutIcDealsIdBody,
+  PutIcVotesDealIdDissentBody,
   ResetPinRequest,
   ResetPinResponse,
   Score,
@@ -2829,27 +2829,27 @@ export const useAdminDeleteAssignment = <
 /**
  * @summary List all deals (IC view)
  */
-export const getGetApiIcDealsUrl = () => {
-  return `/api/api/ic/deals`;
+export const getGetIcDealsUrl = () => {
+  return `/api/ic/deals`;
 };
 
-export const getApiIcDeals = async (options?: RequestInit): Promise<void> => {
-  return customFetch<void>(getGetApiIcDealsUrl(), {
+export const getIcDeals = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetIcDealsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiIcDealsQueryKey = () => {
-  return [`/api/api/ic/deals`] as const;
+export const getGetIcDealsQueryKey = () => {
+  return [`/api/ic/deals`] as const;
 };
 
-export const getGetApiIcDealsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiIcDeals>>,
+export const getGetIcDealsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getIcDeals>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcDeals>>,
+    Awaited<ReturnType<typeof getIcDeals>>,
     TError,
     TData
   >;
@@ -2857,40 +2857,40 @@ export const getGetApiIcDealsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiIcDealsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetIcDealsQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiIcDeals>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getIcDeals>>> = ({
     signal,
-  }) => getApiIcDeals({ signal, ...requestOptions });
+  }) => getIcDeals({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcDeals>>,
+    Awaited<ReturnType<typeof getIcDeals>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiIcDealsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiIcDeals>>
+export type GetIcDealsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getIcDeals>>
 >;
-export type GetApiIcDealsQueryError = ErrorType<unknown>;
+export type GetIcDealsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List all deals (IC view)
  */
 
-export function useGetApiIcDeals<
-  TData = Awaited<ReturnType<typeof getApiIcDeals>>,
+export function useGetIcDeals<
+  TData = Awaited<ReturnType<typeof getIcDeals>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcDeals>>,
+    Awaited<ReturnType<typeof getIcDeals>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiIcDealsQueryOptions(options);
+  const queryOptions = getGetIcDealsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -2902,32 +2902,32 @@ export function useGetApiIcDeals<
 /**
  * @summary Get deal detail
  */
-export const getGetApiIcDealsIdUrl = (id: number) => {
-  return `/api/api/ic/deals/${id}`;
+export const getGetIcDealsIdUrl = (id: number) => {
+  return `/api/ic/deals/${id}`;
 };
 
-export const getApiIcDealsId = async (
+export const getIcDealsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiIcDealsIdUrl(id), {
+  return customFetch<void>(getGetIcDealsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiIcDealsIdQueryKey = (id: number) => {
-  return [`/api/api/ic/deals/${id}`] as const;
+export const getGetIcDealsIdQueryKey = (id: number) => {
+  return [`/api/ic/deals/${id}`] as const;
 };
 
-export const getGetApiIcDealsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiIcDealsId>>,
+export const getGetIcDealsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getIcDealsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiIcDealsId>>,
+      Awaited<ReturnType<typeof getIcDealsId>>,
       TError,
       TData
     >;
@@ -2936,11 +2936,11 @@ export const getGetApiIcDealsIdQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiIcDealsIdQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetIcDealsIdQueryKey(id);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiIcDealsId>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getIcDealsId>>> = ({
     signal,
-  }) => getApiIcDealsId(id, { signal, ...requestOptions });
+  }) => getIcDealsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -2948,36 +2948,36 @@ export const getGetApiIcDealsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcDealsId>>,
+    Awaited<ReturnType<typeof getIcDealsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiIcDealsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiIcDealsId>>
+export type GetIcDealsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getIcDealsId>>
 >;
-export type GetApiIcDealsIdQueryError = ErrorType<unknown>;
+export type GetIcDealsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get deal detail
  */
 
-export function useGetApiIcDealsId<
-  TData = Awaited<ReturnType<typeof getApiIcDealsId>>,
+export function useGetIcDealsId<
+  TData = Awaited<ReturnType<typeof getIcDealsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiIcDealsId>>,
+      Awaited<ReturnType<typeof getIcDealsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiIcDealsIdQueryOptions(id, options);
+  const queryOptions = getGetIcDealsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -2989,41 +2989,41 @@ export function useGetApiIcDealsId<
 /**
  * @summary Update deal fields (no pipelineStage)
  */
-export const getPutApiIcDealsIdUrl = (id: number) => {
-  return `/api/api/ic/deals/${id}`;
+export const getPutIcDealsIdUrl = (id: number) => {
+  return `/api/ic/deals/${id}`;
 };
 
-export const putApiIcDealsId = async (
+export const putIcDealsId = async (
   id: number,
-  putApiIcDealsIdBody: PutApiIcDealsIdBody,
+  putIcDealsIdBody: PutIcDealsIdBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiIcDealsIdUrl(id), {
+  return customFetch<void>(getPutIcDealsIdUrl(id), {
     ...options,
     method: "PUT",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(putApiIcDealsIdBody),
+    body: JSON.stringify(putIcDealsIdBody),
   });
 };
 
-export const getPutApiIcDealsIdMutationOptions = <
+export const getPutIcDealsIdMutationOptions = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiIcDealsId>>,
+    Awaited<ReturnType<typeof putIcDealsId>>,
     TError,
-    { id: number; data: BodyType<PutApiIcDealsIdBody> },
+    { id: number; data: BodyType<PutIcDealsIdBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiIcDealsId>>,
+  Awaited<ReturnType<typeof putIcDealsId>>,
   TError,
-  { id: number; data: BodyType<PutApiIcDealsIdBody> },
+  { id: number; data: BodyType<PutIcDealsIdBody> },
   TContext
 > => {
-  const mutationKey = ["putApiIcDealsId"];
+  const mutationKey = ["putIcDealsId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3033,84 +3033,84 @@ export const getPutApiIcDealsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiIcDealsId>>,
-    { id: number; data: BodyType<PutApiIcDealsIdBody> }
+    Awaited<ReturnType<typeof putIcDealsId>>,
+    { id: number; data: BodyType<PutIcDealsIdBody> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return putApiIcDealsId(id, data, requestOptions);
+    return putIcDealsId(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiIcDealsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiIcDealsId>>
+export type PutIcDealsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putIcDealsId>>
 >;
-export type PutApiIcDealsIdMutationBody = BodyType<PutApiIcDealsIdBody>;
-export type PutApiIcDealsIdMutationError = ErrorType<void>;
+export type PutIcDealsIdMutationBody = BodyType<PutIcDealsIdBody>;
+export type PutIcDealsIdMutationError = ErrorType<void>;
 
 /**
  * @summary Update deal fields (no pipelineStage)
  */
-export const usePutApiIcDealsId = <
+export const usePutIcDealsId = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiIcDealsId>>,
+    Awaited<ReturnType<typeof putIcDealsId>>,
     TError,
-    { id: number; data: BodyType<PutApiIcDealsIdBody> },
+    { id: number; data: BodyType<PutIcDealsIdBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiIcDealsId>>,
+  Awaited<ReturnType<typeof putIcDealsId>>,
   TError,
-  { id: number; data: BodyType<PutApiIcDealsIdBody> },
+  { id: number; data: BodyType<PutIcDealsIdBody> },
   TContext
 > => {
-  return useMutation(getPutApiIcDealsIdMutationOptions(options));
+  return useMutation(getPutIcDealsIdMutationOptions(options));
 };
 
 /**
  * @summary Advance deal pipeline stage via state machine
  */
-export const getPatchApiDealsIdStageUrl = (id: number) => {
-  return `/api/api/deals/${id}/stage`;
+export const getPatchDealsIdStageUrl = (id: number) => {
+  return `/api/deals/${id}/stage`;
 };
 
-export const patchApiDealsIdStage = async (
+export const patchDealsIdStage = async (
   id: number,
-  patchApiDealsIdStageBody: PatchApiDealsIdStageBody,
+  patchDealsIdStageBody: PatchDealsIdStageBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPatchApiDealsIdStageUrl(id), {
+  return customFetch<void>(getPatchDealsIdStageUrl(id), {
     ...options,
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(patchApiDealsIdStageBody),
+    body: JSON.stringify(patchDealsIdStageBody),
   });
 };
 
-export const getPatchApiDealsIdStageMutationOptions = <
+export const getPatchDealsIdStageMutationOptions = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+    Awaited<ReturnType<typeof patchDealsIdStage>>,
     TError,
-    { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+    { id: number; data: BodyType<PatchDealsIdStageBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+  Awaited<ReturnType<typeof patchDealsIdStage>>,
   TError,
-  { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+  { id: number; data: BodyType<PatchDealsIdStageBody> },
   TContext
 > => {
-  const mutationKey = ["patchApiDealsIdStage"];
+  const mutationKey = ["patchDealsIdStage"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3120,85 +3120,84 @@ export const getPatchApiDealsIdStageMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
-    { id: number; data: BodyType<PatchApiDealsIdStageBody> }
+    Awaited<ReturnType<typeof patchDealsIdStage>>,
+    { id: number; data: BodyType<PatchDealsIdStageBody> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return patchApiDealsIdStage(id, data, requestOptions);
+    return patchDealsIdStage(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PatchApiDealsIdStageMutationResult = NonNullable<
-  Awaited<ReturnType<typeof patchApiDealsIdStage>>
+export type PatchDealsIdStageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof patchDealsIdStage>>
 >;
-export type PatchApiDealsIdStageMutationBody =
-  BodyType<PatchApiDealsIdStageBody>;
-export type PatchApiDealsIdStageMutationError = ErrorType<void>;
+export type PatchDealsIdStageMutationBody = BodyType<PatchDealsIdStageBody>;
+export type PatchDealsIdStageMutationError = ErrorType<void>;
 
 /**
  * @summary Advance deal pipeline stage via state machine
  */
-export const usePatchApiDealsIdStage = <
+export const usePatchDealsIdStage = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+    Awaited<ReturnType<typeof patchDealsIdStage>>,
     TError,
-    { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+    { id: number; data: BodyType<PatchDealsIdStageBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof patchApiDealsIdStage>>,
+  Awaited<ReturnType<typeof patchDealsIdStage>>,
   TError,
-  { id: number; data: BodyType<PatchApiDealsIdStageBody> },
+  { id: number; data: BodyType<PatchDealsIdStageBody> },
   TContext
 > => {
-  return useMutation(getPatchApiDealsIdStageMutationOptions(options));
+  return useMutation(getPatchDealsIdStageMutationOptions(options));
 };
 
 /**
  * @summary Cast IC vote; auto-advances stage on majority
  */
-export const getPostApiIcDealsIdVoteUrl = (id: number) => {
-  return `/api/api/ic/deals/${id}/vote`;
+export const getPostIcDealsIdVoteUrl = (id: number) => {
+  return `/api/ic/deals/${id}/vote`;
 };
 
-export const postApiIcDealsIdVote = async (
+export const postIcDealsIdVote = async (
   id: number,
-  postApiIcDealsIdVoteBody: PostApiIcDealsIdVoteBody,
+  postIcDealsIdVoteBody: PostIcDealsIdVoteBody,
   options?: RequestInit,
-): Promise<PostApiIcDealsIdVote200> => {
-  return customFetch<PostApiIcDealsIdVote200>(getPostApiIcDealsIdVoteUrl(id), {
+): Promise<PostIcDealsIdVote200> => {
+  return customFetch<PostIcDealsIdVote200>(getPostIcDealsIdVoteUrl(id), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiIcDealsIdVoteBody),
+    body: JSON.stringify(postIcDealsIdVoteBody),
   });
 };
 
-export const getPostApiIcDealsIdVoteMutationOptions = <
+export const getPostIcDealsIdVoteMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+    Awaited<ReturnType<typeof postIcDealsIdVote>>,
     TError,
-    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+    { id: number; data: BodyType<PostIcDealsIdVoteBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+  Awaited<ReturnType<typeof postIcDealsIdVote>>,
   TError,
-  { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+  { id: number; data: BodyType<PostIcDealsIdVoteBody> },
   TContext
 > => {
-  const mutationKey = ["postApiIcDealsIdVote"];
+  const mutationKey = ["postIcDealsIdVote"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3208,73 +3207,70 @@ export const getPostApiIcDealsIdVoteMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
-    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> }
+    Awaited<ReturnType<typeof postIcDealsIdVote>>,
+    { id: number; data: BodyType<PostIcDealsIdVoteBody> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return postApiIcDealsIdVote(id, data, requestOptions);
+    return postIcDealsIdVote(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiIcDealsIdVoteMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiIcDealsIdVote>>
+export type PostIcDealsIdVoteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postIcDealsIdVote>>
 >;
-export type PostApiIcDealsIdVoteMutationBody =
-  BodyType<PostApiIcDealsIdVoteBody>;
-export type PostApiIcDealsIdVoteMutationError = ErrorType<unknown>;
+export type PostIcDealsIdVoteMutationBody = BodyType<PostIcDealsIdVoteBody>;
+export type PostIcDealsIdVoteMutationError = ErrorType<unknown>;
 
 /**
  * @summary Cast IC vote; auto-advances stage on majority
  */
-export const usePostApiIcDealsIdVote = <
+export const usePostIcDealsIdVote = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+    Awaited<ReturnType<typeof postIcDealsIdVote>>,
     TError,
-    { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+    { id: number; data: BodyType<PostIcDealsIdVoteBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiIcDealsIdVote>>,
+  Awaited<ReturnType<typeof postIcDealsIdVote>>,
   TError,
-  { id: number; data: BodyType<PostApiIcDealsIdVoteBody> },
+  { id: number; data: BodyType<PostIcDealsIdVoteBody> },
   TContext
 > => {
-  return useMutation(getPostApiIcDealsIdVoteMutationOptions(options));
+  return useMutation(getPostIcDealsIdVoteMutationOptions(options));
 };
 
 /**
  * @summary List all term sheets
  */
-export const getGetApiMpTermSheetsUrl = () => {
-  return `/api/api/mp/term-sheets`;
+export const getGetMpTermSheetsUrl = () => {
+  return `/api/mp/term-sheets`;
 };
 
-export const getApiMpTermSheets = async (
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getGetApiMpTermSheetsUrl(), {
+export const getMpTermSheets = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetMpTermSheetsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpTermSheetsQueryKey = () => {
-  return [`/api/api/mp/term-sheets`] as const;
+export const getGetMpTermSheetsQueryKey = () => {
+  return [`/api/mp/term-sheets`] as const;
 };
 
-export const getGetApiMpTermSheetsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpTermSheets>>,
+export const getGetMpTermSheetsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpTermSheets>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    Awaited<ReturnType<typeof getMpTermSheets>>,
     TError,
     TData
   >;
@@ -3282,40 +3278,40 @@ export const getGetApiMpTermSheetsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiMpTermSheetsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetMpTermSheetsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpTermSheets>>
-  > = ({ signal }) => getApiMpTermSheets({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMpTermSheets>>> = ({
+    signal,
+  }) => getMpTermSheets({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    Awaited<ReturnType<typeof getMpTermSheets>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpTermSheetsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpTermSheets>>
+export type GetMpTermSheetsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpTermSheets>>
 >;
-export type GetApiMpTermSheetsQueryError = ErrorType<unknown>;
+export type GetMpTermSheetsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List all term sheets
  */
 
-export function useGetApiMpTermSheets<
-  TData = Awaited<ReturnType<typeof getApiMpTermSheets>>,
+export function useGetMpTermSheets<
+  TData = Awaited<ReturnType<typeof getMpTermSheets>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpTermSheets>>,
+    Awaited<ReturnType<typeof getMpTermSheets>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpTermSheetsQueryOptions(options);
+  const queryOptions = getGetMpTermSheetsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3327,40 +3323,40 @@ export function useGetApiMpTermSheets<
 /**
  * @summary Create term sheet (equityPct auto-calculated)
  */
-export const getPostApiMpTermSheetsUrl = () => {
-  return `/api/api/mp/term-sheets`;
+export const getPostMpTermSheetsUrl = () => {
+  return `/api/mp/term-sheets`;
 };
 
-export const postApiMpTermSheets = async (
-  postApiMpTermSheetsBody: PostApiMpTermSheetsBody,
+export const postMpTermSheets = async (
+  postMpTermSheetsBody: PostMpTermSheetsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiMpTermSheetsUrl(), {
+  return customFetch<void>(getPostMpTermSheetsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiMpTermSheetsBody),
+    body: JSON.stringify(postMpTermSheetsBody),
   });
 };
 
-export const getPostApiMpTermSheetsMutationOptions = <
+export const getPostMpTermSheetsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpTermSheets>>,
+    Awaited<ReturnType<typeof postMpTermSheets>>,
     TError,
-    { data: BodyType<PostApiMpTermSheetsBody> },
+    { data: BodyType<PostMpTermSheetsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiMpTermSheets>>,
+  Awaited<ReturnType<typeof postMpTermSheets>>,
   TError,
-  { data: BodyType<PostApiMpTermSheetsBody> },
+  { data: BodyType<PostMpTermSheetsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiMpTermSheets"];
+  const mutationKey = ["postMpTermSheets"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3370,81 +3366,81 @@ export const getPostApiMpTermSheetsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiMpTermSheets>>,
-    { data: BodyType<PostApiMpTermSheetsBody> }
+    Awaited<ReturnType<typeof postMpTermSheets>>,
+    { data: BodyType<PostMpTermSheetsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiMpTermSheets(data, requestOptions);
+    return postMpTermSheets(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiMpTermSheetsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiMpTermSheets>>
+export type PostMpTermSheetsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpTermSheets>>
 >;
-export type PostApiMpTermSheetsMutationBody = BodyType<PostApiMpTermSheetsBody>;
-export type PostApiMpTermSheetsMutationError = ErrorType<unknown>;
+export type PostMpTermSheetsMutationBody = BodyType<PostMpTermSheetsBody>;
+export type PostMpTermSheetsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create term sheet (equityPct auto-calculated)
  */
-export const usePostApiMpTermSheets = <
+export const usePostMpTermSheets = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpTermSheets>>,
+    Awaited<ReturnType<typeof postMpTermSheets>>,
     TError,
-    { data: BodyType<PostApiMpTermSheetsBody> },
+    { data: BodyType<PostMpTermSheetsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiMpTermSheets>>,
+  Awaited<ReturnType<typeof postMpTermSheets>>,
   TError,
-  { data: BodyType<PostApiMpTermSheetsBody> },
+  { data: BodyType<PostMpTermSheetsBody> },
   TContext
 > => {
-  return useMutation(getPostApiMpTermSheetsMutationOptions(options));
+  return useMutation(getPostMpTermSheetsMutationOptions(options));
 };
 
 /**
  * @summary Update term sheet
  */
-export const getPutApiMpTermSheetsIdUrl = (id: number) => {
-  return `/api/api/mp/term-sheets/${id}`;
+export const getPutMpTermSheetsIdUrl = (id: number) => {
+  return `/api/mp/term-sheets/${id}`;
 };
 
-export const putApiMpTermSheetsId = async (
+export const putMpTermSheetsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiMpTermSheetsIdUrl(id), {
+  return customFetch<void>(getPutMpTermSheetsIdUrl(id), {
     ...options,
     method: "PUT",
   });
 };
 
-export const getPutApiMpTermSheetsIdMutationOptions = <
+export const getPutMpTermSheetsIdMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    Awaited<ReturnType<typeof putMpTermSheetsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+  Awaited<ReturnType<typeof putMpTermSheetsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  const mutationKey = ["putApiMpTermSheetsId"];
+  const mutationKey = ["putMpTermSheetsId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3454,72 +3450,72 @@ export const getPutApiMpTermSheetsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    Awaited<ReturnType<typeof putMpTermSheetsId>>,
     { id: number }
   > = (props) => {
     const { id } = props ?? {};
 
-    return putApiMpTermSheetsId(id, requestOptions);
+    return putMpTermSheetsId(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiMpTermSheetsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiMpTermSheetsId>>
+export type PutMpTermSheetsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putMpTermSheetsId>>
 >;
 
-export type PutApiMpTermSheetsIdMutationError = ErrorType<unknown>;
+export type PutMpTermSheetsIdMutationError = ErrorType<unknown>;
 
 /**
  * @summary Update term sheet
  */
-export const usePutApiMpTermSheetsId = <
+export const usePutMpTermSheetsId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+    Awaited<ReturnType<typeof putMpTermSheetsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiMpTermSheetsId>>,
+  Awaited<ReturnType<typeof putMpTermSheetsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  return useMutation(getPutApiMpTermSheetsIdMutationOptions(options));
+  return useMutation(getPutMpTermSheetsIdMutationOptions(options));
 };
 
 /**
  * @summary List diligence checklists
  */
-export const getGetApiDiligenceChecklistsUrl = () => {
-  return `/api/api/diligence/checklists`;
+export const getGetDiligenceChecklistsUrl = () => {
+  return `/api/diligence/checklists`;
 };
 
-export const getApiDiligenceChecklists = async (
+export const getDiligenceChecklists = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiDiligenceChecklistsUrl(), {
+  return customFetch<void>(getGetDiligenceChecklistsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiDiligenceChecklistsQueryKey = () => {
-  return [`/api/api/diligence/checklists`] as const;
+export const getGetDiligenceChecklistsQueryKey = () => {
+  return [`/api/diligence/checklists`] as const;
 };
 
-export const getGetApiDiligenceChecklistsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+export const getGetDiligenceChecklistsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDiligenceChecklists>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    Awaited<ReturnType<typeof getDiligenceChecklists>>,
     TError,
     TData
   >;
@@ -3528,40 +3524,40 @@ export const getGetApiDiligenceChecklistsQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiDiligenceChecklistsQueryKey();
+    queryOptions?.queryKey ?? getGetDiligenceChecklistsQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiDiligenceChecklists>>
-  > = ({ signal }) => getApiDiligenceChecklists({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getDiligenceChecklists>>
+  > = ({ signal }) => getDiligenceChecklists({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    Awaited<ReturnType<typeof getDiligenceChecklists>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiDiligenceChecklistsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiDiligenceChecklists>>
+export type GetDiligenceChecklistsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDiligenceChecklists>>
 >;
-export type GetApiDiligenceChecklistsQueryError = ErrorType<unknown>;
+export type GetDiligenceChecklistsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List diligence checklists
  */
 
-export function useGetApiDiligenceChecklists<
-  TData = Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+export function useGetDiligenceChecklists<
+  TData = Awaited<ReturnType<typeof getDiligenceChecklists>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDiligenceChecklists>>,
+    Awaited<ReturnType<typeof getDiligenceChecklists>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiDiligenceChecklistsQueryOptions(options);
+  const queryOptions = getGetDiligenceChecklistsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3573,40 +3569,40 @@ export function useGetApiDiligenceChecklists<
 /**
  * @summary Create diligence checklist for a deal
  */
-export const getPostApiDiligenceChecklistsUrl = () => {
-  return `/api/api/diligence/checklists`;
+export const getPostDiligenceChecklistsUrl = () => {
+  return `/api/diligence/checklists`;
 };
 
-export const postApiDiligenceChecklists = async (
-  postApiDiligenceChecklistsBody: PostApiDiligenceChecklistsBody,
+export const postDiligenceChecklists = async (
+  postDiligenceChecklistsBody: PostDiligenceChecklistsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiDiligenceChecklistsUrl(), {
+  return customFetch<void>(getPostDiligenceChecklistsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiDiligenceChecklistsBody),
+    body: JSON.stringify(postDiligenceChecklistsBody),
   });
 };
 
-export const getPostApiDiligenceChecklistsMutationOptions = <
+export const getPostDiligenceChecklistsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+    Awaited<ReturnType<typeof postDiligenceChecklists>>,
     TError,
-    { data: BodyType<PostApiDiligenceChecklistsBody> },
+    { data: BodyType<PostDiligenceChecklistsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+  Awaited<ReturnType<typeof postDiligenceChecklists>>,
   TError,
-  { data: BodyType<PostApiDiligenceChecklistsBody> },
+  { data: BodyType<PostDiligenceChecklistsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiDiligenceChecklists"];
+  const mutationKey = ["postDiligenceChecklists"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3616,76 +3612,76 @@ export const getPostApiDiligenceChecklistsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
-    { data: BodyType<PostApiDiligenceChecklistsBody> }
+    Awaited<ReturnType<typeof postDiligenceChecklists>>,
+    { data: BodyType<PostDiligenceChecklistsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiDiligenceChecklists(data, requestOptions);
+    return postDiligenceChecklists(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiDiligenceChecklistsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiDiligenceChecklists>>
+export type PostDiligenceChecklistsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postDiligenceChecklists>>
 >;
-export type PostApiDiligenceChecklistsMutationBody =
-  BodyType<PostApiDiligenceChecklistsBody>;
-export type PostApiDiligenceChecklistsMutationError = ErrorType<unknown>;
+export type PostDiligenceChecklistsMutationBody =
+  BodyType<PostDiligenceChecklistsBody>;
+export type PostDiligenceChecklistsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create diligence checklist for a deal
  */
-export const usePostApiDiligenceChecklists = <
+export const usePostDiligenceChecklists = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+    Awaited<ReturnType<typeof postDiligenceChecklists>>,
     TError,
-    { data: BodyType<PostApiDiligenceChecklistsBody> },
+    { data: BodyType<PostDiligenceChecklistsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiDiligenceChecklists>>,
+  Awaited<ReturnType<typeof postDiligenceChecklists>>,
   TError,
-  { data: BodyType<PostApiDiligenceChecklistsBody> },
+  { data: BodyType<PostDiligenceChecklistsBody> },
   TContext
 > => {
-  return useMutation(getPostApiDiligenceChecklistsMutationOptions(options));
+  return useMutation(getPostDiligenceChecklistsMutationOptions(options));
 };
 
 /**
  * @summary Get diligence checklist with items
  */
-export const getGetApiDiligenceChecklistsIdUrl = (id: number) => {
-  return `/api/api/diligence/checklists/${id}`;
+export const getGetDiligenceChecklistsIdUrl = (id: number) => {
+  return `/api/diligence/checklists/${id}`;
 };
 
-export const getApiDiligenceChecklistsId = async (
+export const getDiligenceChecklistsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiDiligenceChecklistsIdUrl(id), {
+  return customFetch<void>(getGetDiligenceChecklistsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiDiligenceChecklistsIdQueryKey = (id: number) => {
-  return [`/api/api/diligence/checklists/${id}`] as const;
+export const getGetDiligenceChecklistsIdQueryKey = (id: number) => {
+  return [`/api/diligence/checklists/${id}`] as const;
 };
 
-export const getGetApiDiligenceChecklistsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+export const getGetDiligenceChecklistsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDiligenceChecklistsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+      Awaited<ReturnType<typeof getDiligenceChecklistsId>>,
       TError,
       TData
     >;
@@ -3695,12 +3691,12 @@ export const getGetApiDiligenceChecklistsIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiDiligenceChecklistsIdQueryKey(id);
+    queryOptions?.queryKey ?? getGetDiligenceChecklistsIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>
+    Awaited<ReturnType<typeof getDiligenceChecklistsId>>
   > = ({ signal }) =>
-    getApiDiligenceChecklistsId(id, { signal, ...requestOptions });
+    getDiligenceChecklistsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -3708,36 +3704,36 @@ export const getGetApiDiligenceChecklistsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+    Awaited<ReturnType<typeof getDiligenceChecklistsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiDiligenceChecklistsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>
+export type GetDiligenceChecklistsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDiligenceChecklistsId>>
 >;
-export type GetApiDiligenceChecklistsIdQueryError = ErrorType<unknown>;
+export type GetDiligenceChecklistsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get diligence checklist with items
  */
 
-export function useGetApiDiligenceChecklistsId<
-  TData = Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+export function useGetDiligenceChecklistsId<
+  TData = Awaited<ReturnType<typeof getDiligenceChecklistsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDiligenceChecklistsId>>,
+      Awaited<ReturnType<typeof getDiligenceChecklistsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiDiligenceChecklistsIdQueryOptions(id, options);
+  const queryOptions = getGetDiligenceChecklistsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3749,23 +3745,20 @@ export function useGetApiDiligenceChecklistsId<
 /**
  * @summary Update diligence item status
  */
-export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdUrl = (
+export const getPatchDiligenceChecklistsChecklistIdItemsItemIdUrl = (
   checklistId: number,
   itemId: number,
 ) => {
-  return `/api/api/diligence/checklists/${checklistId}/items/${itemId}`;
+  return `/api/diligence/checklists/${checklistId}/items/${itemId}`;
 };
 
-export const patchApiDiligenceChecklistsChecklistIdItemsItemId = async (
+export const patchDiligenceChecklistsChecklistIdItemsItemId = async (
   checklistId: number,
   itemId: number,
   options?: RequestInit,
 ): Promise<void> => {
   return customFetch<void>(
-    getPatchApiDiligenceChecklistsChecklistIdItemsItemIdUrl(
-      checklistId,
-      itemId,
-    ),
+    getPatchDiligenceChecklistsChecklistIdItemsItemIdUrl(checklistId, itemId),
     {
       ...options,
       method: "PATCH",
@@ -3773,11 +3766,11 @@ export const patchApiDiligenceChecklistsChecklistIdItemsItemId = async (
   );
 };
 
-export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions =
+export const getPatchDiligenceChecklistsChecklistIdItemsItemIdMutationOptions =
   <TError = ErrorType<unknown>, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
       Awaited<
-        ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+        ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>
       >,
       TError,
       { checklistId: number; itemId: number },
@@ -3785,14 +3778,12 @@ export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions
     >;
     request?: SecondParameter<typeof customFetch>;
   }): UseMutationOptions<
-    Awaited<
-      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
-    >,
+    Awaited<ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>>,
     TError,
     { checklistId: number; itemId: number },
     TContext
   > => {
-    const mutationKey = ["patchApiDiligenceChecklistsChecklistIdItemsItemId"];
+    const mutationKey = ["patchDiligenceChecklistsChecklistIdItemsItemId"];
     const { mutation: mutationOptions, request: requestOptions } = options
       ? options.mutation &&
         "mutationKey" in options.mutation &&
@@ -3803,13 +3794,13 @@ export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions
 
     const mutationFn: MutationFunction<
       Awaited<
-        ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
+        ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>
       >,
       { checklistId: number; itemId: number }
     > = (props) => {
       const { checklistId, itemId } = props ?? {};
 
-      return patchApiDiligenceChecklistsChecklistIdItemsItemId(
+      return patchDiligenceChecklistsChecklistIdItemsItemId(
         checklistId,
         itemId,
         requestOptions,
@@ -3819,71 +3810,65 @@ export const getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions
     return { mutationFn, ...mutationOptions };
   };
 
-export type PatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationResult =
+export type PatchDiligenceChecklistsChecklistIdItemsItemIdMutationResult =
   NonNullable<
-    Awaited<
-      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
-    >
+    Awaited<ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>>
   >;
 
-export type PatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationError =
+export type PatchDiligenceChecklistsChecklistIdItemsItemIdMutationError =
   ErrorType<unknown>;
 
 /**
  * @summary Update diligence item status
  */
-export const usePatchApiDiligenceChecklistsChecklistIdItemsItemId = <
+export const usePatchDiligenceChecklistsChecklistIdItemsItemId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<
-      ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>
-    >,
+    Awaited<ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>>,
     TError,
     { checklistId: number; itemId: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof patchApiDiligenceChecklistsChecklistIdItemsItemId>>,
+  Awaited<ReturnType<typeof patchDiligenceChecklistsChecklistIdItemsItemId>>,
   TError,
   { checklistId: number; itemId: number },
   TContext
 > => {
   return useMutation(
-    getPatchApiDiligenceChecklistsChecklistIdItemsItemIdMutationOptions(
-      options,
-    ),
+    getPatchDiligenceChecklistsChecklistIdItemsItemIdMutationOptions(options),
   );
 };
 
 /**
  * @summary List closing checklists
  */
-export const getGetApiClosingChecklistsUrl = () => {
-  return `/api/api/closing/checklists`;
+export const getGetClosingChecklistsUrl = () => {
+  return `/api/closing/checklists`;
 };
 
-export const getApiClosingChecklists = async (
+export const getClosingChecklists = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiClosingChecklistsUrl(), {
+  return customFetch<void>(getGetClosingChecklistsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiClosingChecklistsQueryKey = () => {
-  return [`/api/api/closing/checklists`] as const;
+export const getGetClosingChecklistsQueryKey = () => {
+  return [`/api/closing/checklists`] as const;
 };
 
-export const getGetApiClosingChecklistsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiClosingChecklists>>,
+export const getGetClosingChecklistsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getClosingChecklists>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    Awaited<ReturnType<typeof getClosingChecklists>>,
     TError,
     TData
   >;
@@ -3891,41 +3876,40 @@ export const getGetApiClosingChecklistsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetApiClosingChecklistsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetClosingChecklistsQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiClosingChecklists>>
-  > = ({ signal }) => getApiClosingChecklists({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getClosingChecklists>>
+  > = ({ signal }) => getClosingChecklists({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    Awaited<ReturnType<typeof getClosingChecklists>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiClosingChecklistsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiClosingChecklists>>
+export type GetClosingChecklistsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getClosingChecklists>>
 >;
-export type GetApiClosingChecklistsQueryError = ErrorType<unknown>;
+export type GetClosingChecklistsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List closing checklists
  */
 
-export function useGetApiClosingChecklists<
-  TData = Awaited<ReturnType<typeof getApiClosingChecklists>>,
+export function useGetClosingChecklists<
+  TData = Awaited<ReturnType<typeof getClosingChecklists>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiClosingChecklists>>,
+    Awaited<ReturnType<typeof getClosingChecklists>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiClosingChecklistsQueryOptions(options);
+  const queryOptions = getGetClosingChecklistsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3937,40 +3921,40 @@ export function useGetApiClosingChecklists<
 /**
  * @summary Create closing checklist for a deal (seeds default items)
  */
-export const getPostApiClosingChecklistsUrl = () => {
-  return `/api/api/closing/checklists`;
+export const getPostClosingChecklistsUrl = () => {
+  return `/api/closing/checklists`;
 };
 
-export const postApiClosingChecklists = async (
-  postApiClosingChecklistsBody: PostApiClosingChecklistsBody,
+export const postClosingChecklists = async (
+  postClosingChecklistsBody: PostClosingChecklistsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiClosingChecklistsUrl(), {
+  return customFetch<void>(getPostClosingChecklistsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiClosingChecklistsBody),
+    body: JSON.stringify(postClosingChecklistsBody),
   });
 };
 
-export const getPostApiClosingChecklistsMutationOptions = <
+export const getPostClosingChecklistsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiClosingChecklists>>,
+    Awaited<ReturnType<typeof postClosingChecklists>>,
     TError,
-    { data: BodyType<PostApiClosingChecklistsBody> },
+    { data: BodyType<PostClosingChecklistsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiClosingChecklists>>,
+  Awaited<ReturnType<typeof postClosingChecklists>>,
   TError,
-  { data: BodyType<PostApiClosingChecklistsBody> },
+  { data: BodyType<PostClosingChecklistsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiClosingChecklists"];
+  const mutationKey = ["postClosingChecklists"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -3980,76 +3964,76 @@ export const getPostApiClosingChecklistsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiClosingChecklists>>,
-    { data: BodyType<PostApiClosingChecklistsBody> }
+    Awaited<ReturnType<typeof postClosingChecklists>>,
+    { data: BodyType<PostClosingChecklistsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiClosingChecklists(data, requestOptions);
+    return postClosingChecklists(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiClosingChecklistsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiClosingChecklists>>
+export type PostClosingChecklistsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postClosingChecklists>>
 >;
-export type PostApiClosingChecklistsMutationBody =
-  BodyType<PostApiClosingChecklistsBody>;
-export type PostApiClosingChecklistsMutationError = ErrorType<unknown>;
+export type PostClosingChecklistsMutationBody =
+  BodyType<PostClosingChecklistsBody>;
+export type PostClosingChecklistsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create closing checklist for a deal (seeds default items)
  */
-export const usePostApiClosingChecklists = <
+export const usePostClosingChecklists = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiClosingChecklists>>,
+    Awaited<ReturnType<typeof postClosingChecklists>>,
     TError,
-    { data: BodyType<PostApiClosingChecklistsBody> },
+    { data: BodyType<PostClosingChecklistsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiClosingChecklists>>,
+  Awaited<ReturnType<typeof postClosingChecklists>>,
   TError,
-  { data: BodyType<PostApiClosingChecklistsBody> },
+  { data: BodyType<PostClosingChecklistsBody> },
   TContext
 > => {
-  return useMutation(getPostApiClosingChecklistsMutationOptions(options));
+  return useMutation(getPostClosingChecklistsMutationOptions(options));
 };
 
 /**
  * @summary Get closing checklist with items
  */
-export const getGetApiClosingChecklistsIdUrl = (id: number) => {
-  return `/api/api/closing/checklists/${id}`;
+export const getGetClosingChecklistsIdUrl = (id: number) => {
+  return `/api/closing/checklists/${id}`;
 };
 
-export const getApiClosingChecklistsId = async (
+export const getClosingChecklistsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiClosingChecklistsIdUrl(id), {
+  return customFetch<void>(getGetClosingChecklistsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiClosingChecklistsIdQueryKey = (id: number) => {
-  return [`/api/api/closing/checklists/${id}`] as const;
+export const getGetClosingChecklistsIdQueryKey = (id: number) => {
+  return [`/api/closing/checklists/${id}`] as const;
 };
 
-export const getGetApiClosingChecklistsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+export const getGetClosingChecklistsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getClosingChecklistsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+      Awaited<ReturnType<typeof getClosingChecklistsId>>,
       TError,
       TData
     >;
@@ -4059,12 +4043,11 @@ export const getGetApiClosingChecklistsIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiClosingChecklistsIdQueryKey(id);
+    queryOptions?.queryKey ?? getGetClosingChecklistsIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiClosingChecklistsId>>
-  > = ({ signal }) =>
-    getApiClosingChecklistsId(id, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof getClosingChecklistsId>>
+  > = ({ signal }) => getClosingChecklistsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -4072,36 +4055,36 @@ export const getGetApiClosingChecklistsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+    Awaited<ReturnType<typeof getClosingChecklistsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiClosingChecklistsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiClosingChecklistsId>>
+export type GetClosingChecklistsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getClosingChecklistsId>>
 >;
-export type GetApiClosingChecklistsIdQueryError = ErrorType<unknown>;
+export type GetClosingChecklistsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get closing checklist with items
  */
 
-export function useGetApiClosingChecklistsId<
-  TData = Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+export function useGetClosingChecklistsId<
+  TData = Awaited<ReturnType<typeof getClosingChecklistsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiClosingChecklistsId>>,
+      Awaited<ReturnType<typeof getClosingChecklistsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiClosingChecklistsIdQueryOptions(id, options);
+  const queryOptions = getGetClosingChecklistsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -4113,155 +4096,153 @@ export function useGetApiClosingChecklistsId<
 /**
  * @summary Mark closing checklist item complete/incomplete
  */
-export const getPatchApiClosingChecklistsChecklistIdItemsItemIdUrl = (
+export const getPatchClosingChecklistsChecklistIdItemsItemIdUrl = (
   checklistId: number,
   itemId: number,
 ) => {
-  return `/api/api/closing/checklists/${checklistId}/items/${itemId}`;
+  return `/api/closing/checklists/${checklistId}/items/${itemId}`;
 };
 
-export const patchApiClosingChecklistsChecklistIdItemsItemId = async (
+export const patchClosingChecklistsChecklistIdItemsItemId = async (
   checklistId: number,
   itemId: number,
-  patchApiClosingChecklistsChecklistIdItemsItemIdBody: PatchApiClosingChecklistsChecklistIdItemsItemIdBody,
+  patchClosingChecklistsChecklistIdItemsItemIdBody: PatchClosingChecklistsChecklistIdItemsItemIdBody,
   options?: RequestInit,
 ): Promise<void> => {
   return customFetch<void>(
-    getPatchApiClosingChecklistsChecklistIdItemsItemIdUrl(checklistId, itemId),
+    getPatchClosingChecklistsChecklistIdItemsItemIdUrl(checklistId, itemId),
     {
       ...options,
       method: "PATCH",
       headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(patchApiClosingChecklistsChecklistIdItemsItemIdBody),
+      body: JSON.stringify(patchClosingChecklistsChecklistIdItemsItemIdBody),
     },
   );
 };
 
-export const getPatchApiClosingChecklistsChecklistIdItemsItemIdMutationOptions =
-  <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-      Awaited<
-        ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>
-      >,
-      TError,
-      {
-        checklistId: number;
-        itemId: number;
-        data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
-      },
-      TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  }): UseMutationOptions<
-    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+export const getPatchClosingChecklistsChecklistIdItemsItemIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>,
     TError,
     {
       checklistId: number;
       itemId: number;
-      data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+      data: BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
     },
     TContext
-  > => {
-    const mutationKey = ["patchApiClosingChecklistsChecklistIdItemsItemId"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-      ? options.mutation &&
-        "mutationKey" in options.mutation &&
-        options.mutation.mutationKey
-        ? options
-        : { ...options, mutation: { ...options.mutation, mutationKey } }
-      : { mutation: { mutationKey }, request: undefined };
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>,
+  TError,
+  {
+    checklistId: number;
+    itemId: number;
+    data: BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
+  },
+  TContext
+> => {
+  const mutationKey = ["patchClosingChecklistsChecklistIdItemsItemId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-    const mutationFn: MutationFunction<
-      Awaited<
-        ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>
-      >,
-      {
-        checklistId: number;
-        itemId: number;
-        data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
-      }
-    > = (props) => {
-      const { checklistId, itemId, data } = props ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>,
+    {
+      checklistId: number;
+      itemId: number;
+      data: BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
+    }
+  > = (props) => {
+    const { checklistId, itemId, data } = props ?? {};
 
-      return patchApiClosingChecklistsChecklistIdItemsItemId(
-        checklistId,
-        itemId,
-        data,
-        requestOptions,
-      );
-    };
-
-    return { mutationFn, ...mutationOptions };
+    return patchClosingChecklistsChecklistIdItemsItemId(
+      checklistId,
+      itemId,
+      data,
+      requestOptions,
+    );
   };
 
-export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationResult =
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PatchClosingChecklistsChecklistIdItemsItemIdMutationResult =
   NonNullable<
-    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>
+    Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>
   >;
-export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationBody =
-  BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
-export type PatchApiClosingChecklistsChecklistIdItemsItemIdMutationError =
+export type PatchClosingChecklistsChecklistIdItemsItemIdMutationBody =
+  BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
+export type PatchClosingChecklistsChecklistIdItemsItemIdMutationError =
   ErrorType<unknown>;
 
 /**
  * @summary Mark closing checklist item complete/incomplete
  */
-export const usePatchApiClosingChecklistsChecklistIdItemsItemId = <
+export const usePatchClosingChecklistsChecklistIdItemsItemId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+    Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>,
     TError,
     {
       checklistId: number;
       itemId: number;
-      data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+      data: BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
     },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof patchApiClosingChecklistsChecklistIdItemsItemId>>,
+  Awaited<ReturnType<typeof patchClosingChecklistsChecklistIdItemsItemId>>,
   TError,
   {
     checklistId: number;
     itemId: number;
-    data: BodyType<PatchApiClosingChecklistsChecklistIdItemsItemIdBody>;
+    data: BodyType<PatchClosingChecklistsChecklistIdItemsItemIdBody>;
   },
   TContext
 > => {
   return useMutation(
-    getPatchApiClosingChecklistsChecklistIdItemsItemIdMutationOptions(options),
+    getPatchClosingChecklistsChecklistIdItemsItemIdMutationOptions(options),
   );
 };
 
 /**
  * @summary List board meetings
  */
-export const getGetApiBoardMeetingsUrl = () => {
-  return `/api/api/board/meetings`;
+export const getGetBoardMeetingsUrl = () => {
+  return `/api/board/meetings`;
 };
 
-export const getApiBoardMeetings = async (
+export const getBoardMeetings = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiBoardMeetingsUrl(), {
+  return customFetch<void>(getGetBoardMeetingsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiBoardMeetingsQueryKey = () => {
-  return [`/api/api/board/meetings`] as const;
+export const getGetBoardMeetingsQueryKey = () => {
+  return [`/api/board/meetings`] as const;
 };
 
-export const getGetApiBoardMeetingsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiBoardMeetings>>,
+export const getGetBoardMeetingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getBoardMeetings>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    Awaited<ReturnType<typeof getBoardMeetings>>,
     TError,
     TData
   >;
@@ -4269,40 +4250,40 @@ export const getGetApiBoardMeetingsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiBoardMeetingsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetBoardMeetingsQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiBoardMeetings>>
-  > = ({ signal }) => getApiBoardMeetings({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getBoardMeetings>>
+  > = ({ signal }) => getBoardMeetings({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    Awaited<ReturnType<typeof getBoardMeetings>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiBoardMeetingsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiBoardMeetings>>
+export type GetBoardMeetingsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getBoardMeetings>>
 >;
-export type GetApiBoardMeetingsQueryError = ErrorType<unknown>;
+export type GetBoardMeetingsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List board meetings
  */
 
-export function useGetApiBoardMeetings<
-  TData = Awaited<ReturnType<typeof getApiBoardMeetings>>,
+export function useGetBoardMeetings<
+  TData = Awaited<ReturnType<typeof getBoardMeetings>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiBoardMeetings>>,
+    Awaited<ReturnType<typeof getBoardMeetings>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiBoardMeetingsQueryOptions(options);
+  const queryOptions = getGetBoardMeetingsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -4314,40 +4295,40 @@ export function useGetApiBoardMeetings<
 /**
  * @summary Create board meeting
  */
-export const getPostApiBoardMeetingsUrl = () => {
-  return `/api/api/board/meetings`;
+export const getPostBoardMeetingsUrl = () => {
+  return `/api/board/meetings`;
 };
 
-export const postApiBoardMeetings = async (
-  postApiBoardMeetingsBody: PostApiBoardMeetingsBody,
+export const postBoardMeetings = async (
+  postBoardMeetingsBody: PostBoardMeetingsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiBoardMeetingsUrl(), {
+  return customFetch<void>(getPostBoardMeetingsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiBoardMeetingsBody),
+    body: JSON.stringify(postBoardMeetingsBody),
   });
 };
 
-export const getPostApiBoardMeetingsMutationOptions = <
+export const getPostBoardMeetingsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiBoardMeetings>>,
+    Awaited<ReturnType<typeof postBoardMeetings>>,
     TError,
-    { data: BodyType<PostApiBoardMeetingsBody> },
+    { data: BodyType<PostBoardMeetingsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiBoardMeetings>>,
+  Awaited<ReturnType<typeof postBoardMeetings>>,
   TError,
-  { data: BodyType<PostApiBoardMeetingsBody> },
+  { data: BodyType<PostBoardMeetingsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiBoardMeetings"];
+  const mutationKey = ["postBoardMeetings"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -4357,76 +4338,75 @@ export const getPostApiBoardMeetingsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiBoardMeetings>>,
-    { data: BodyType<PostApiBoardMeetingsBody> }
+    Awaited<ReturnType<typeof postBoardMeetings>>,
+    { data: BodyType<PostBoardMeetingsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiBoardMeetings(data, requestOptions);
+    return postBoardMeetings(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiBoardMeetingsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiBoardMeetings>>
+export type PostBoardMeetingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postBoardMeetings>>
 >;
-export type PostApiBoardMeetingsMutationBody =
-  BodyType<PostApiBoardMeetingsBody>;
-export type PostApiBoardMeetingsMutationError = ErrorType<unknown>;
+export type PostBoardMeetingsMutationBody = BodyType<PostBoardMeetingsBody>;
+export type PostBoardMeetingsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create board meeting
  */
-export const usePostApiBoardMeetings = <
+export const usePostBoardMeetings = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiBoardMeetings>>,
+    Awaited<ReturnType<typeof postBoardMeetings>>,
     TError,
-    { data: BodyType<PostApiBoardMeetingsBody> },
+    { data: BodyType<PostBoardMeetingsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiBoardMeetings>>,
+  Awaited<ReturnType<typeof postBoardMeetings>>,
   TError,
-  { data: BodyType<PostApiBoardMeetingsBody> },
+  { data: BodyType<PostBoardMeetingsBody> },
   TContext
 > => {
-  return useMutation(getPostApiBoardMeetingsMutationOptions(options));
+  return useMutation(getPostBoardMeetingsMutationOptions(options));
 };
 
 /**
  * @summary Get board meeting with materials
  */
-export const getGetApiBoardMeetingsIdUrl = (id: number) => {
-  return `/api/api/board/meetings/${id}`;
+export const getGetBoardMeetingsIdUrl = (id: number) => {
+  return `/api/board/meetings/${id}`;
 };
 
-export const getApiBoardMeetingsId = async (
+export const getBoardMeetingsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiBoardMeetingsIdUrl(id), {
+  return customFetch<void>(getGetBoardMeetingsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiBoardMeetingsIdQueryKey = (id: number) => {
-  return [`/api/api/board/meetings/${id}`] as const;
+export const getGetBoardMeetingsIdQueryKey = (id: number) => {
+  return [`/api/board/meetings/${id}`] as const;
 };
 
-export const getGetApiBoardMeetingsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+export const getGetBoardMeetingsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getBoardMeetingsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+      Awaited<ReturnType<typeof getBoardMeetingsId>>,
       TError,
       TData
     >;
@@ -4435,12 +4415,11 @@ export const getGetApiBoardMeetingsIdQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetApiBoardMeetingsIdQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetBoardMeetingsIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiBoardMeetingsId>>
-  > = ({ signal }) => getApiBoardMeetingsId(id, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof getBoardMeetingsId>>
+  > = ({ signal }) => getBoardMeetingsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -4448,36 +4427,36 @@ export const getGetApiBoardMeetingsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+    Awaited<ReturnType<typeof getBoardMeetingsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiBoardMeetingsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiBoardMeetingsId>>
+export type GetBoardMeetingsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getBoardMeetingsId>>
 >;
-export type GetApiBoardMeetingsIdQueryError = ErrorType<unknown>;
+export type GetBoardMeetingsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get board meeting with materials
  */
 
-export function useGetApiBoardMeetingsId<
-  TData = Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+export function useGetBoardMeetingsId<
+  TData = Awaited<ReturnType<typeof getBoardMeetingsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiBoardMeetingsId>>,
+      Awaited<ReturnType<typeof getBoardMeetingsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiBoardMeetingsIdQueryOptions(id, options);
+  const queryOptions = getGetBoardMeetingsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -4489,38 +4468,38 @@ export function useGetApiBoardMeetingsId<
 /**
  * @summary Update board meeting
  */
-export const getPutApiBoardMeetingsIdUrl = (id: number) => {
-  return `/api/api/board/meetings/${id}`;
+export const getPutBoardMeetingsIdUrl = (id: number) => {
+  return `/api/board/meetings/${id}`;
 };
 
-export const putApiBoardMeetingsId = async (
+export const putBoardMeetingsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiBoardMeetingsIdUrl(id), {
+  return customFetch<void>(getPutBoardMeetingsIdUrl(id), {
     ...options,
     method: "PUT",
   });
 };
 
-export const getPutApiBoardMeetingsIdMutationOptions = <
+export const getPutBoardMeetingsIdMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    Awaited<ReturnType<typeof putBoardMeetingsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+  Awaited<ReturnType<typeof putBoardMeetingsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  const mutationKey = ["putApiBoardMeetingsId"];
+  const mutationKey = ["putBoardMeetingsId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -4530,83 +4509,83 @@ export const getPutApiBoardMeetingsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    Awaited<ReturnType<typeof putBoardMeetingsId>>,
     { id: number }
   > = (props) => {
     const { id } = props ?? {};
 
-    return putApiBoardMeetingsId(id, requestOptions);
+    return putBoardMeetingsId(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiBoardMeetingsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiBoardMeetingsId>>
+export type PutBoardMeetingsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putBoardMeetingsId>>
 >;
 
-export type PutApiBoardMeetingsIdMutationError = ErrorType<unknown>;
+export type PutBoardMeetingsIdMutationError = ErrorType<unknown>;
 
 /**
  * @summary Update board meeting
  */
-export const usePutApiBoardMeetingsId = <
+export const usePutBoardMeetingsId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+    Awaited<ReturnType<typeof putBoardMeetingsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiBoardMeetingsId>>,
+  Awaited<ReturnType<typeof putBoardMeetingsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  return useMutation(getPutApiBoardMeetingsIdMutationOptions(options));
+  return useMutation(getPutBoardMeetingsIdMutationOptions(options));
 };
 
 /**
  * @summary Upload board material
  */
-export const getPostApiBoardMaterialsUrl = () => {
-  return `/api/api/board/materials`;
+export const getPostBoardMaterialsUrl = () => {
+  return `/api/board/materials`;
 };
 
-export const postApiBoardMaterials = async (
-  postApiBoardMaterialsBody: PostApiBoardMaterialsBody,
+export const postBoardMaterials = async (
+  postBoardMaterialsBody: PostBoardMaterialsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiBoardMaterialsUrl(), {
+  return customFetch<void>(getPostBoardMaterialsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiBoardMaterialsBody),
+    body: JSON.stringify(postBoardMaterialsBody),
   });
 };
 
-export const getPostApiBoardMaterialsMutationOptions = <
+export const getPostBoardMaterialsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiBoardMaterials>>,
+    Awaited<ReturnType<typeof postBoardMaterials>>,
     TError,
-    { data: BodyType<PostApiBoardMaterialsBody> },
+    { data: BodyType<PostBoardMaterialsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiBoardMaterials>>,
+  Awaited<ReturnType<typeof postBoardMaterials>>,
   TError,
-  { data: BodyType<PostApiBoardMaterialsBody> },
+  { data: BodyType<PostBoardMaterialsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiBoardMaterials"];
+  const mutationKey = ["postBoardMaterials"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -4616,76 +4595,75 @@ export const getPostApiBoardMaterialsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiBoardMaterials>>,
-    { data: BodyType<PostApiBoardMaterialsBody> }
+    Awaited<ReturnType<typeof postBoardMaterials>>,
+    { data: BodyType<PostBoardMaterialsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiBoardMaterials(data, requestOptions);
+    return postBoardMaterials(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiBoardMaterialsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiBoardMaterials>>
+export type PostBoardMaterialsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postBoardMaterials>>
 >;
-export type PostApiBoardMaterialsMutationBody =
-  BodyType<PostApiBoardMaterialsBody>;
-export type PostApiBoardMaterialsMutationError = ErrorType<unknown>;
+export type PostBoardMaterialsMutationBody = BodyType<PostBoardMaterialsBody>;
+export type PostBoardMaterialsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Upload board material
  */
-export const usePostApiBoardMaterials = <
+export const usePostBoardMaterials = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiBoardMaterials>>,
+    Awaited<ReturnType<typeof postBoardMaterials>>,
     TError,
-    { data: BodyType<PostApiBoardMaterialsBody> },
+    { data: BodyType<PostBoardMaterialsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiBoardMaterials>>,
+  Awaited<ReturnType<typeof postBoardMaterials>>,
   TError,
-  { data: BodyType<PostApiBoardMaterialsBody> },
+  { data: BodyType<PostBoardMaterialsBody> },
   TContext
 > => {
-  return useMutation(getPostApiBoardMaterialsMutationOptions(options));
+  return useMutation(getPostBoardMaterialsMutationOptions(options));
 };
 
 /**
  * @summary Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
  */
-export const getGetApiMpFundsFundIdMetricsUrl = (fundId: number) => {
-  return `/api/api/mp/funds/${fundId}/metrics`;
+export const getGetMpFundsFundIdMetricsUrl = (fundId: number) => {
+  return `/api/mp/funds/${fundId}/metrics`;
 };
 
-export const getApiMpFundsFundIdMetrics = async (
+export const getMpFundsFundIdMetrics = async (
   fundId: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiMpFundsFundIdMetricsUrl(fundId), {
+  return customFetch<void>(getGetMpFundsFundIdMetricsUrl(fundId), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpFundsFundIdMetricsQueryKey = (fundId: number) => {
-  return [`/api/api/mp/funds/${fundId}/metrics`] as const;
+export const getGetMpFundsFundIdMetricsQueryKey = (fundId: number) => {
+  return [`/api/mp/funds/${fundId}/metrics`] as const;
 };
 
-export const getGetApiMpFundsFundIdMetricsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+export const getGetMpFundsFundIdMetricsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>,
   TError = ErrorType<unknown>,
 >(
   fundId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+      Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>,
       TError,
       TData
     >;
@@ -4695,12 +4673,12 @@ export const getGetApiMpFundsFundIdMetricsQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiMpFundsFundIdMetricsQueryKey(fundId);
+    queryOptions?.queryKey ?? getGetMpFundsFundIdMetricsQueryKey(fundId);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>
+    Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>
   > = ({ signal }) =>
-    getApiMpFundsFundIdMetrics(fundId, { signal, ...requestOptions });
+    getMpFundsFundIdMetrics(fundId, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -4708,39 +4686,36 @@ export const getGetApiMpFundsFundIdMetricsQueryOptions = <
     enabled: !!fundId,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+    Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpFundsFundIdMetricsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>
+export type GetMpFundsFundIdMetricsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>
 >;
-export type GetApiMpFundsFundIdMetricsQueryError = ErrorType<unknown>;
+export type GetMpFundsFundIdMetricsQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get fund metrics snapshots (TVPI, DPI, RVPI, IRR)
  */
 
-export function useGetApiMpFundsFundIdMetrics<
-  TData = Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+export function useGetMpFundsFundIdMetrics<
+  TData = Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>,
   TError = ErrorType<unknown>,
 >(
   fundId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiMpFundsFundIdMetrics>>,
+      Awaited<ReturnType<typeof getMpFundsFundIdMetrics>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpFundsFundIdMetricsQueryOptions(
-    fundId,
-    options,
-  );
+  const queryOptions = getGetMpFundsFundIdMetricsQueryOptions(fundId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -4752,41 +4727,41 @@ export function useGetApiMpFundsFundIdMetrics<
 /**
  * @summary Record fund metrics snapshot
  */
-export const getPostApiMpFundsFundIdMetricsUrl = (fundId: number) => {
-  return `/api/api/mp/funds/${fundId}/metrics`;
+export const getPostMpFundsFundIdMetricsUrl = (fundId: number) => {
+  return `/api/mp/funds/${fundId}/metrics`;
 };
 
-export const postApiMpFundsFundIdMetrics = async (
+export const postMpFundsFundIdMetrics = async (
   fundId: number,
-  postApiMpFundsFundIdMetricsBody: PostApiMpFundsFundIdMetricsBody,
+  postMpFundsFundIdMetricsBody: PostMpFundsFundIdMetricsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiMpFundsFundIdMetricsUrl(fundId), {
+  return customFetch<void>(getPostMpFundsFundIdMetricsUrl(fundId), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiMpFundsFundIdMetricsBody),
+    body: JSON.stringify(postMpFundsFundIdMetricsBody),
   });
 };
 
-export const getPostApiMpFundsFundIdMetricsMutationOptions = <
+export const getPostMpFundsFundIdMetricsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+    Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>,
     TError,
-    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+    { fundId: number; data: BodyType<PostMpFundsFundIdMetricsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+  Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>,
   TError,
-  { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+  { fundId: number; data: BodyType<PostMpFundsFundIdMetricsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiMpFundsFundIdMetrics"];
+  const mutationKey = ["postMpFundsFundIdMetrics"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -4796,73 +4771,73 @@ export const getPostApiMpFundsFundIdMetricsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
-    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> }
+    Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>,
+    { fundId: number; data: BodyType<PostMpFundsFundIdMetricsBody> }
   > = (props) => {
     const { fundId, data } = props ?? {};
 
-    return postApiMpFundsFundIdMetrics(fundId, data, requestOptions);
+    return postMpFundsFundIdMetrics(fundId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiMpFundsFundIdMetricsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>
+export type PostMpFundsFundIdMetricsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>
 >;
-export type PostApiMpFundsFundIdMetricsMutationBody =
-  BodyType<PostApiMpFundsFundIdMetricsBody>;
-export type PostApiMpFundsFundIdMetricsMutationError = ErrorType<unknown>;
+export type PostMpFundsFundIdMetricsMutationBody =
+  BodyType<PostMpFundsFundIdMetricsBody>;
+export type PostMpFundsFundIdMetricsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Record fund metrics snapshot
  */
-export const usePostApiMpFundsFundIdMetrics = <
+export const usePostMpFundsFundIdMetrics = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+    Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>,
     TError,
-    { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+    { fundId: number; data: BodyType<PostMpFundsFundIdMetricsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiMpFundsFundIdMetrics>>,
+  Awaited<ReturnType<typeof postMpFundsFundIdMetrics>>,
   TError,
-  { fundId: number; data: BodyType<PostApiMpFundsFundIdMetricsBody> },
+  { fundId: number; data: BodyType<PostMpFundsFundIdMetricsBody> },
   TContext
 > => {
-  return useMutation(getPostApiMpFundsFundIdMetricsMutationOptions(options));
+  return useMutation(getPostMpFundsFundIdMetricsMutationOptions(options));
 };
 
 /**
  * @summary List capital calls
  */
-export const getGetApiMpCapitalCallsUrl = () => {
-  return `/api/api/mp/capital-calls`;
+export const getGetMpCapitalCallsUrl = () => {
+  return `/api/mp/capital-calls`;
 };
 
-export const getApiMpCapitalCalls = async (
+export const getMpCapitalCalls = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiMpCapitalCallsUrl(), {
+  return customFetch<void>(getGetMpCapitalCallsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpCapitalCallsQueryKey = () => {
-  return [`/api/api/mp/capital-calls`] as const;
+export const getGetMpCapitalCallsQueryKey = () => {
+  return [`/api/mp/capital-calls`] as const;
 };
 
-export const getGetApiMpCapitalCallsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+export const getGetMpCapitalCallsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpCapitalCalls>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof getMpCapitalCalls>>,
     TError,
     TData
   >;
@@ -4870,40 +4845,40 @@ export const getGetApiMpCapitalCallsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiMpCapitalCallsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetMpCapitalCallsQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpCapitalCalls>>
-  > = ({ signal }) => getApiMpCapitalCalls({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getMpCapitalCalls>>
+  > = ({ signal }) => getMpCapitalCalls({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof getMpCapitalCalls>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpCapitalCallsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpCapitalCalls>>
+export type GetMpCapitalCallsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpCapitalCalls>>
 >;
-export type GetApiMpCapitalCallsQueryError = ErrorType<unknown>;
+export type GetMpCapitalCallsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List capital calls
  */
 
-export function useGetApiMpCapitalCalls<
-  TData = Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+export function useGetMpCapitalCalls<
+  TData = Awaited<ReturnType<typeof getMpCapitalCalls>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof getMpCapitalCalls>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpCapitalCallsQueryOptions(options);
+  const queryOptions = getGetMpCapitalCallsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -4915,37 +4890,37 @@ export function useGetApiMpCapitalCalls<
 /**
  * @summary Create capital call
  */
-export const getPostApiMpCapitalCallsUrl = () => {
-  return `/api/api/mp/capital-calls`;
+export const getPostMpCapitalCallsUrl = () => {
+  return `/api/mp/capital-calls`;
 };
 
-export const postApiMpCapitalCalls = async (
+export const postMpCapitalCalls = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiMpCapitalCallsUrl(), {
+  return customFetch<void>(getPostMpCapitalCallsUrl(), {
     ...options,
     method: "POST",
   });
 };
 
-export const getPostApiMpCapitalCallsMutationOptions = <
+export const getPostMpCapitalCallsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof postMpCapitalCalls>>,
     TError,
     void,
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+  Awaited<ReturnType<typeof postMpCapitalCalls>>,
   TError,
   void,
   TContext
 > => {
-  const mutationKey = ["postApiMpCapitalCalls"];
+  const mutationKey = ["postMpCapitalCalls"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -4955,84 +4930,79 @@ export const getPostApiMpCapitalCallsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof postMpCapitalCalls>>,
     void
   > = () => {
-    return postApiMpCapitalCalls(requestOptions);
+    return postMpCapitalCalls(requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiMpCapitalCallsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiMpCapitalCalls>>
+export type PostMpCapitalCallsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpCapitalCalls>>
 >;
 
-export type PostApiMpCapitalCallsMutationError = ErrorType<unknown>;
+export type PostMpCapitalCallsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create capital call
  */
-export const usePostApiMpCapitalCalls = <
+export const usePostMpCapitalCalls = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+    Awaited<ReturnType<typeof postMpCapitalCalls>>,
     TError,
     void,
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiMpCapitalCalls>>,
+  Awaited<ReturnType<typeof postMpCapitalCalls>>,
   TError,
   void,
   TContext
 > => {
-  return useMutation(getPostApiMpCapitalCallsMutationOptions(options));
+  return useMutation(getPostMpCapitalCallsMutationOptions(options));
 };
 
 /**
  * @summary Generate pro-rata LP allocations for a capital call
  */
-export const getPostApiMpCapitalCallsIdGenerateAllocationsUrl = (
-  id: number,
-) => {
-  return `/api/api/mp/capital-calls/${id}/generate-allocations`;
+export const getPostMpCapitalCallsIdGenerateAllocationsUrl = (id: number) => {
+  return `/api/mp/capital-calls/${id}/generate-allocations`;
 };
 
-export const postApiMpCapitalCallsIdGenerateAllocations = async (
+export const postMpCapitalCallsIdGenerateAllocations = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(
-    getPostApiMpCapitalCallsIdGenerateAllocationsUrl(id),
-    {
-      ...options,
-      method: "POST",
-    },
-  );
+  return customFetch<void>(getPostMpCapitalCallsIdGenerateAllocationsUrl(id), {
+    ...options,
+    method: "POST",
+  });
 };
 
-export const getPostApiMpCapitalCallsIdGenerateAllocationsMutationOptions = <
+export const getPostMpCapitalCallsIdGenerateAllocationsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+  Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>,
   TError,
   { id: number },
   TContext
 > => {
-  const mutationKey = ["postApiMpCapitalCallsIdGenerateAllocations"];
+  const mutationKey = ["postMpCapitalCallsIdGenerateAllocations"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -5042,76 +5012,75 @@ export const getPostApiMpCapitalCallsIdGenerateAllocationsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>,
     { id: number }
   > = (props) => {
     const { id } = props ?? {};
 
-    return postApiMpCapitalCallsIdGenerateAllocations(id, requestOptions);
+    return postMpCapitalCallsIdGenerateAllocations(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiMpCapitalCallsIdGenerateAllocationsMutationResult =
-  NonNullable<
-    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>
-  >;
+export type PostMpCapitalCallsIdGenerateAllocationsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>
+>;
 
-export type PostApiMpCapitalCallsIdGenerateAllocationsMutationError =
+export type PostMpCapitalCallsIdGenerateAllocationsMutationError =
   ErrorType<unknown>;
 
 /**
  * @summary Generate pro-rata LP allocations for a capital call
  */
-export const usePostApiMpCapitalCallsIdGenerateAllocations = <
+export const usePostMpCapitalCallsIdGenerateAllocations = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+    Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiMpCapitalCallsIdGenerateAllocations>>,
+  Awaited<ReturnType<typeof postMpCapitalCallsIdGenerateAllocations>>,
   TError,
   { id: number },
   TContext
 > => {
   return useMutation(
-    getPostApiMpCapitalCallsIdGenerateAllocationsMutationOptions(options),
+    getPostMpCapitalCallsIdGenerateAllocationsMutationOptions(options),
   );
 };
 
 /**
  * @summary LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
  */
-export const getGetApiLpFundSummaryUrl = () => {
-  return `/api/api/lp/fund-summary`;
+export const getGetLpFundSummaryUrl = () => {
+  return `/api/lp/fund-summary`;
 };
 
-export const getApiLpFundSummary = async (
+export const getLpFundSummary = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiLpFundSummaryUrl(), {
+  return customFetch<void>(getGetLpFundSummaryUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiLpFundSummaryQueryKey = () => {
-  return [`/api/api/lp/fund-summary`] as const;
+export const getGetLpFundSummaryQueryKey = () => {
+  return [`/api/lp/fund-summary`] as const;
 };
 
-export const getGetApiLpFundSummaryQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiLpFundSummary>>,
+export const getGetLpFundSummaryQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLpFundSummary>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    Awaited<ReturnType<typeof getLpFundSummary>>,
     TError,
     TData
   >;
@@ -5119,40 +5088,40 @@ export const getGetApiLpFundSummaryQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiLpFundSummaryQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetLpFundSummaryQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiLpFundSummary>>
-  > = ({ signal }) => getApiLpFundSummary({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getLpFundSummary>>
+  > = ({ signal }) => getLpFundSummary({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    Awaited<ReturnType<typeof getLpFundSummary>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiLpFundSummaryQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiLpFundSummary>>
+export type GetLpFundSummaryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getLpFundSummary>>
 >;
-export type GetApiLpFundSummaryQueryError = ErrorType<unknown>;
+export type GetLpFundSummaryQueryError = ErrorType<unknown>;
 
 /**
  * @summary LP fund summary (commitment, called, TVPI/DPI/RVPI/IRR)
  */
 
-export function useGetApiLpFundSummary<
-  TData = Awaited<ReturnType<typeof getApiLpFundSummary>>,
+export function useGetLpFundSummary<
+  TData = Awaited<ReturnType<typeof getLpFundSummary>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpFundSummary>>,
+    Awaited<ReturnType<typeof getLpFundSummary>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiLpFundSummaryQueryOptions(options);
+  const queryOptions = getGetLpFundSummaryQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5164,29 +5133,29 @@ export function useGetApiLpFundSummary<
 /**
  * @summary LP quarterly updates
  */
-export const getGetApiLpQuarterlyUpdatesUrl = () => {
-  return `/api/api/lp/quarterly-updates`;
+export const getGetLpQuarterlyUpdatesUrl = () => {
+  return `/api/lp/quarterly-updates`;
 };
 
-export const getApiLpQuarterlyUpdates = async (
+export const getLpQuarterlyUpdates = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiLpQuarterlyUpdatesUrl(), {
+  return customFetch<void>(getGetLpQuarterlyUpdatesUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiLpQuarterlyUpdatesQueryKey = () => {
-  return [`/api/api/lp/quarterly-updates`] as const;
+export const getGetLpQuarterlyUpdatesQueryKey = () => {
+  return [`/api/lp/quarterly-updates`] as const;
 };
 
-export const getGetApiLpQuarterlyUpdatesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+export const getGetLpQuarterlyUpdatesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLpQuarterlyUpdates>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    Awaited<ReturnType<typeof getLpQuarterlyUpdates>>,
     TError,
     TData
   >;
@@ -5194,41 +5163,40 @@ export const getGetApiLpQuarterlyUpdatesQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetApiLpQuarterlyUpdatesQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetLpQuarterlyUpdatesQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>
-  > = ({ signal }) => getApiLpQuarterlyUpdates({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getLpQuarterlyUpdates>>
+  > = ({ signal }) => getLpQuarterlyUpdates({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    Awaited<ReturnType<typeof getLpQuarterlyUpdates>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiLpQuarterlyUpdatesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>
+export type GetLpQuarterlyUpdatesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getLpQuarterlyUpdates>>
 >;
-export type GetApiLpQuarterlyUpdatesQueryError = ErrorType<unknown>;
+export type GetLpQuarterlyUpdatesQueryError = ErrorType<unknown>;
 
 /**
  * @summary LP quarterly updates
  */
 
-export function useGetApiLpQuarterlyUpdates<
-  TData = Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+export function useGetLpQuarterlyUpdates<
+  TData = Awaited<ReturnType<typeof getLpQuarterlyUpdates>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpQuarterlyUpdates>>,
+    Awaited<ReturnType<typeof getLpQuarterlyUpdates>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiLpQuarterlyUpdatesQueryOptions(options);
+  const queryOptions = getGetLpQuarterlyUpdatesQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5240,32 +5208,32 @@ export function useGetApiLpQuarterlyUpdates<
 /**
  * @summary Download K-1 link for a given tax year
  */
-export const getGetApiLpK1YearUrl = (year: number) => {
-  return `/api/api/lp/k1/${year}`;
+export const getGetLpK1YearUrl = (year: number) => {
+  return `/api/lp/k1/${year}`;
 };
 
-export const getApiLpK1Year = async (
+export const getLpK1Year = async (
   year: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiLpK1YearUrl(year), {
+  return customFetch<void>(getGetLpK1YearUrl(year), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiLpK1YearQueryKey = (year: number) => {
-  return [`/api/api/lp/k1/${year}`] as const;
+export const getGetLpK1YearQueryKey = (year: number) => {
+  return [`/api/lp/k1/${year}`] as const;
 };
 
-export const getGetApiLpK1YearQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiLpK1Year>>,
+export const getGetLpK1YearQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLpK1Year>>,
   TError = ErrorType<unknown>,
 >(
   year: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiLpK1Year>>,
+      Awaited<ReturnType<typeof getLpK1Year>>,
       TError,
       TData
     >;
@@ -5274,11 +5242,11 @@ export const getGetApiLpK1YearQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiLpK1YearQueryKey(year);
+  const queryKey = queryOptions?.queryKey ?? getGetLpK1YearQueryKey(year);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLpK1Year>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getLpK1Year>>> = ({
     signal,
-  }) => getApiLpK1Year(year, { signal, ...requestOptions });
+  }) => getLpK1Year(year, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -5286,36 +5254,36 @@ export const getGetApiLpK1YearQueryOptions = <
     enabled: !!year,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiLpK1Year>>,
+    Awaited<ReturnType<typeof getLpK1Year>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiLpK1YearQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiLpK1Year>>
+export type GetLpK1YearQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getLpK1Year>>
 >;
-export type GetApiLpK1YearQueryError = ErrorType<unknown>;
+export type GetLpK1YearQueryError = ErrorType<unknown>;
 
 /**
  * @summary Download K-1 link for a given tax year
  */
 
-export function useGetApiLpK1Year<
-  TData = Awaited<ReturnType<typeof getApiLpK1Year>>,
+export function useGetLpK1Year<
+  TData = Awaited<ReturnType<typeof getLpK1Year>>,
   TError = ErrorType<unknown>,
 >(
   year: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiLpK1Year>>,
+      Awaited<ReturnType<typeof getLpK1Year>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiLpK1YearQueryOptions(year, options);
+  const queryOptions = getGetLpK1YearQueryOptions(year, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5327,29 +5295,27 @@ export function useGetApiLpK1Year<
 /**
  * @summary Portfolio cap table overview
  */
-export const getGetApiMpCapTableUrl = () => {
-  return `/api/api/mp/cap-table`;
+export const getGetMpCapTableUrl = () => {
+  return `/api/mp/cap-table`;
 };
 
-export const getApiMpCapTable = async (
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getGetApiMpCapTableUrl(), {
+export const getMpCapTable = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetMpCapTableUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpCapTableQueryKey = () => {
-  return [`/api/api/mp/cap-table`] as const;
+export const getGetMpCapTableQueryKey = () => {
+  return [`/api/mp/cap-table`] as const;
 };
 
-export const getGetApiMpCapTableQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpCapTable>>,
+export const getGetMpCapTableQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpCapTable>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    Awaited<ReturnType<typeof getMpCapTable>>,
     TError,
     TData
   >;
@@ -5357,40 +5323,40 @@ export const getGetApiMpCapTableQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiMpCapTableQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetMpCapTableQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpCapTable>>
-  > = ({ signal }) => getApiMpCapTable({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMpCapTable>>> = ({
+    signal,
+  }) => getMpCapTable({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    Awaited<ReturnType<typeof getMpCapTable>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpCapTableQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpCapTable>>
+export type GetMpCapTableQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpCapTable>>
 >;
-export type GetApiMpCapTableQueryError = ErrorType<unknown>;
+export type GetMpCapTableQueryError = ErrorType<unknown>;
 
 /**
  * @summary Portfolio cap table overview
  */
 
-export function useGetApiMpCapTable<
-  TData = Awaited<ReturnType<typeof getApiMpCapTable>>,
+export function useGetMpCapTable<
+  TData = Awaited<ReturnType<typeof getMpCapTable>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpCapTable>>,
+    Awaited<ReturnType<typeof getMpCapTable>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpCapTableQueryOptions(options);
+  const queryOptions = getGetMpCapTableQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5402,38 +5368,38 @@ export function useGetApiMpCapTable<
 /**
  * @summary Update cap table entry
  */
-export const getPutApiMpCapTableIdUrl = (id: number) => {
-  return `/api/api/mp/cap-table/${id}`;
+export const getPutMpCapTableIdUrl = (id: number) => {
+  return `/api/mp/cap-table/${id}`;
 };
 
-export const putApiMpCapTableId = async (
+export const putMpCapTableId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiMpCapTableIdUrl(id), {
+  return customFetch<void>(getPutMpCapTableIdUrl(id), {
     ...options,
     method: "PUT",
   });
 };
 
-export const getPutApiMpCapTableIdMutationOptions = <
+export const getPutMpCapTableIdMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    Awaited<ReturnType<typeof putMpCapTableId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiMpCapTableId>>,
+  Awaited<ReturnType<typeof putMpCapTableId>>,
   TError,
   { id: number },
   TContext
 > => {
-  const mutationKey = ["putApiMpCapTableId"];
+  const mutationKey = ["putMpCapTableId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -5443,72 +5409,70 @@ export const getPutApiMpCapTableIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    Awaited<ReturnType<typeof putMpCapTableId>>,
     { id: number }
   > = (props) => {
     const { id } = props ?? {};
 
-    return putApiMpCapTableId(id, requestOptions);
+    return putMpCapTableId(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiMpCapTableIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiMpCapTableId>>
+export type PutMpCapTableIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putMpCapTableId>>
 >;
 
-export type PutApiMpCapTableIdMutationError = ErrorType<unknown>;
+export type PutMpCapTableIdMutationError = ErrorType<unknown>;
 
 /**
  * @summary Update cap table entry
  */
-export const usePutApiMpCapTableId = <
+export const usePutMpCapTableId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpCapTableId>>,
+    Awaited<ReturnType<typeof putMpCapTableId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiMpCapTableId>>,
+  Awaited<ReturnType<typeof putMpCapTableId>>,
   TError,
   { id: number },
   TContext
 > => {
-  return useMutation(getPutApiMpCapTableIdMutationOptions(options));
+  return useMutation(getPutMpCapTableIdMutationOptions(options));
 };
 
 /**
  * @summary List IC meeting packets
  */
-export const getGetApiIcMeetingsUrl = () => {
-  return `/api/api/ic/meetings`;
+export const getGetIcMeetingsUrl = () => {
+  return `/api/ic/meetings`;
 };
 
-export const getApiIcMeetings = async (
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getGetApiIcMeetingsUrl(), {
+export const getIcMeetings = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetIcMeetingsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiIcMeetingsQueryKey = () => {
-  return [`/api/api/ic/meetings`] as const;
+export const getGetIcMeetingsQueryKey = () => {
+  return [`/api/ic/meetings`] as const;
 };
 
-export const getGetApiIcMeetingsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiIcMeetings>>,
+export const getGetIcMeetingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getIcMeetings>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    Awaited<ReturnType<typeof getIcMeetings>>,
     TError,
     TData
   >;
@@ -5516,40 +5480,40 @@ export const getGetApiIcMeetingsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiIcMeetingsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetIcMeetingsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiIcMeetings>>
-  > = ({ signal }) => getApiIcMeetings({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getIcMeetings>>> = ({
+    signal,
+  }) => getIcMeetings({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    Awaited<ReturnType<typeof getIcMeetings>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiIcMeetingsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiIcMeetings>>
+export type GetIcMeetingsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getIcMeetings>>
 >;
-export type GetApiIcMeetingsQueryError = ErrorType<unknown>;
+export type GetIcMeetingsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List IC meeting packets
  */
 
-export function useGetApiIcMeetings<
-  TData = Awaited<ReturnType<typeof getApiIcMeetings>>,
+export function useGetIcMeetings<
+  TData = Awaited<ReturnType<typeof getIcMeetings>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcMeetings>>,
+    Awaited<ReturnType<typeof getIcMeetings>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiIcMeetingsQueryOptions(options);
+  const queryOptions = getGetIcMeetingsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5561,37 +5525,35 @@ export function useGetApiIcMeetings<
 /**
  * @summary Create IC meeting packet
  */
-export const getPostApiIcMeetingsUrl = () => {
-  return `/api/api/ic/meetings`;
+export const getPostIcMeetingsUrl = () => {
+  return `/api/ic/meetings`;
 };
 
-export const postApiIcMeetings = async (
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getPostApiIcMeetingsUrl(), {
+export const postIcMeetings = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getPostIcMeetingsUrl(), {
     ...options,
     method: "POST",
   });
 };
 
-export const getPostApiIcMeetingsMutationOptions = <
+export const getPostIcMeetingsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    Awaited<ReturnType<typeof postIcMeetings>>,
     TError,
     void,
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiIcMeetings>>,
+  Awaited<ReturnType<typeof postIcMeetings>>,
   TError,
   void,
   TContext
 > => {
-  const mutationKey = ["postApiIcMeetings"];
+  const mutationKey = ["postIcMeetings"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -5601,70 +5563,70 @@ export const getPostApiIcMeetingsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    Awaited<ReturnType<typeof postIcMeetings>>,
     void
   > = () => {
-    return postApiIcMeetings(requestOptions);
+    return postIcMeetings(requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiIcMeetingsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiIcMeetings>>
+export type PostIcMeetingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postIcMeetings>>
 >;
 
-export type PostApiIcMeetingsMutationError = ErrorType<unknown>;
+export type PostIcMeetingsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create IC meeting packet
  */
-export const usePostApiIcMeetings = <
+export const usePostIcMeetings = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcMeetings>>,
+    Awaited<ReturnType<typeof postIcMeetings>>,
     TError,
     void,
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiIcMeetings>>,
+  Awaited<ReturnType<typeof postIcMeetings>>,
   TError,
   void,
   TContext
 > => {
-  return useMutation(getPostApiIcMeetingsMutationOptions(options));
+  return useMutation(getPostIcMeetingsMutationOptions(options));
 };
 
 /**
  * @summary List all deals (ventures-vc canonical view)
  */
-export const getGetApiVenturesVcDealsUrl = () => {
-  return `/api/api/ventures-vc/deals`;
+export const getGetVenturesVcDealsUrl = () => {
+  return `/api/ventures-vc/deals`;
 };
 
-export const getApiVenturesVcDeals = async (
+export const getVenturesVcDeals = async (
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiVenturesVcDealsUrl(), {
+  return customFetch<void>(getGetVenturesVcDealsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiVenturesVcDealsQueryKey = () => {
-  return [`/api/api/ventures-vc/deals`] as const;
+export const getGetVenturesVcDealsQueryKey = () => {
+  return [`/api/ventures-vc/deals`] as const;
 };
 
-export const getGetApiVenturesVcDealsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+export const getGetVenturesVcDealsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getVenturesVcDeals>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    Awaited<ReturnType<typeof getVenturesVcDeals>>,
     TError,
     TData
   >;
@@ -5672,40 +5634,40 @@ export const getGetApiVenturesVcDealsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiVenturesVcDealsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetVenturesVcDealsQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiVenturesVcDeals>>
-  > = ({ signal }) => getApiVenturesVcDeals({ signal, ...requestOptions });
+    Awaited<ReturnType<typeof getVenturesVcDeals>>
+  > = ({ signal }) => getVenturesVcDeals({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    Awaited<ReturnType<typeof getVenturesVcDeals>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiVenturesVcDealsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiVenturesVcDeals>>
+export type GetVenturesVcDealsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getVenturesVcDeals>>
 >;
-export type GetApiVenturesVcDealsQueryError = ErrorType<unknown>;
+export type GetVenturesVcDealsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List all deals (ventures-vc canonical view)
  */
 
-export function useGetApiVenturesVcDeals<
-  TData = Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+export function useGetVenturesVcDeals<
+  TData = Awaited<ReturnType<typeof getVenturesVcDeals>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    Awaited<ReturnType<typeof getVenturesVcDeals>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiVenturesVcDealsQueryOptions(options);
+  const queryOptions = getGetVenturesVcDealsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5717,32 +5679,32 @@ export function useGetApiVenturesVcDeals<
 /**
  * @summary Get deal with IC votes
  */
-export const getGetApiVenturesVcDealsIdUrl = (id: number) => {
-  return `/api/api/ventures-vc/deals/${id}`;
+export const getGetVenturesVcDealsIdUrl = (id: number) => {
+  return `/api/ventures-vc/deals/${id}`;
 };
 
-export const getApiVenturesVcDealsId = async (
+export const getVenturesVcDealsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiVenturesVcDealsIdUrl(id), {
+  return customFetch<void>(getGetVenturesVcDealsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiVenturesVcDealsIdQueryKey = (id: number) => {
-  return [`/api/api/ventures-vc/deals/${id}`] as const;
+export const getGetVenturesVcDealsIdQueryKey = (id: number) => {
+  return [`/api/ventures-vc/deals/${id}`] as const;
 };
 
-export const getGetApiVenturesVcDealsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+export const getGetVenturesVcDealsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getVenturesVcDealsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+      Awaited<ReturnType<typeof getVenturesVcDealsId>>,
       TError,
       TData
     >;
@@ -5752,12 +5714,11 @@ export const getGetApiVenturesVcDealsIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiVenturesVcDealsIdQueryKey(id);
+    queryOptions?.queryKey ?? getGetVenturesVcDealsIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiVenturesVcDealsId>>
-  > = ({ signal }) =>
-    getApiVenturesVcDealsId(id, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof getVenturesVcDealsId>>
+  > = ({ signal }) => getVenturesVcDealsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -5765,36 +5726,36 @@ export const getGetApiVenturesVcDealsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+    Awaited<ReturnType<typeof getVenturesVcDealsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiVenturesVcDealsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiVenturesVcDealsId>>
+export type GetVenturesVcDealsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getVenturesVcDealsId>>
 >;
-export type GetApiVenturesVcDealsIdQueryError = ErrorType<unknown>;
+export type GetVenturesVcDealsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get deal with IC votes
  */
 
-export function useGetApiVenturesVcDealsId<
-  TData = Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+export function useGetVenturesVcDealsId<
+  TData = Awaited<ReturnType<typeof getVenturesVcDealsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+      Awaited<ReturnType<typeof getVenturesVcDealsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiVenturesVcDealsIdQueryOptions(id, options);
+  const queryOptions = getGetVenturesVcDealsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5806,32 +5767,32 @@ export function useGetApiVenturesVcDealsId<
 /**
  * @summary List IC votes for a deal with tally
  */
-export const getGetApiIcVotesDealIdUrl = (dealId: number) => {
-  return `/api/api/ic/votes/${dealId}`;
+export const getGetIcVotesDealIdUrl = (dealId: number) => {
+  return `/api/ic/votes/${dealId}`;
 };
 
-export const getApiIcVotesDealId = async (
+export const getIcVotesDealId = async (
   dealId: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiIcVotesDealIdUrl(dealId), {
+  return customFetch<void>(getGetIcVotesDealIdUrl(dealId), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiIcVotesDealIdQueryKey = (dealId: number) => {
-  return [`/api/api/ic/votes/${dealId}`] as const;
+export const getGetIcVotesDealIdQueryKey = (dealId: number) => {
+  return [`/api/ic/votes/${dealId}`] as const;
 };
 
-export const getGetApiIcVotesDealIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+export const getGetIcVotesDealIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getIcVotesDealId>>,
   TError = ErrorType<unknown>,
 >(
   dealId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+      Awaited<ReturnType<typeof getIcVotesDealId>>,
       TError,
       TData
     >;
@@ -5841,12 +5802,11 @@ export const getGetApiIcVotesDealIdQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiIcVotesDealIdQueryKey(dealId);
+    queryOptions?.queryKey ?? getGetIcVotesDealIdQueryKey(dealId);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiIcVotesDealId>>
-  > = ({ signal }) =>
-    getApiIcVotesDealId(dealId, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof getIcVotesDealId>>
+  > = ({ signal }) => getIcVotesDealId(dealId, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -5854,36 +5814,36 @@ export const getGetApiIcVotesDealIdQueryOptions = <
     enabled: !!dealId,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+    Awaited<ReturnType<typeof getIcVotesDealId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiIcVotesDealIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiIcVotesDealId>>
+export type GetIcVotesDealIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getIcVotesDealId>>
 >;
-export type GetApiIcVotesDealIdQueryError = ErrorType<unknown>;
+export type GetIcVotesDealIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary List IC votes for a deal with tally
  */
 
-export function useGetApiIcVotesDealId<
-  TData = Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+export function useGetIcVotesDealId<
+  TData = Awaited<ReturnType<typeof getIcVotesDealId>>,
   TError = ErrorType<unknown>,
 >(
   dealId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+      Awaited<ReturnType<typeof getIcVotesDealId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiIcVotesDealIdQueryOptions(dealId, options);
+  const queryOptions = getGetIcVotesDealIdQueryOptions(dealId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -5895,44 +5855,41 @@ export function useGetApiIcVotesDealId<
 /**
  * @summary Cast or update IC vote with optional dissent note (v2)
  */
-export const getPostApiIcVotesDealIdUrl = (dealId: number) => {
-  return `/api/api/ic/votes/${dealId}`;
+export const getPostIcVotesDealIdUrl = (dealId: number) => {
+  return `/api/ic/votes/${dealId}`;
 };
 
-export const postApiIcVotesDealId = async (
+export const postIcVotesDealId = async (
   dealId: number,
-  postApiIcVotesDealIdBody: PostApiIcVotesDealIdBody,
+  postIcVotesDealIdBody: PostIcVotesDealIdBody,
   options?: RequestInit,
-): Promise<PostApiIcVotesDealId200> => {
-  return customFetch<PostApiIcVotesDealId200>(
-    getPostApiIcVotesDealIdUrl(dealId),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(postApiIcVotesDealIdBody),
-    },
-  );
+): Promise<PostIcVotesDealId200> => {
+  return customFetch<PostIcVotesDealId200>(getPostIcVotesDealIdUrl(dealId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postIcVotesDealIdBody),
+  });
 };
 
-export const getPostApiIcVotesDealIdMutationOptions = <
+export const getPostIcVotesDealIdMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+    Awaited<ReturnType<typeof postIcVotesDealId>>,
     TError,
-    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+    { dealId: number; data: BodyType<PostIcVotesDealIdBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+  Awaited<ReturnType<typeof postIcVotesDealId>>,
   TError,
-  { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+  { dealId: number; data: BodyType<PostIcVotesDealIdBody> },
   TContext
 > => {
-  const mutationKey = ["postApiIcVotesDealId"];
+  const mutationKey = ["postIcVotesDealId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -5942,85 +5899,84 @@ export const getPostApiIcVotesDealIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
-    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> }
+    Awaited<ReturnType<typeof postIcVotesDealId>>,
+    { dealId: number; data: BodyType<PostIcVotesDealIdBody> }
   > = (props) => {
     const { dealId, data } = props ?? {};
 
-    return postApiIcVotesDealId(dealId, data, requestOptions);
+    return postIcVotesDealId(dealId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiIcVotesDealIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiIcVotesDealId>>
+export type PostIcVotesDealIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postIcVotesDealId>>
 >;
-export type PostApiIcVotesDealIdMutationBody =
-  BodyType<PostApiIcVotesDealIdBody>;
-export type PostApiIcVotesDealIdMutationError = ErrorType<unknown>;
+export type PostIcVotesDealIdMutationBody = BodyType<PostIcVotesDealIdBody>;
+export type PostIcVotesDealIdMutationError = ErrorType<unknown>;
 
 /**
  * @summary Cast or update IC vote with optional dissent note (v2)
  */
-export const usePostApiIcVotesDealId = <
+export const usePostIcVotesDealId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+    Awaited<ReturnType<typeof postIcVotesDealId>>,
     TError,
-    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+    { dealId: number; data: BodyType<PostIcVotesDealIdBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+  Awaited<ReturnType<typeof postIcVotesDealId>>,
   TError,
-  { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+  { dealId: number; data: BodyType<PostIcVotesDealIdBody> },
   TContext
 > => {
-  return useMutation(getPostApiIcVotesDealIdMutationOptions(options));
+  return useMutation(getPostIcVotesDealIdMutationOptions(options));
 };
 
 /**
  * @summary Update dissent note on existing reject vote
  */
-export const getPutApiIcVotesDealIdDissentUrl = (dealId: number) => {
-  return `/api/api/ic/votes/${dealId}/dissent`;
+export const getPutIcVotesDealIdDissentUrl = (dealId: number) => {
+  return `/api/ic/votes/${dealId}/dissent`;
 };
 
-export const putApiIcVotesDealIdDissent = async (
+export const putIcVotesDealIdDissent = async (
   dealId: number,
-  putApiIcVotesDealIdDissentBody: PutApiIcVotesDealIdDissentBody,
+  putIcVotesDealIdDissentBody: PutIcVotesDealIdDissentBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiIcVotesDealIdDissentUrl(dealId), {
+  return customFetch<void>(getPutIcVotesDealIdDissentUrl(dealId), {
     ...options,
     method: "PUT",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(putApiIcVotesDealIdDissentBody),
+    body: JSON.stringify(putIcVotesDealIdDissentBody),
   });
 };
 
-export const getPutApiIcVotesDealIdDissentMutationOptions = <
+export const getPutIcVotesDealIdDissentMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+    Awaited<ReturnType<typeof putIcVotesDealIdDissent>>,
     TError,
-    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+    { dealId: number; data: BodyType<PutIcVotesDealIdDissentBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+  Awaited<ReturnType<typeof putIcVotesDealIdDissent>>,
   TError,
-  { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+  { dealId: number; data: BodyType<PutIcVotesDealIdDissentBody> },
   TContext
 > => {
-  const mutationKey = ["putApiIcVotesDealIdDissent"];
+  const mutationKey = ["putIcVotesDealIdDissent"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -6030,73 +5986,71 @@ export const getPutApiIcVotesDealIdDissentMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
-    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> }
+    Awaited<ReturnType<typeof putIcVotesDealIdDissent>>,
+    { dealId: number; data: BodyType<PutIcVotesDealIdDissentBody> }
   > = (props) => {
     const { dealId, data } = props ?? {};
 
-    return putApiIcVotesDealIdDissent(dealId, data, requestOptions);
+    return putIcVotesDealIdDissent(dealId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiIcVotesDealIdDissentMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>
+export type PutIcVotesDealIdDissentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putIcVotesDealIdDissent>>
 >;
-export type PutApiIcVotesDealIdDissentMutationBody =
-  BodyType<PutApiIcVotesDealIdDissentBody>;
-export type PutApiIcVotesDealIdDissentMutationError = ErrorType<unknown>;
+export type PutIcVotesDealIdDissentMutationBody =
+  BodyType<PutIcVotesDealIdDissentBody>;
+export type PutIcVotesDealIdDissentMutationError = ErrorType<unknown>;
 
 /**
  * @summary Update dissent note on existing reject vote
  */
-export const usePutApiIcVotesDealIdDissent = <
+export const usePutIcVotesDealIdDissent = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+    Awaited<ReturnType<typeof putIcVotesDealIdDissent>>,
     TError,
-    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+    { dealId: number; data: BodyType<PutIcVotesDealIdDissentBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+  Awaited<ReturnType<typeof putIcVotesDealIdDissent>>,
   TError,
-  { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+  { dealId: number; data: BodyType<PutIcVotesDealIdDissentBody> },
   TContext
 > => {
-  return useMutation(getPutApiIcVotesDealIdDissentMutationOptions(options));
+  return useMutation(getPutIcVotesDealIdDissentMutationOptions(options));
 };
 
 /**
  * @summary List all LP accounts (MP view)
  */
-export const getGetApiMpLpAccountsUrl = () => {
-  return `/api/api/mp/lp-accounts`;
+export const getGetMpLpAccountsUrl = () => {
+  return `/api/mp/lp-accounts`;
 };
 
-export const getApiMpLpAccounts = async (
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getGetApiMpLpAccountsUrl(), {
+export const getMpLpAccounts = async (options?: RequestInit): Promise<void> => {
+  return customFetch<void>(getGetMpLpAccountsUrl(), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpLpAccountsQueryKey = () => {
-  return [`/api/api/mp/lp-accounts`] as const;
+export const getGetMpLpAccountsQueryKey = () => {
+  return [`/api/mp/lp-accounts`] as const;
 };
 
-export const getGetApiMpLpAccountsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+export const getGetMpLpAccountsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpLpAccounts>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    Awaited<ReturnType<typeof getMpLpAccounts>>,
     TError,
     TData
   >;
@@ -6104,40 +6058,40 @@ export const getGetApiMpLpAccountsQueryOptions = <
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetApiMpLpAccountsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetMpLpAccountsQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpLpAccounts>>
-  > = ({ signal }) => getApiMpLpAccounts({ signal, ...requestOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMpLpAccounts>>> = ({
+    signal,
+  }) => getMpLpAccounts({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    Awaited<ReturnType<typeof getMpLpAccounts>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpLpAccountsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpLpAccounts>>
+export type GetMpLpAccountsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpLpAccounts>>
 >;
-export type GetApiMpLpAccountsQueryError = ErrorType<unknown>;
+export type GetMpLpAccountsQueryError = ErrorType<unknown>;
 
 /**
  * @summary List all LP accounts (MP view)
  */
 
-export function useGetApiMpLpAccounts<
-  TData = Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+export function useGetMpLpAccounts<
+  TData = Awaited<ReturnType<typeof getMpLpAccounts>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    Awaited<ReturnType<typeof getMpLpAccounts>>,
     TError,
     TData
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpLpAccountsQueryOptions(options);
+  const queryOptions = getGetMpLpAccountsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -6149,40 +6103,40 @@ export function useGetApiMpLpAccounts<
 /**
  * @summary Create LP account
  */
-export const getPostApiMpLpAccountsUrl = () => {
-  return `/api/api/mp/lp-accounts`;
+export const getPostMpLpAccountsUrl = () => {
+  return `/api/mp/lp-accounts`;
 };
 
-export const postApiMpLpAccounts = async (
-  postApiMpLpAccountsBody: PostApiMpLpAccountsBody,
+export const postMpLpAccounts = async (
+  postMpLpAccountsBody: PostMpLpAccountsBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiMpLpAccountsUrl(), {
+  return customFetch<void>(getPostMpLpAccountsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiMpLpAccountsBody),
+    body: JSON.stringify(postMpLpAccountsBody),
   });
 };
 
-export const getPostApiMpLpAccountsMutationOptions = <
+export const getPostMpLpAccountsMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+    Awaited<ReturnType<typeof postMpLpAccounts>>,
     TError,
-    { data: BodyType<PostApiMpLpAccountsBody> },
+    { data: BodyType<PostMpLpAccountsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+  Awaited<ReturnType<typeof postMpLpAccounts>>,
   TError,
-  { data: BodyType<PostApiMpLpAccountsBody> },
+  { data: BodyType<PostMpLpAccountsBody> },
   TContext
 > => {
-  const mutationKey = ["postApiMpLpAccounts"];
+  const mutationKey = ["postMpLpAccounts"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -6192,75 +6146,75 @@ export const getPostApiMpLpAccountsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
-    { data: BodyType<PostApiMpLpAccountsBody> }
+    Awaited<ReturnType<typeof postMpLpAccounts>>,
+    { data: BodyType<PostMpLpAccountsBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return postApiMpLpAccounts(data, requestOptions);
+    return postMpLpAccounts(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiMpLpAccountsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiMpLpAccounts>>
+export type PostMpLpAccountsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpLpAccounts>>
 >;
-export type PostApiMpLpAccountsMutationBody = BodyType<PostApiMpLpAccountsBody>;
-export type PostApiMpLpAccountsMutationError = ErrorType<unknown>;
+export type PostMpLpAccountsMutationBody = BodyType<PostMpLpAccountsBody>;
+export type PostMpLpAccountsMutationError = ErrorType<unknown>;
 
 /**
  * @summary Create LP account
  */
-export const usePostApiMpLpAccounts = <
+export const usePostMpLpAccounts = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+    Awaited<ReturnType<typeof postMpLpAccounts>>,
     TError,
-    { data: BodyType<PostApiMpLpAccountsBody> },
+    { data: BodyType<PostMpLpAccountsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+  Awaited<ReturnType<typeof postMpLpAccounts>>,
   TError,
-  { data: BodyType<PostApiMpLpAccountsBody> },
+  { data: BodyType<PostMpLpAccountsBody> },
   TContext
 > => {
-  return useMutation(getPostApiMpLpAccountsMutationOptions(options));
+  return useMutation(getPostMpLpAccountsMutationOptions(options));
 };
 
 /**
  * @summary Get LP account with capital call history
  */
-export const getGetApiMpLpAccountsIdUrl = (id: number) => {
-  return `/api/api/mp/lp-accounts/${id}`;
+export const getGetMpLpAccountsIdUrl = (id: number) => {
+  return `/api/mp/lp-accounts/${id}`;
 };
 
-export const getApiMpLpAccountsId = async (
+export const getMpLpAccountsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiMpLpAccountsIdUrl(id), {
+  return customFetch<void>(getGetMpLpAccountsIdUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiMpLpAccountsIdQueryKey = (id: number) => {
-  return [`/api/api/mp/lp-accounts/${id}`] as const;
+export const getGetMpLpAccountsIdQueryKey = (id: number) => {
+  return [`/api/mp/lp-accounts/${id}`] as const;
 };
 
-export const getGetApiMpLpAccountsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+export const getGetMpLpAccountsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMpLpAccountsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+      Awaited<ReturnType<typeof getMpLpAccountsId>>,
       TError,
       TData
     >;
@@ -6269,12 +6223,11 @@ export const getGetApiMpLpAccountsIdQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetApiMpLpAccountsIdQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetMpLpAccountsIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiMpLpAccountsId>>
-  > = ({ signal }) => getApiMpLpAccountsId(id, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof getMpLpAccountsId>>
+  > = ({ signal }) => getMpLpAccountsId(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -6282,36 +6235,36 @@ export const getGetApiMpLpAccountsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+    Awaited<ReturnType<typeof getMpLpAccountsId>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiMpLpAccountsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiMpLpAccountsId>>
+export type GetMpLpAccountsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMpLpAccountsId>>
 >;
-export type GetApiMpLpAccountsIdQueryError = ErrorType<unknown>;
+export type GetMpLpAccountsIdQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get LP account with capital call history
  */
 
-export function useGetApiMpLpAccountsId<
-  TData = Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+export function useGetMpLpAccountsId<
+  TData = Awaited<ReturnType<typeof getMpLpAccountsId>>,
   TError = ErrorType<unknown>,
 >(
   id: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+      Awaited<ReturnType<typeof getMpLpAccountsId>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiMpLpAccountsIdQueryOptions(id, options);
+  const queryOptions = getGetMpLpAccountsIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -6323,38 +6276,38 @@ export function useGetApiMpLpAccountsId<
 /**
  * @summary Update LP account
  */
-export const getPutApiMpLpAccountsIdUrl = (id: number) => {
-  return `/api/api/mp/lp-accounts/${id}`;
+export const getPutMpLpAccountsIdUrl = (id: number) => {
+  return `/api/mp/lp-accounts/${id}`;
 };
 
-export const putApiMpLpAccountsId = async (
+export const putMpLpAccountsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPutApiMpLpAccountsIdUrl(id), {
+  return customFetch<void>(getPutMpLpAccountsIdUrl(id), {
     ...options,
     method: "PUT",
   });
 };
 
-export const getPutApiMpLpAccountsIdMutationOptions = <
+export const getPutMpLpAccountsIdMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    Awaited<ReturnType<typeof putMpLpAccountsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+  Awaited<ReturnType<typeof putMpLpAccountsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  const mutationKey = ["putApiMpLpAccountsId"];
+  const mutationKey = ["putMpLpAccountsId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -6364,75 +6317,75 @@ export const getPutApiMpLpAccountsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    Awaited<ReturnType<typeof putMpLpAccountsId>>,
     { id: number }
   > = (props) => {
     const { id } = props ?? {};
 
-    return putApiMpLpAccountsId(id, requestOptions);
+    return putMpLpAccountsId(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutApiMpLpAccountsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putApiMpLpAccountsId>>
+export type PutMpLpAccountsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putMpLpAccountsId>>
 >;
 
-export type PutApiMpLpAccountsIdMutationError = ErrorType<unknown>;
+export type PutMpLpAccountsIdMutationError = ErrorType<unknown>;
 
 /**
  * @summary Update LP account
  */
-export const usePutApiMpLpAccountsId = <
+export const usePutMpLpAccountsId = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    Awaited<ReturnType<typeof putMpLpAccountsId>>,
     TError,
     { id: number },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+  Awaited<ReturnType<typeof putMpLpAccountsId>>,
   TError,
   { id: number },
   TContext
 > => {
-  return useMutation(getPutApiMpLpAccountsIdMutationOptions(options));
+  return useMutation(getPutMpLpAccountsIdMutationOptions(options));
 };
 
 /**
  * @summary Get deal data room files (IC/MP view)
  */
-export const getGetApiDataRoomDealsDealIdFilesUrl = (dealId: number) => {
-  return `/api/api/data-room/deals/${dealId}/files`;
+export const getGetDataRoomDealsDealIdFilesUrl = (dealId: number) => {
+  return `/api/data-room/deals/${dealId}/files`;
 };
 
-export const getApiDataRoomDealsDealIdFiles = async (
+export const getDataRoomDealsDealIdFiles = async (
   dealId: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getGetApiDataRoomDealsDealIdFilesUrl(dealId), {
+  return customFetch<void>(getGetDataRoomDealsDealIdFilesUrl(dealId), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetApiDataRoomDealsDealIdFilesQueryKey = (dealId: number) => {
-  return [`/api/api/data-room/deals/${dealId}/files`] as const;
+export const getGetDataRoomDealsDealIdFilesQueryKey = (dealId: number) => {
+  return [`/api/data-room/deals/${dealId}/files`] as const;
 };
 
-export const getGetApiDataRoomDealsDealIdFilesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+export const getGetDataRoomDealsDealIdFilesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>,
   TError = ErrorType<unknown>,
 >(
   dealId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+      Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>,
       TError,
       TData
     >;
@@ -6442,12 +6395,12 @@ export const getGetApiDataRoomDealsDealIdFilesQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiDataRoomDealsDealIdFilesQueryKey(dealId);
+    queryOptions?.queryKey ?? getGetDataRoomDealsDealIdFilesQueryKey(dealId);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>
+    Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>
   > = ({ signal }) =>
-    getApiDataRoomDealsDealIdFiles(dealId, { signal, ...requestOptions });
+    getDataRoomDealsDealIdFiles(dealId, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -6455,36 +6408,36 @@ export const getGetApiDataRoomDealsDealIdFilesQueryOptions = <
     enabled: !!dealId,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+    Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiDataRoomDealsDealIdFilesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>
+export type GetDataRoomDealsDealIdFilesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>
 >;
-export type GetApiDataRoomDealsDealIdFilesQueryError = ErrorType<unknown>;
+export type GetDataRoomDealsDealIdFilesQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get deal data room files (IC/MP view)
  */
 
-export function useGetApiDataRoomDealsDealIdFiles<
-  TData = Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+export function useGetDataRoomDealsDealIdFiles<
+  TData = Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>,
   TError = ErrorType<unknown>,
 >(
   dealId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+      Awaited<ReturnType<typeof getDataRoomDealsDealIdFiles>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiDataRoomDealsDealIdFilesQueryOptions(
+  const queryOptions = getGetDataRoomDealsDealIdFilesQueryOptions(
     dealId,
     options,
   );
@@ -6499,41 +6452,41 @@ export function useGetApiDataRoomDealsDealIdFiles<
 /**
  * @summary Upload file to deal data room
  */
-export const getPostApiDataRoomDealsDealIdFilesUrl = (dealId: number) => {
-  return `/api/api/data-room/deals/${dealId}/files`;
+export const getPostDataRoomDealsDealIdFilesUrl = (dealId: number) => {
+  return `/api/data-room/deals/${dealId}/files`;
 };
 
-export const postApiDataRoomDealsDealIdFiles = async (
+export const postDataRoomDealsDealIdFiles = async (
   dealId: number,
-  postApiDataRoomDealsDealIdFilesBody: PostApiDataRoomDealsDealIdFilesBody,
+  postDataRoomDealsDealIdFilesBody: PostDataRoomDealsDealIdFilesBody,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(getPostApiDataRoomDealsDealIdFilesUrl(dealId), {
+  return customFetch<void>(getPostDataRoomDealsDealIdFilesUrl(dealId), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiDataRoomDealsDealIdFilesBody),
+    body: JSON.stringify(postDataRoomDealsDealIdFilesBody),
   });
 };
 
-export const getPostApiDataRoomDealsDealIdFilesMutationOptions = <
+export const getPostDataRoomDealsDealIdFilesMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+    Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>,
     TError,
-    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+    { dealId: number; data: BodyType<PostDataRoomDealsDealIdFilesBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+  Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>,
   TError,
-  { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+  { dealId: number; data: BodyType<PostDataRoomDealsDealIdFilesBody> },
   TContext
 > => {
-  const mutationKey = ["postApiDataRoomDealsDealIdFiles"];
+  const mutationKey = ["postDataRoomDealsDealIdFiles"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -6543,85 +6496,78 @@ export const getPostApiDataRoomDealsDealIdFilesMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
-    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> }
+    Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>,
+    { dealId: number; data: BodyType<PostDataRoomDealsDealIdFilesBody> }
   > = (props) => {
     const { dealId, data } = props ?? {};
 
-    return postApiDataRoomDealsDealIdFiles(dealId, data, requestOptions);
+    return postDataRoomDealsDealIdFiles(dealId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiDataRoomDealsDealIdFilesMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>
+export type PostDataRoomDealsDealIdFilesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>
 >;
-export type PostApiDataRoomDealsDealIdFilesMutationBody =
-  BodyType<PostApiDataRoomDealsDealIdFilesBody>;
-export type PostApiDataRoomDealsDealIdFilesMutationError = ErrorType<unknown>;
+export type PostDataRoomDealsDealIdFilesMutationBody =
+  BodyType<PostDataRoomDealsDealIdFilesBody>;
+export type PostDataRoomDealsDealIdFilesMutationError = ErrorType<unknown>;
 
 /**
  * @summary Upload file to deal data room
  */
-export const usePostApiDataRoomDealsDealIdFiles = <
+export const usePostDataRoomDealsDealIdFiles = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+    Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>,
     TError,
-    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+    { dealId: number; data: BodyType<PostDataRoomDealsDealIdFilesBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+  Awaited<ReturnType<typeof postDataRoomDealsDealIdFiles>>,
   TError,
-  { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+  { dealId: number; data: BodyType<PostDataRoomDealsDealIdFilesBody> },
   TContext
 > => {
-  return useMutation(
-    getPostApiDataRoomDealsDealIdFilesMutationOptions(options),
-  );
+  return useMutation(getPostDataRoomDealsDealIdFilesMutationOptions(options));
 };
 
 /**
  * @summary Get founder data room files (IC/MP view)
  */
-export const getGetApiDataRoomFounderFounderIdFilesUrl = (
-  founderId: number,
-) => {
-  return `/api/api/data-room/founder/${founderId}/files`;
+export const getGetDataRoomFounderFounderIdFilesUrl = (founderId: number) => {
+  return `/api/data-room/founder/${founderId}/files`;
 };
 
-export const getApiDataRoomFounderFounderIdFiles = async (
+export const getDataRoomFounderFounderIdFiles = async (
   founderId: number,
   options?: RequestInit,
 ): Promise<void> => {
-  return customFetch<void>(
-    getGetApiDataRoomFounderFounderIdFilesUrl(founderId),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+  return customFetch<void>(getGetDataRoomFounderFounderIdFilesUrl(founderId), {
+    ...options,
+    method: "GET",
+  });
 };
 
-export const getGetApiDataRoomFounderFounderIdFilesQueryKey = (
+export const getGetDataRoomFounderFounderIdFilesQueryKey = (
   founderId: number,
 ) => {
-  return [`/api/api/data-room/founder/${founderId}/files`] as const;
+  return [`/api/data-room/founder/${founderId}/files`] as const;
 };
 
-export const getGetApiDataRoomFounderFounderIdFilesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+export const getGetDataRoomFounderFounderIdFilesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>,
   TError = ErrorType<unknown>,
 >(
   founderId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+      Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>,
       TError,
       TData
     >;
@@ -6632,15 +6578,12 @@ export const getGetApiDataRoomFounderFounderIdFilesQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetApiDataRoomFounderFounderIdFilesQueryKey(founderId);
+    getGetDataRoomFounderFounderIdFilesQueryKey(founderId);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>
+    Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>
   > = ({ signal }) =>
-    getApiDataRoomFounderFounderIdFiles(founderId, {
-      signal,
-      ...requestOptions,
-    });
+    getDataRoomFounderFounderIdFiles(founderId, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -6648,36 +6591,36 @@ export const getGetApiDataRoomFounderFounderIdFilesQueryOptions = <
     enabled: !!founderId,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+    Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetApiDataRoomFounderFounderIdFilesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>
+export type GetDataRoomFounderFounderIdFilesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>
 >;
-export type GetApiDataRoomFounderFounderIdFilesQueryError = ErrorType<unknown>;
+export type GetDataRoomFounderFounderIdFilesQueryError = ErrorType<unknown>;
 
 /**
  * @summary Get founder data room files (IC/MP view)
  */
 
-export function useGetApiDataRoomFounderFounderIdFiles<
-  TData = Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+export function useGetDataRoomFounderFounderIdFiles<
+  TData = Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>,
   TError = ErrorType<unknown>,
 >(
   founderId: number,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+      Awaited<ReturnType<typeof getDataRoomFounderFounderIdFiles>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetApiDataRoomFounderFounderIdFilesQueryOptions(
+  const queryOptions = getGetDataRoomFounderFounderIdFilesQueryOptions(
     founderId,
     options,
   );

@@ -8,6 +8,7 @@ import { db } from "@workspace/db";
 import {
   capTableEntriesTable,
   foundersTable,
+  dealFlowTable,
 } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
@@ -130,6 +131,73 @@ router.delete("/admin/cap-table/entry/:id", requireAuth, requireAdminOrMP, async
     res.json({ success: true });
   } catch {
     res.status(500).json({ error: "Failed to delete entry" });
+  }
+});
+
+// GET /api/mp/cap-table — list all cap table entries for MP (with computed ownership %)
+router.get("/mp/cap-table", requireAuth, requireAdminOrMP, async (req, res) => {
+  try {
+    const entries = await db
+      .select({
+        id: capTableEntriesTable.id,
+        founderId: capTableEntriesTable.founderId,
+        investorName: capTableEntriesTable.investorName,
+        investorType: capTableEntriesTable.investorType,
+        instrument: capTableEntriesTable.instrument,
+        shares: capTableEntriesTable.shares,
+        equityPct: capTableEntriesTable.equityPct,
+        investmentAmountCad: capTableEntriesTable.investmentAmountCad,
+        roundName: capTableEntriesTable.roundName,
+        date: capTableEntriesTable.date,
+        notes: capTableEntriesTable.notes,
+        companyName: foundersTable.companyName,
+        companyStage: foundersTable.stage,
+      })
+      .from(capTableEntriesTable)
+      .leftJoin(foundersTable, eq(capTableEntriesTable.founderId, foundersTable.id))
+      .orderBy(desc(capTableEntriesTable.createdAt));
+
+    res.json({ entries });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch MP cap table" });
+  }
+});
+
+// GET /api/mp/cap-table/deal/:dealId — cap table for a specific deal (joined through founder)
+router.get("/mp/cap-table/deal/:dealId", requireAuth, requireAdminOrMP, async (req, res) => {
+  const dealId = parseInt(String(req.params.dealId));
+  try {
+    const [deal] = await db
+      .select({ founderId: dealFlowTable.founderId, companyName: dealFlowTable.companyName })
+      .from(dealFlowTable)
+      .where(eq(dealFlowTable.id, dealId))
+      .limit(1);
+
+    if (!deal) return res.status(404).json({ error: "Deal not found" });
+
+    if (!deal.founderId) return res.json({ entries: [], summary: { totalInvested: 0, totalEquityPct: 0 } });
+
+    const entries = await db
+      .select()
+      .from(capTableEntriesTable)
+      .where(eq(capTableEntriesTable.founderId, deal.founderId))
+      .orderBy(desc(capTableEntriesTable.createdAt));
+
+    // Compute summary
+    const totalInvested = entries.reduce((sum, e) => sum + parseFloat(e.investmentAmountCad ?? "0"), 0);
+    const totalEquityPct = entries.reduce((sum, e) => sum + parseFloat(e.equityPct ?? "0"), 0);
+
+    res.json({
+      entries,
+      summary: {
+        companyName: deal.companyName,
+        totalInvested: totalInvested.toFixed(2),
+        totalEquityPct: totalEquityPct.toFixed(3),
+        entryCount: entries.length,
+      },
+    });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch deal cap table" });
   }
 });
 

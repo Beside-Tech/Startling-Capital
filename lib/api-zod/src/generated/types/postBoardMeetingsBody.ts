@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiBoardMeetingsBody = {
+export type PostBoardMeetingsBody = {
   companyName: string;
   title: string;
   scheduledAt?: string;

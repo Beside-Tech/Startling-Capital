@@ -378,7 +378,7 @@ export type AdminGetStartupsParams = {
   cohortId?: string;
 };
 
-export type PutApiIcDealsIdBody = {
+export type PutIcDealsIdBody = {
   notes?: string;
   decisionDate?: string;
   sector?: string;
@@ -387,10 +387,10 @@ export type PutApiIcDealsIdBody = {
   instrument?: string;
 };
 
-export type PatchApiDealsIdStageBodyToStage =
-  (typeof PatchApiDealsIdStageBodyToStage)[keyof typeof PatchApiDealsIdStageBodyToStage];
+export type PatchDealsIdStageBodyToStage =
+  (typeof PatchDealsIdStageBodyToStage)[keyof typeof PatchDealsIdStageBodyToStage];
 
-export const PatchApiDealsIdStageBodyToStage = {
+export const PatchDealsIdStageBodyToStage = {
   sourced: "sourced",
   interested: "interested",
   due_diligence: "due_diligence",
@@ -403,35 +403,35 @@ export const PatchApiDealsIdStageBodyToStage = {
   deal_dead: "deal_dead",
 } as const;
 
-export type PatchApiDealsIdStageBody = {
-  toStage: PatchApiDealsIdStageBodyToStage;
+export type PatchDealsIdStageBody = {
+  toStage: PatchDealsIdStageBodyToStage;
 };
 
-export type PostApiIcDealsIdVoteBodyVote =
-  (typeof PostApiIcDealsIdVoteBodyVote)[keyof typeof PostApiIcDealsIdVoteBodyVote];
+export type PostIcDealsIdVoteBodyVote =
+  (typeof PostIcDealsIdVoteBodyVote)[keyof typeof PostIcDealsIdVoteBodyVote];
 
-export const PostApiIcDealsIdVoteBodyVote = {
+export const PostIcDealsIdVoteBodyVote = {
   approve: "approve",
   reject: "reject",
   abstain: "abstain",
 } as const;
 
-export type PostApiIcDealsIdVoteBody = {
-  vote: PostApiIcDealsIdVoteBodyVote;
+export type PostIcDealsIdVoteBody = {
+  vote: PostIcDealsIdVoteBodyVote;
   comment?: string;
 };
 
-export type PostApiIcDealsIdVote200IcVote = { [key: string]: unknown };
+export type PostIcDealsIdVote200IcVote = { [key: string]: unknown };
 
-export type PostApiIcDealsIdVote200Tally = { [key: string]: unknown };
+export type PostIcDealsIdVote200Tally = { [key: string]: unknown };
 
-export type PostApiIcDealsIdVote200 = {
-  icVote?: PostApiIcDealsIdVote200IcVote;
-  tally?: PostApiIcDealsIdVote200Tally;
+export type PostIcDealsIdVote200 = {
+  icVote?: PostIcDealsIdVote200IcVote;
+  tally?: PostIcDealsIdVote200Tally;
   autoAdvancedTo?: string | null;
 };
 
-export type PostApiMpTermSheetsBody = {
+export type PostMpTermSheetsBody = {
   dealId: number;
   valuationCapCad?: number;
   investmentAmountCad?: number;
@@ -443,23 +443,23 @@ export type PostApiMpTermSheetsBody = {
   status?: string;
 };
 
-export type PostApiDiligenceChecklistsBody = {
+export type PostDiligenceChecklistsBody = {
   dealId: number;
   name?: string;
 };
 
-export type PostApiClosingChecklistsBody = {
+export type PostClosingChecklistsBody = {
   dealId: number;
   name?: string;
   notes?: string;
 };
 
-export type PatchApiClosingChecklistsChecklistIdItemsItemIdBody = {
+export type PatchClosingChecklistsChecklistIdItemsItemIdBody = {
   isComplete?: boolean;
   notes?: string;
 };
 
-export type PostApiBoardMeetingsBody = {
+export type PostBoardMeetingsBody = {
   companyName: string;
   title: string;
   scheduledAt?: string;
@@ -467,10 +467,10 @@ export type PostApiBoardMeetingsBody = {
   founderId?: number;
 };
 
-export type PostApiBoardMaterialsBodyFileType =
-  (typeof PostApiBoardMaterialsBodyFileType)[keyof typeof PostApiBoardMaterialsBodyFileType];
+export type PostBoardMaterialsBodyFileType =
+  (typeof PostBoardMaterialsBodyFileType)[keyof typeof PostBoardMaterialsBodyFileType];
 
-export const PostApiBoardMaterialsBodyFileType = {
+export const PostBoardMaterialsBodyFileType = {
   deck: "deck",
   financials: "financials",
   legal: "legal",
@@ -478,17 +478,17 @@ export const PostApiBoardMaterialsBodyFileType = {
   other: "other",
 } as const;
 
-export type PostApiBoardMaterialsBody = {
+export type PostBoardMaterialsBody = {
   boardMeetingId?: number;
   founderId?: number;
   title: string;
   fileUrl?: string;
-  fileType?: PostApiBoardMaterialsBodyFileType;
+  fileType?: PostBoardMaterialsBodyFileType;
   isConfidential?: boolean;
   notes?: string;
 };
 
-export type PostApiMpFundsFundIdMetricsBody = {
+export type PostMpFundsFundIdMetricsBody = {
   snapshotDate: string;
   quarter: number;
   year: number;
@@ -503,38 +503,38 @@ export type PostApiMpFundsFundIdMetricsBody = {
   notes?: string;
 };
 
-export type PostApiIcVotesDealIdBodyVote =
-  (typeof PostApiIcVotesDealIdBodyVote)[keyof typeof PostApiIcVotesDealIdBodyVote];
+export type PostIcVotesDealIdBodyVote =
+  (typeof PostIcVotesDealIdBodyVote)[keyof typeof PostIcVotesDealIdBodyVote];
 
-export const PostApiIcVotesDealIdBodyVote = {
+export const PostIcVotesDealIdBodyVote = {
   approve: "approve",
   reject: "reject",
   abstain: "abstain",
   more_info: "more_info",
 } as const;
 
-export type PostApiIcVotesDealIdBody = {
-  vote: PostApiIcVotesDealIdBodyVote;
+export type PostIcVotesDealIdBody = {
+  vote: PostIcVotesDealIdBodyVote;
   comment?: string;
   /** Only applicable for reject votes */
   dissentNote?: string;
 };
 
-export type PostApiIcVotesDealId200IcVote = { [key: string]: unknown };
+export type PostIcVotesDealId200IcVote = { [key: string]: unknown };
 
-export type PostApiIcVotesDealId200Tally = { [key: string]: unknown };
+export type PostIcVotesDealId200Tally = { [key: string]: unknown };
 
-export type PostApiIcVotesDealId200 = {
-  icVote?: PostApiIcVotesDealId200IcVote;
-  tally?: PostApiIcVotesDealId200Tally;
+export type PostIcVotesDealId200 = {
+  icVote?: PostIcVotesDealId200IcVote;
+  tally?: PostIcVotesDealId200Tally;
   autoAdvancedTo?: string | null;
 };
 
-export type PutApiIcVotesDealIdDissentBody = {
+export type PutIcVotesDealIdDissentBody = {
   dissentNote: string;
 };
 
-export type PostApiMpLpAccountsBody = {
+export type PostMpLpAccountsBody = {
   firmName: string;
   contactName: string;
   userId?: number;
@@ -544,7 +544,7 @@ export type PostApiMpLpAccountsBody = {
   notes?: string;
 };
 
-export type PostApiDataRoomDealsDealIdFilesBody = {
+export type PostDataRoomDealsDealIdFilesBody = {
   fileName: string;
   originalName?: string;
   storageKey: string;

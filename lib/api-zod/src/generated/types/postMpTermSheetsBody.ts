@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiMpTermSheetsBody = {
+export type PostMpTermSheetsBody = {
   dealId: number;
   valuationCapCad?: number;
   investmentAmountCad?: number;

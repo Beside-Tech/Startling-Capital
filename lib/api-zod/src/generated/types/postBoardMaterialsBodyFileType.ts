@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PostApiBoardMaterialsBodyFileType =
-  (typeof PostApiBoardMaterialsBodyFileType)[keyof typeof PostApiBoardMaterialsBodyFileType];
+export type PostBoardMaterialsBodyFileType =
+  (typeof PostBoardMaterialsBodyFileType)[keyof typeof PostBoardMaterialsBodyFileType];
 
-export const PostApiBoardMaterialsBodyFileType = {
+export const PostBoardMaterialsBodyFileType = {
   deck: "deck",
   financials: "financials",
   legal: "legal",

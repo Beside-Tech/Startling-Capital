@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type PatchApiDealsIdStageBodyToStage =
-  (typeof PatchApiDealsIdStageBodyToStage)[keyof typeof PatchApiDealsIdStageBodyToStage];
+export type PatchDealsIdStageBodyToStage =
+  (typeof PatchDealsIdStageBodyToStage)[keyof typeof PatchDealsIdStageBodyToStage];
 
-export const PatchApiDealsIdStageBodyToStage = {
+export const PatchDealsIdStageBodyToStage = {
   sourced: "sourced",
   interested: "interested",
   due_diligence: "due_diligence",
