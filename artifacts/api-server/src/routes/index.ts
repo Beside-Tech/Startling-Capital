@@ -37,6 +37,10 @@ import closingRouter from "./closing";
 import boardMaterialsRouter from "./board-materials";
 import fundMetricsRouter from "./fund-metrics";
 import diligenceChecklistsRouter from "./diligence-checklists";
+import venturesVcRouter from "./ventures-vc";
+import icVotesV2Router from "./ic-votes-v2";
+import lpAccountsRouter from "./lp-accounts";
+import dataRoomV2Router from "./data-room-v2";
 
 const router: IRouter = Router();
 
@@ -78,5 +82,9 @@ router.use(closingRouter);
 router.use(boardMaterialsRouter);
 router.use(fundMetricsRouter);
 router.use(diligenceChecklistsRouter);
+router.use(venturesVcRouter);
+router.use(icVotesV2Router);
+router.use(lpAccountsRouter);
+router.use(dataRoomV2Router);
 
 export default router;

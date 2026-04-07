@@ -42,22 +42,21 @@ router.post("/closing/checklists", requireManagingPartner, async (req, res) => {
       createdById: req.user!.userId,
     }).returning();
 
-    const defaultItems = [
-      { title: "Term sheet signed by all parties", category: "legal", sortOrder: 1 },
-      { title: "Legal counsel engaged", category: "legal", sortOrder: 2 },
-      { title: "Subscription agreement executed", category: "legal", sortOrder: 3 },
-      { title: "Wire transfer initiated by investor", category: "financial", sortOrder: 4 },
-      { title: "Wire transfer confirmed received", category: "financial", sortOrder: 5 },
-      { title: "Cap table updated", category: "financial", sortOrder: 6 },
-      { title: "Share certificates / SAFE issued", category: "legal", sortOrder: 7 },
-      { title: "Closing documentation archived", category: "legal", sortOrder: 8 },
+    const defaultItems: { title: string; sortOrder: number }[] = [
+      { title: "Term sheet signed by all parties", sortOrder: 1 },
+      { title: "Legal counsel engaged", sortOrder: 2 },
+      { title: "Subscription agreement executed", sortOrder: 3 },
+      { title: "Wire transfer initiated by investor", sortOrder: 4 },
+      { title: "Wire transfer confirmed received", sortOrder: 5 },
+      { title: "Cap table updated", sortOrder: 6 },
+      { title: "Share certificates / SAFE issued", sortOrder: 7 },
+      { title: "Closing documentation archived", sortOrder: 8 },
     ];
 
     await db.insert(closingChecklistItemsTable).values(
       defaultItems.map(i => ({
         checklistId: checklist.id,
         title: i.title,
-        category: i.category as any,
         sortOrder: i.sortOrder,
       }))
     );

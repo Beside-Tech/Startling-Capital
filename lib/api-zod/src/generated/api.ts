@@ -852,3 +852,108 @@ export const GetApiLpK1YearParams = zod.object({
 export const PutApiMpCapTableIdParams = zod.object({
   id: zod.coerce.number(),
 });
+
+/**
+ * @summary Get deal with IC votes
+ */
+export const GetApiVenturesVcDealsIdParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List IC votes for a deal with tally
+ */
+export const GetApiIcVotesDealIdParams = zod.object({
+  dealId: zod.coerce.number(),
+});
+
+/**
+ * @summary Cast or update IC vote with optional dissent note (v2)
+ */
+export const PostApiIcVotesDealIdParams = zod.object({
+  dealId: zod.coerce.number(),
+});
+
+export const PostApiIcVotesDealIdBody = zod.object({
+  vote: zod.enum(["approve", "reject", "abstain", "more_info"]),
+  comment: zod.string().optional(),
+  dissentNote: zod
+    .string()
+    .optional()
+    .describe("Only applicable for reject votes"),
+});
+
+export const PostApiIcVotesDealIdResponse = zod.object({
+  icVote: zod.object({}).passthrough().optional(),
+  tally: zod.object({}).passthrough().optional(),
+  autoAdvancedTo: zod.string().nullish(),
+});
+
+/**
+ * @summary Update dissent note on existing reject vote
+ */
+export const PutApiIcVotesDealIdDissentParams = zod.object({
+  dealId: zod.coerce.number(),
+});
+
+export const PutApiIcVotesDealIdDissentBody = zod.object({
+  dissentNote: zod.string(),
+});
+
+/**
+ * @summary Create LP account
+ */
+export const PostApiMpLpAccountsBody = zod.object({
+  firmName: zod.string(),
+  contactName: zod.string(),
+  userId: zod.number().optional(),
+  commitmentCad: zod.number().optional(),
+  investorType: zod.string().optional(),
+  active: zod.boolean().optional(),
+  notes: zod.string().optional(),
+});
+
+/**
+ * @summary Get LP account with capital call history
+ */
+export const GetApiMpLpAccountsIdParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Update LP account
+ */
+export const PutApiMpLpAccountsIdParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Get deal data room files (IC/MP view)
+ */
+export const GetApiDataRoomDealsDealIdFilesParams = zod.object({
+  dealId: zod.coerce.number(),
+});
+
+/**
+ * @summary Upload file to deal data room
+ */
+export const PostApiDataRoomDealsDealIdFilesParams = zod.object({
+  dealId: zod.coerce.number(),
+});
+
+export const PostApiDataRoomDealsDealIdFilesBody = zod.object({
+  fileName: zod.string(),
+  originalName: zod.string().optional(),
+  storageKey: zod.string(),
+  category: zod.string().optional(),
+  fileSize: zod.number().optional(),
+  mimeType: zod.string().optional(),
+  isPublic: zod.boolean().optional(),
+});
+
+/**
+ * @summary Get founder data room files (IC/MP view)
+ */
+export const GetApiDataRoomFounderFounderIdFilesParams = zod.object({
+  founderId: zod.coerce.number(),
+});

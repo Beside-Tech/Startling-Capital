@@ -16,6 +16,7 @@ export const dataRoomFilesTable = pgTable("data_room_files", {
   storageKey: text("storage_key").notNull(),
   description: text("description"),
   isPublic: boolean("is_public").notNull().default(false),
+  dealId: integer("deal_id"),
   uploadedAt: timestamp("uploaded_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

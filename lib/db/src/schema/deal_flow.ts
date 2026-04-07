@@ -33,6 +33,8 @@ export const icVotesTable = pgTable("ic_votes", {
   voterId: integer("voter_id").notNull().references(() => usersTable.id),
   vote: text("vote", { enum: ["approve", "reject", "abstain", "more_info"] }).notNull(),
   comment: text("comment"),
+  dissentNote: text("dissent_note"),
+  updatedAt: timestamp("updated_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

@@ -1300,6 +1300,205 @@ paths:
       responses:
         "201":
           description: Created
+  /api/ventures-vc/deals:
+    get:
+      tags: [deal-flow]
+      summary: List all deals (ventures-vc canonical view)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of deals
+  /api/ventures-vc/deals/{id}:
+    get:
+      tags: [deal-flow]
+      summary: Get deal with IC votes
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deal with votes
+  /api/ic/votes/{dealId}:
+    get:
+      tags: [ic-operations]
+      summary: List IC votes for a deal with tally
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: dealId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Votes and tally
+    post:
+      tags: [ic-operations]
+      summary: Cast or update IC vote with optional dissent note (v2)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: dealId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [vote]
+              properties:
+                vote:
+                  type: string
+                  enum: [approve, reject, abstain, more_info]
+                comment: { type: string }
+                dissentNote:
+                  type: string
+                  description: Only applicable for reject votes
+      responses:
+        "200":
+          description: Vote recorded with tally and optional auto-advance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  icVote: { type: object }
+                  tally: { type: object }
+                  autoAdvancedTo: { type: string, nullable: true }
+  /api/ic/votes/{dealId}/dissent:
+    put:
+      tags: [ic-operations]
+      summary: Update dissent note on existing reject vote
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: dealId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dissentNote]
+              properties:
+                dissentNote: { type: string }
+      responses:
+        "200":
+          description: Updated vote
+  /api/mp/lp-accounts:
+    get:
+      tags: [lp-portal]
+      summary: List all LP accounts (MP view)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: LP accounts list
+    post:
+      tags: [lp-portal]
+      summary: Create LP account
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firmName, contactName]
+              properties:
+                firmName: { type: string }
+                contactName: { type: string }
+                userId: { type: integer }
+                commitmentCad: { type: number }
+                investorType: { type: string }
+                active: { type: boolean }
+                notes: { type: string }
+      responses:
+        "201":
+          description: LP account created
+  /api/mp/lp-accounts/{id}:
+    get:
+      tags: [lp-portal]
+      summary: Get LP account with capital call history
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: LP account detail
+    put:
+      tags: [lp-portal]
+      summary: Update LP account
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated account
+  /api/data-room/deals/{dealId}/files:
+    get:
+      tags: [diligence]
+      summary: Get deal data room files (IC/MP view)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: dealId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deal files and linked founder files
+    post:
+      tags: [diligence]
+      summary: Upload file to deal data room
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: dealId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fileName, storageKey]
+              properties:
+                fileName: { type: string }
+                originalName: { type: string }
+                storageKey: { type: string }
+                category: { type: string }
+                fileSize: { type: number }
+                mimeType: { type: string }
+                isPublic: { type: boolean }
+      responses:
+        "201":
+          description: File uploaded
+  /api/data-room/founder/{founderId}/files:
+    get:
+      tags: [diligence]
+      summary: Get founder data room files (IC/MP view)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: founderId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Files list
 
 components:
   securitySchemes:

@@ -6,30 +6,6 @@ import {
 import { eq, desc, count, sql } from "drizzle-orm";
 import { requireIC, requireManagingPartner } from "../lib/auth";
 
-type PipelineStage =
-  | "sourced" | "interested" | "due_diligence" | "ready_for_ic"
-  | "ic_approved" | "ic_rejected" | "closing" | "invested" | "passed" | "deal_dead"
-  | "screening" | "ic_review" | "term_sheet" | "closed";
-
-const VALID_TRANSITIONS: Record<string, PipelineStage[]> = {
-  sourced:       ["interested", "passed", "deal_dead"],
-  interested:    ["due_diligence", "passed", "deal_dead"],
-  due_diligence: ["ready_for_ic", "passed", "deal_dead"],
-  ready_for_ic:  ["ic_approved", "ic_rejected", "deal_dead"],
-  ic_approved:   ["closing", "deal_dead"],
-  ic_rejected:   ["deal_dead"],
-  closing:       ["invested", "deal_dead"],
-  invested:      [],
-  passed:        [],
-  deal_dead:     [],
-  screening:     ["due_diligence", "passed", "deal_dead"],
-  ic_review:     ["ic_approved", "ic_rejected", "deal_dead"],
-  term_sheet:    ["closing", "invested", "deal_dead"],
-  closed:        [],
-};
-
-const MP_ONLY_TARGETS: PipelineStage[] = ["ic_approved", "ic_rejected", "closing", "invested"];
-
 const router = Router();
 
 router.get("/ic/deals", requireIC, async (req, res) => {
@@ -119,39 +95,6 @@ router.get("/ic/deal/:id", requireIC, async (req, res) => {
   }
 });
 
-router.patch("/deals/:id/stage", requireIC, async (req, res) => {
-  try {
-    const id = Number(String(req.params.id));
-    const { stage } = req.body as { stage: PipelineStage };
-    if (!stage) return res.status(400).json({ error: "stage is required" });
-
-    const [current] = await db.select({ pipelineStage: dealFlowTable.pipelineStage })
-      .from(dealFlowTable).where(eq(dealFlowTable.id, id)).limit(1);
-    if (!current) return res.status(404).json({ error: "Deal not found" });
-
-    const from = current.pipelineStage as PipelineStage;
-    const allowed = VALID_TRANSITIONS[from] ?? [];
-    if (!allowed.includes(stage)) {
-      return res.status(422).json({
-        error: `Invalid transition: ${from} → ${stage}. Allowed: ${allowed.join(", ") || "none"}`,
-      });
-    }
-
-    const role = req.user?.role ?? "";
-    if (MP_ONLY_TARGETS.includes(stage) && role !== "ManagingPartner" && role !== "SuperAdmin") {
-      return res.status(403).json({ error: `Advancing to '${stage}' requires Managing Partner role` });
-    }
-
-    const [updated] = await db.update(dealFlowTable)
-      .set({ pipelineStage: stage, decisionDate: new Date().toISOString().slice(0, 10), updatedAt: new Date() })
-      .where(eq(dealFlowTable.id, id)).returning();
-
-    res.json({ deal: updated });
-  } catch {
-    res.status(500).json({ error: "Failed to advance deal stage" });
-  }
-});
-
 router.put("/ic/deals/:id", requireIC, async (req, res) => {
   try {
     const id = Number(String(req.params.id));
@@ -216,7 +159,7 @@ router.post("/ic/deals/:id/vote", requireIC, async (req, res) => {
         .from(dealFlowTable).where(eq(dealFlowTable.id, dealId)).limit(1);
 
       if (currentDeal?.pipelineStage === "ic_review" || currentDeal?.pipelineStage === "ready_for_ic") {
-        let newStage: PipelineStage | null = null;
+        let newStage: "ic_approved" | "ic_rejected" | null = null;
         if (approves > total / 2) newStage = "ic_approved";
         else if (rejects > total / 2) newStage = "ic_rejected";
 

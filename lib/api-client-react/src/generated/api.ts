@@ -48,13 +48,18 @@ import type {
   PostApiBoardMaterialsBody,
   PostApiBoardMeetingsBody,
   PostApiClosingChecklistsBody,
+  PostApiDataRoomDealsDealIdFilesBody,
   PostApiDiligenceChecklistsBody,
   PostApiIcDealsIdVote200,
   PostApiIcDealsIdVoteBody,
+  PostApiIcVotesDealId200,
+  PostApiIcVotesDealIdBody,
   PostApiMpFundsFundIdMetricsBody,
+  PostApiMpLpAccountsBody,
   PostApiMpTermSheetsBody,
   Program,
   PutApiIcDealsIdBody,
+  PutApiIcVotesDealIdDissentBody,
   ResetPinRequest,
   ResetPinResponse,
   Score,
@@ -5633,3 +5638,1053 @@ export const usePostApiIcMeetings = <
 > => {
   return useMutation(getPostApiIcMeetingsMutationOptions(options));
 };
+
+/**
+ * @summary List all deals (ventures-vc canonical view)
+ */
+export const getGetApiVenturesVcDealsUrl = () => {
+  return `/api/api/ventures-vc/deals`;
+};
+
+export const getApiVenturesVcDeals = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiVenturesVcDealsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiVenturesVcDealsQueryKey = () => {
+  return [`/api/api/ventures-vc/deals`] as const;
+};
+
+export const getGetApiVenturesVcDealsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiVenturesVcDealsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiVenturesVcDeals>>
+  > = ({ signal }) => getApiVenturesVcDeals({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiVenturesVcDealsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiVenturesVcDeals>>
+>;
+export type GetApiVenturesVcDealsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all deals (ventures-vc canonical view)
+ */
+
+export function useGetApiVenturesVcDeals<
+  TData = Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiVenturesVcDeals>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiVenturesVcDealsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get deal with IC votes
+ */
+export const getGetApiVenturesVcDealsIdUrl = (id: number) => {
+  return `/api/api/ventures-vc/deals/${id}`;
+};
+
+export const getApiVenturesVcDealsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiVenturesVcDealsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiVenturesVcDealsIdQueryKey = (id: number) => {
+  return [`/api/api/ventures-vc/deals/${id}`] as const;
+};
+
+export const getGetApiVenturesVcDealsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiVenturesVcDealsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiVenturesVcDealsId>>
+  > = ({ signal }) =>
+    getApiVenturesVcDealsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiVenturesVcDealsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiVenturesVcDealsId>>
+>;
+export type GetApiVenturesVcDealsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get deal with IC votes
+ */
+
+export function useGetApiVenturesVcDealsId<
+  TData = Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiVenturesVcDealsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiVenturesVcDealsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List IC votes for a deal with tally
+ */
+export const getGetApiIcVotesDealIdUrl = (dealId: number) => {
+  return `/api/api/ic/votes/${dealId}`;
+};
+
+export const getApiIcVotesDealId = async (
+  dealId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiIcVotesDealIdUrl(dealId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiIcVotesDealIdQueryKey = (dealId: number) => {
+  return [`/api/api/ic/votes/${dealId}`] as const;
+};
+
+export const getGetApiIcVotesDealIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiIcVotesDealIdQueryKey(dealId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiIcVotesDealId>>
+  > = ({ signal }) =>
+    getApiIcVotesDealId(dealId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!dealId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiIcVotesDealIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiIcVotesDealId>>
+>;
+export type GetApiIcVotesDealIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List IC votes for a deal with tally
+ */
+
+export function useGetApiIcVotesDealId<
+  TData = Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiIcVotesDealId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiIcVotesDealIdQueryOptions(dealId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Cast or update IC vote with optional dissent note (v2)
+ */
+export const getPostApiIcVotesDealIdUrl = (dealId: number) => {
+  return `/api/api/ic/votes/${dealId}`;
+};
+
+export const postApiIcVotesDealId = async (
+  dealId: number,
+  postApiIcVotesDealIdBody: PostApiIcVotesDealIdBody,
+  options?: RequestInit,
+): Promise<PostApiIcVotesDealId200> => {
+  return customFetch<PostApiIcVotesDealId200>(
+    getPostApiIcVotesDealIdUrl(dealId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(postApiIcVotesDealIdBody),
+    },
+  );
+};
+
+export const getPostApiIcVotesDealIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+    TError,
+    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+  TError,
+  { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiIcVotesDealId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> }
+  > = (props) => {
+    const { dealId, data } = props ?? {};
+
+    return postApiIcVotesDealId(dealId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiIcVotesDealIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiIcVotesDealId>>
+>;
+export type PostApiIcVotesDealIdMutationBody =
+  BodyType<PostApiIcVotesDealIdBody>;
+export type PostApiIcVotesDealIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Cast or update IC vote with optional dissent note (v2)
+ */
+export const usePostApiIcVotesDealId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+    TError,
+    { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiIcVotesDealId>>,
+  TError,
+  { dealId: number; data: BodyType<PostApiIcVotesDealIdBody> },
+  TContext
+> => {
+  return useMutation(getPostApiIcVotesDealIdMutationOptions(options));
+};
+
+/**
+ * @summary Update dissent note on existing reject vote
+ */
+export const getPutApiIcVotesDealIdDissentUrl = (dealId: number) => {
+  return `/api/api/ic/votes/${dealId}/dissent`;
+};
+
+export const putApiIcVotesDealIdDissent = async (
+  dealId: number,
+  putApiIcVotesDealIdDissentBody: PutApiIcVotesDealIdDissentBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiIcVotesDealIdDissentUrl(dealId), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(putApiIcVotesDealIdDissentBody),
+  });
+};
+
+export const getPutApiIcVotesDealIdDissentMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+    TError,
+    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+  TError,
+  { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+  TContext
+> => {
+  const mutationKey = ["putApiIcVotesDealIdDissent"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> }
+  > = (props) => {
+    const { dealId, data } = props ?? {};
+
+    return putApiIcVotesDealIdDissent(dealId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiIcVotesDealIdDissentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>
+>;
+export type PutApiIcVotesDealIdDissentMutationBody =
+  BodyType<PutApiIcVotesDealIdDissentBody>;
+export type PutApiIcVotesDealIdDissentMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update dissent note on existing reject vote
+ */
+export const usePutApiIcVotesDealIdDissent = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+    TError,
+    { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiIcVotesDealIdDissent>>,
+  TError,
+  { dealId: number; data: BodyType<PutApiIcVotesDealIdDissentBody> },
+  TContext
+> => {
+  return useMutation(getPutApiIcVotesDealIdDissentMutationOptions(options));
+};
+
+/**
+ * @summary List all LP accounts (MP view)
+ */
+export const getGetApiMpLpAccountsUrl = () => {
+  return `/api/api/mp/lp-accounts`;
+};
+
+export const getApiMpLpAccounts = async (
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpLpAccountsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpLpAccountsQueryKey = () => {
+  return [`/api/api/mp/lp-accounts`] as const;
+};
+
+export const getGetApiMpLpAccountsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiMpLpAccountsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpLpAccounts>>
+  > = ({ signal }) => getApiMpLpAccounts({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpLpAccountsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpLpAccounts>>
+>;
+export type GetApiMpLpAccountsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all LP accounts (MP view)
+ */
+
+export function useGetApiMpLpAccounts<
+  TData = Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpLpAccounts>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpLpAccountsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create LP account
+ */
+export const getPostApiMpLpAccountsUrl = () => {
+  return `/api/api/mp/lp-accounts`;
+};
+
+export const postApiMpLpAccounts = async (
+  postApiMpLpAccountsBody: PostApiMpLpAccountsBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiMpLpAccountsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiMpLpAccountsBody),
+  });
+};
+
+export const getPostApiMpLpAccountsMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+    TError,
+    { data: BodyType<PostApiMpLpAccountsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+  TError,
+  { data: BodyType<PostApiMpLpAccountsBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiMpLpAccounts"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+    { data: BodyType<PostApiMpLpAccountsBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiMpLpAccounts(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiMpLpAccountsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiMpLpAccounts>>
+>;
+export type PostApiMpLpAccountsMutationBody = BodyType<PostApiMpLpAccountsBody>;
+export type PostApiMpLpAccountsMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create LP account
+ */
+export const usePostApiMpLpAccounts = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+    TError,
+    { data: BodyType<PostApiMpLpAccountsBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMpLpAccounts>>,
+  TError,
+  { data: BodyType<PostApiMpLpAccountsBody> },
+  TContext
+> => {
+  return useMutation(getPostApiMpLpAccountsMutationOptions(options));
+};
+
+/**
+ * @summary Get LP account with capital call history
+ */
+export const getGetApiMpLpAccountsIdUrl = (id: number) => {
+  return `/api/api/mp/lp-accounts/${id}`;
+};
+
+export const getApiMpLpAccountsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiMpLpAccountsIdUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiMpLpAccountsIdQueryKey = (id: number) => {
+  return [`/api/api/mp/lp-accounts/${id}`] as const;
+};
+
+export const getGetApiMpLpAccountsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiMpLpAccountsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiMpLpAccountsId>>
+  > = ({ signal }) => getApiMpLpAccountsId(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiMpLpAccountsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiMpLpAccountsId>>
+>;
+export type GetApiMpLpAccountsIdQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get LP account with capital call history
+ */
+
+export function useGetApiMpLpAccountsId<
+  TData = Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+  TError = ErrorType<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiMpLpAccountsId>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiMpLpAccountsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update LP account
+ */
+export const getPutApiMpLpAccountsIdUrl = (id: number) => {
+  return `/api/api/mp/lp-accounts/${id}`;
+};
+
+export const putApiMpLpAccountsId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPutApiMpLpAccountsIdUrl(id), {
+    ...options,
+    method: "PUT",
+  });
+};
+
+export const getPutApiMpLpAccountsIdMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["putApiMpLpAccountsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return putApiMpLpAccountsId(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutApiMpLpAccountsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putApiMpLpAccountsId>>
+>;
+
+export type PutApiMpLpAccountsIdMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update LP account
+ */
+export const usePutApiMpLpAccountsId = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof putApiMpLpAccountsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPutApiMpLpAccountsIdMutationOptions(options));
+};
+
+/**
+ * @summary Get deal data room files (IC/MP view)
+ */
+export const getGetApiDataRoomDealsDealIdFilesUrl = (dealId: number) => {
+  return `/api/api/data-room/deals/${dealId}/files`;
+};
+
+export const getApiDataRoomDealsDealIdFiles = async (
+  dealId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getGetApiDataRoomDealsDealIdFilesUrl(dealId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiDataRoomDealsDealIdFilesQueryKey = (dealId: number) => {
+  return [`/api/api/data-room/deals/${dealId}/files`] as const;
+};
+
+export const getGetApiDataRoomDealsDealIdFilesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetApiDataRoomDealsDealIdFilesQueryKey(dealId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>
+  > = ({ signal }) =>
+    getApiDataRoomDealsDealIdFiles(dealId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!dealId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiDataRoomDealsDealIdFilesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>
+>;
+export type GetApiDataRoomDealsDealIdFilesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get deal data room files (IC/MP view)
+ */
+
+export function useGetApiDataRoomDealsDealIdFiles<
+  TData = Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+  TError = ErrorType<unknown>,
+>(
+  dealId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDataRoomDealsDealIdFiles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiDataRoomDealsDealIdFilesQueryOptions(
+    dealId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Upload file to deal data room
+ */
+export const getPostApiDataRoomDealsDealIdFilesUrl = (dealId: number) => {
+  return `/api/api/data-room/deals/${dealId}/files`;
+};
+
+export const postApiDataRoomDealsDealIdFiles = async (
+  dealId: number,
+  postApiDataRoomDealsDealIdFilesBody: PostApiDataRoomDealsDealIdFilesBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostApiDataRoomDealsDealIdFilesUrl(dealId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiDataRoomDealsDealIdFilesBody),
+  });
+};
+
+export const getPostApiDataRoomDealsDealIdFilesMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+    TError,
+    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+  TError,
+  { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+  TContext
+> => {
+  const mutationKey = ["postApiDataRoomDealsDealIdFiles"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> }
+  > = (props) => {
+    const { dealId, data } = props ?? {};
+
+    return postApiDataRoomDealsDealIdFiles(dealId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiDataRoomDealsDealIdFilesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>
+>;
+export type PostApiDataRoomDealsDealIdFilesMutationBody =
+  BodyType<PostApiDataRoomDealsDealIdFilesBody>;
+export type PostApiDataRoomDealsDealIdFilesMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Upload file to deal data room
+ */
+export const usePostApiDataRoomDealsDealIdFiles = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+    TError,
+    { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postApiDataRoomDealsDealIdFiles>>,
+  TError,
+  { dealId: number; data: BodyType<PostApiDataRoomDealsDealIdFilesBody> },
+  TContext
+> => {
+  return useMutation(
+    getPostApiDataRoomDealsDealIdFilesMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Get founder data room files (IC/MP view)
+ */
+export const getGetApiDataRoomFounderFounderIdFilesUrl = (
+  founderId: number,
+) => {
+  return `/api/api/data-room/founder/${founderId}/files`;
+};
+
+export const getApiDataRoomFounderFounderIdFiles = async (
+  founderId: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(
+    getGetApiDataRoomFounderFounderIdFilesUrl(founderId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetApiDataRoomFounderFounderIdFilesQueryKey = (
+  founderId: number,
+) => {
+  return [`/api/api/data-room/founder/${founderId}/files`] as const;
+};
+
+export const getGetApiDataRoomFounderFounderIdFilesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+  TError = ErrorType<unknown>,
+>(
+  founderId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetApiDataRoomFounderFounderIdFilesQueryKey(founderId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>
+  > = ({ signal }) =>
+    getApiDataRoomFounderFounderIdFiles(founderId, {
+      signal,
+      ...requestOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!founderId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetApiDataRoomFounderFounderIdFilesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>
+>;
+export type GetApiDataRoomFounderFounderIdFilesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get founder data room files (IC/MP view)
+ */
+
+export function useGetApiDataRoomFounderFounderIdFiles<
+  TData = Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+  TError = ErrorType<unknown>,
+>(
+  founderId: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getApiDataRoomFounderFounderIdFiles>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetApiDataRoomFounderFounderIdFilesQueryOptions(
+    founderId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

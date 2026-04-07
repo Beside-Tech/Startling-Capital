@@ -29,6 +29,23 @@ export const capitalCallAllocationsTable = pgTable("capital_call_allocations", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const capitalCallLineItemsTable = pgTable("capital_call_line_items", {
+  id: serial("id").primaryKey(),
+  capitalCallId: integer("capital_call_id").notNull().references(() => capitalCallsTable.id, { onDelete: "cascade" }),
+  companyName: text("company_name").notNull(),
+  description: text("description"),
+  amountCad: numeric("amount_cad", { precision: 15, scale: 2 }).notNull(),
+  category: text("category", {
+    enum: ["new_investment", "follow_on", "reserve", "fees", "other"],
+  }).notNull().default("new_investment"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertCapitalCallLineItemSchema = createInsertSchema(capitalCallLineItemsTable).omit({ id: true, createdAt: true });
+export type CapitalCallLineItem = typeof capitalCallLineItemsTable.$inferSelect;
+export type InsertCapitalCallLineItem = z.infer<typeof insertCapitalCallLineItemSchema>;
+
 export const insertCapitalCallSchema = createInsertSchema(capitalCallsTable).omit({ id: true, createdAt: true, updatedAt: true });
 export const insertCapitalCallAllocationSchema = createInsertSchema(capitalCallAllocationsTable).omit({ id: true, createdAt: true, updatedAt: true });
 export type CapitalCall = typeof capitalCallsTable.$inferSelect;

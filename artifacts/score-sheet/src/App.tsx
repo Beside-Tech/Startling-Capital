@@ -60,6 +60,10 @@ import MPTermSheet from "@/pages/mp/term-sheet";
 import MPFunds from "@/pages/mp/funds";
 import MPFounderAsks from "@/pages/mp/founder-asks";
 import MPLPPortal from "@/pages/mp/lp-portal";
+import MPDiligenceDetail from "@/pages/mp/diligence-detail";
+import MPICMeetingDetail from "@/pages/mp/ic-meeting-detail";
+import MPPortfolioDetail from "@/pages/mp/portfolio-detail";
+import MPFundCapitalCalls from "@/pages/mp/fund-capital-calls";
 import ICMeetings from "@/pages/ic/meetings";
 import FounderAsks from "@/pages/founder/asks";
 import LPPortal from "@/pages/lp/portal";
@@ -157,6 +161,10 @@ function Router() {
       <Route path="/mp/funds" component={MPFunds} />
       <Route path="/mp/founder-asks" component={MPFounderAsks} />
       <Route path="/mp/lp-portal" component={MPLPPortal} />
+      <Route path="/mp/diligence/:id" component={MPDiligenceDetail} />
+      <Route path="/mp/ic-meetings/:id" component={MPICMeetingDetail} />
+      <Route path="/mp/portfolio/:dealId" component={MPPortfolioDetail} />
+      <Route path="/mp/funds/:fundId/capital-calls" component={MPFundCapitalCalls} />
 
       {/* Legal */}
       <Route path="/legal/privacy" component={PrivacyPage} />

@@ -40,7 +40,8 @@ router.post("/diligence/checklists", requireManagingPartner, async (req, res) =>
       createdById: req.user!.userId,
     }).returning();
 
-    const defaultItems = [
+    type DiligenceCategory = "legal" | "financial" | "technical" | "team" | "market" | "product" | "other";
+    const defaultItems: { title: string; category: DiligenceCategory; sortOrder: number }[] = [
       { title: "Corporate structure & cap table review", category: "legal", sortOrder: 1 },
       { title: "IP ownership and freedom to operate", category: "legal", sortOrder: 2 },
       { title: "Financial statements (3 years)", category: "financial", sortOrder: 3 },
@@ -57,7 +58,7 @@ router.post("/diligence/checklists", requireManagingPartner, async (req, res) =>
       defaultItems.map(i => ({
         checklistId: checklist.id,
         title: i.title,
-        category: i.category as any,
+        category: i.category,
         sortOrder: i.sortOrder,
       }))
     );

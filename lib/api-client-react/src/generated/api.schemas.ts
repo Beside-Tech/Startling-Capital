@@ -502,3 +502,54 @@ export type PostApiMpFundsFundIdMetricsBody = {
   portfolioCount?: number;
   notes?: string;
 };
+
+export type PostApiIcVotesDealIdBodyVote =
+  (typeof PostApiIcVotesDealIdBodyVote)[keyof typeof PostApiIcVotesDealIdBodyVote];
+
+export const PostApiIcVotesDealIdBodyVote = {
+  approve: "approve",
+  reject: "reject",
+  abstain: "abstain",
+  more_info: "more_info",
+} as const;
+
+export type PostApiIcVotesDealIdBody = {
+  vote: PostApiIcVotesDealIdBodyVote;
+  comment?: string;
+  /** Only applicable for reject votes */
+  dissentNote?: string;
+};
+
+export type PostApiIcVotesDealId200IcVote = { [key: string]: unknown };
+
+export type PostApiIcVotesDealId200Tally = { [key: string]: unknown };
+
+export type PostApiIcVotesDealId200 = {
+  icVote?: PostApiIcVotesDealId200IcVote;
+  tally?: PostApiIcVotesDealId200Tally;
+  autoAdvancedTo?: string | null;
+};
+
+export type PutApiIcVotesDealIdDissentBody = {
+  dissentNote: string;
+};
+
+export type PostApiMpLpAccountsBody = {
+  firmName: string;
+  contactName: string;
+  userId?: number;
+  commitmentCad?: number;
+  investorType?: string;
+  active?: boolean;
+  notes?: string;
+};
+
+export type PostApiDataRoomDealsDealIdFilesBody = {
+  fileName: string;
+  originalName?: string;
+  storageKey: string;
+  category?: string;
+  fileSize?: number;
+  mimeType?: string;
+  isPublic?: boolean;
+};
