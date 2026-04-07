@@ -53,5 +53,18 @@ export async function seedSuperAdmin(): Promise<void> {
     logger.info("Super Admin account provisioned: team@nobellum.com");
   } catch (err) {
     logger.error({ err }, "Failed to provision Super Admin account");
+    process.exit(1);
   }
+}
+
+// Runnable as a script: tsx src/lib/seed-superadmin.ts
+if (import.meta.url === new URL(process.argv[1], import.meta.url).href ||
+    process.argv[1]?.endsWith("seed-superadmin.ts") ||
+    process.argv[1]?.endsWith("seed-superadmin.mjs")) {
+  seedSuperAdmin().then(() => {
+    process.exit(0);
+  }).catch((err) => {
+    logger.error({ err }, "Fatal error in seed-superadmin");
+    process.exit(1);
+  });
 }
