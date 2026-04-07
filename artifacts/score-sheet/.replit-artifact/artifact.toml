@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Nobellum Ventures"
+version = "1.0.0"
+id = "artifacts/score-sheet"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19596
+
+[services.development]
+run = "pnpm --filter @workspace/score-sheet run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/score-sheet", "run", "build" ]
+publicDir = "artifacts/score-sheet/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19596"
+BASE_PATH = "/"

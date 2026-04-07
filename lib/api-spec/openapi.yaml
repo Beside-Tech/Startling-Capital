@@ -3,20 +3,34 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Nobellum Score Sheet API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: programs
+    description: Programs and cohorts
+  - name: config
+    description: Configuration
+  - name: scores
+    description: Scoring
+  - name: committee
+    description: Committee analytics
+  - name: export
+    description: Export
+  - name: admin
+    description: Admin management
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,7 +38,756 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with email and PIN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current session info
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Session info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /programs:
+    get:
+      operationId: getPrograms
+      tags: [programs]
+      summary: List programs (filtered for judge)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Programs list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Program"
+
+  /cohorts:
+    get:
+      operationId: getCohorts
+      tags: [programs]
+      summary: List cohorts for a program (filtered for judge)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cohorts list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cohort"
+
+  /config:
+    get:
+      operationId: getConfig
+      tags: [config]
+      summary: Get full config for a program/cohort (rounds, startups, rubric, etc.)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Full config
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigResponse"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scores/submit:
+    post:
+      operationId: submitScores
+      tags: [scores]
+      summary: Submit score rows (upsert by dedupe key)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitScoresRequest"
+      responses:
+        "200":
+          description: Scores submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitScoresResponse"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scores:
+    get:
+      operationId: getScores
+      tags: [scores]
+      summary: Get scores with filters
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: round
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: startupId
+          in: query
+          schema:
+            type: integer
+        - name: judgeId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Scores list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Score"
+
+  /committee/analytics:
+    get:
+      operationId: getCommitteeAnalytics
+      tags: [committee]
+      summary: Get committee analytics (rankings, judge analytics, matrix)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: round
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsResponse"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /committee/advance-preview:
+    get:
+      operationId: getAdvancePreview
+      tags: [committee]
+      summary: Preview auto-advance decisions
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: fromRound
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: toRound
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Advance preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdvancePreviewItem"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /export/excel:
+    get:
+      operationId: exportExcel
+      tags: [export]
+      summary: Export results to Excel (.xlsx)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: round
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Excel file
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/programs:
+    get:
+      operationId: adminGetPrograms
+      tags: [admin]
+      summary: Get all programs (admin)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Programs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Program"
+    post:
+      operationId: adminCreateProgram
+      tags: [admin]
+      summary: Create program
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProgramRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Program"
+
+  /admin/programs/{id}:
+    put:
+      operationId: adminUpdateProgram
+      tags: [admin]
+      summary: Update program
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProgramRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Program"
+    delete:
+      operationId: adminDeleteProgram
+      tags: [admin]
+      summary: Delete program
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /admin/cohorts:
+    get:
+      operationId: adminGetCohorts
+      tags: [admin]
+      summary: Get all cohorts (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cohorts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cohort"
+    post:
+      operationId: adminCreateCohort
+      tags: [admin]
+      summary: Create cohort
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCohortRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cohort"
+
+  /admin/cohorts/{id}:
+    put:
+      operationId: adminUpdateCohort
+      tags: [admin]
+      summary: Update cohort
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCohortRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cohort"
+    delete:
+      operationId: adminDeleteCohort
+      tags: [admin]
+      summary: Delete cohort
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /admin/startups:
+    get:
+      operationId: adminGetStartups
+      tags: [admin]
+      summary: Get all startups (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: programId
+          in: query
+          schema:
+            type: string
+        - name: cohortId
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Startups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Startup"
+    post:
+      operationId: adminCreateStartup
+      tags: [admin]
+      summary: Create startup
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStartupRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Startup"
+
+  /admin/startups/{id}:
+    put:
+      operationId: adminUpdateStartup
+      tags: [admin]
+      summary: Update startup
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStartupRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Startup"
+    delete:
+      operationId: adminDeleteStartup
+      tags: [admin]
+      summary: Delete startup
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /admin/judges:
+    get:
+      operationId: adminGetJudges
+      tags: [admin]
+      summary: Get all judges (admin)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Judges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JudgeWithUser"
+    post:
+      operationId: adminCreateJudge
+      tags: [admin]
+      summary: Create judge and user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateJudgeRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJudgeResponse"
+
+  /admin/judges/{id}:
+    put:
+      operationId: adminUpdateJudge
+      tags: [admin]
+      summary: Update judge
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateJudgeRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Judge"
+    delete:
+      operationId: adminDeleteJudge
+      tags: [admin]
+      summary: Delete judge and user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /admin/judges/{id}/reset-pin:
+    post:
+      operationId: adminResetPin
+      tags: [admin]
+      summary: Reset judge PIN (generates random, returns plaintext once)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPinRequest"
+      responses:
+        "200":
+          description: PIN reset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResetPinResponse"
+
+  /admin/assignments:
+    get:
+      operationId: adminGetAssignments
+      tags: [admin]
+      summary: Get all assignments (admin)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Assignment"
+    post:
+      operationId: adminCreateAssignment
+      tags: [admin]
+      summary: Create assignment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAssignmentRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assignment"
+
+  /admin/assignments/{id}:
+    delete:
+      operationId: adminDeleteAssignment
+      tags: [admin]
+      summary: Delete assignment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +797,800 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+        - success
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        pin:
+          type: string
+      required:
+        - email
+        - pin
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        role:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserInfo"
+        allowedAssignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/AllowedAssignment"
+      required:
+        - token
+        - role
+        - user
+        - allowedAssignments
+
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        judgeId:
+          type: integer
+          nullable: true
+      required:
+        - id
+        - email
+        - name
+        - role
+
+    AllowedAssignment:
+      type: object
+      properties:
+        programId:
+          type: string
+        cohortId:
+          type: string
+      required:
+        - programId
+        - cohortId
+
+    MeResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/UserInfo"
+        allowedAssignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/AllowedAssignment"
+      required:
+        - user
+        - allowedAssignments
+
+    Program:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+      required:
+        - id
+        - name
+        - active
+
+    Cohort:
+      type: object
+      properties:
+        id:
+          type: string
+        programId:
+          type: string
+        name:
+          type: string
+        year:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - name
+        - year
+        - active
+
+    Round:
+      type: object
+      properties:
+        id:
+          type: integer
+        programId:
+          type: string
+        name:
+          type: string
+        sequence:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - name
+        - sequence
+        - active
+
+    Startup:
+      type: object
+      properties:
+        id:
+          type: integer
+        programId:
+          type: string
+        cohortId:
+          type: string
+        name:
+          type: string
+        sector:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - cohortId
+        - name
+        - active
+
+    Judge:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+      required:
+        - id
+        - name
+        - email
+        - active
+
+    JudgeWithUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        userId:
+          type: integer
+          nullable: true
+      required:
+        - id
+        - name
+        - email
+        - active
+
+    RubricScale:
+      type: object
+      properties:
+        score:
+          type: integer
+        label:
+          type: string
+        meaning:
+          type: string
+        active:
+          type: boolean
+      required:
+        - score
+        - label
+        - meaning
+        - active
+
+    RubricCriterion:
+      type: object
+      properties:
+        id:
+          type: string
+        programId:
+          type: string
+        roundName:
+          type: string
+        category:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        required:
+          type: boolean
+        weight:
+          type: number
+        maxScore:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - roundName
+        - category
+        - name
+        - required
+        - weight
+        - maxScore
+        - active
+
+    CriterionGuidance:
+      type: object
+      properties:
+        id:
+          type: integer
+        criterionId:
+          type: string
+        score:
+          type: integer
+        guidanceText:
+          type: string
+        active:
+          type: boolean
+      required:
+        - id
+        - criterionId
+        - score
+        - guidanceText
+        - active
+
+    AdvancementRule:
+      type: object
+      properties:
+        id:
+          type: integer
+        programId:
+          type: string
+        cohortId:
+          type: string
+        fromRound:
+          type: string
+        toRound:
+          type: string
+        thresholdPct:
+          type: number
+        minJudges:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - cohortId
+        - fromRound
+        - toRound
+        - thresholdPct
+        - minJudges
+        - active
+
+    Assignment:
+      type: object
+      properties:
+        id:
+          type: integer
+        programId:
+          type: string
+        cohortId:
+          type: string
+        judgeId:
+          type: integer
+        active:
+          type: boolean
+        judgeName:
+          type: string
+          nullable: true
+        programName:
+          type: string
+          nullable: true
+        cohortName:
+          type: string
+          nullable: true
+      required:
+        - id
+        - programId
+        - cohortId
+        - judgeId
+        - active
+
+    ConfigResponse:
+      type: object
+      properties:
+        rounds:
+          type: array
+          items:
+            $ref: "#/components/schemas/Round"
+        startups:
+          type: array
+          items:
+            $ref: "#/components/schemas/Startup"
+        judges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Judge"
+        rubric:
+          type: array
+          items:
+            $ref: "#/components/schemas/RubricCriterion"
+        rubricScale:
+          type: array
+          items:
+            $ref: "#/components/schemas/RubricScale"
+        guidance:
+          type: array
+          items:
+            $ref: "#/components/schemas/CriterionGuidance"
+        advancementRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdvancementRule"
+        judgeAssignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Assignment"
+      required:
+        - rounds
+        - startups
+        - judges
+        - rubric
+        - rubricScale
+        - guidance
+        - advancementRules
+        - judgeAssignments
+
+    Score:
+      type: object
+      properties:
+        id:
+          type: integer
+        programId:
+          type: string
+        cohortId:
+          type: string
+        roundName:
+          type: string
+        startupId:
+          type: integer
+        judgeId:
+          type: integer
+        criterionId:
+          type: string
+        score:
+          type: integer
+        weight:
+          type: number
+        comment:
+          type: string
+          nullable: true
+        source:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - programId
+        - cohortId
+        - roundName
+        - startupId
+        - judgeId
+        - criterionId
+        - score
+        - weight
+        - source
+        - createdAt
+        - updatedAt
+
+    ScoreRow:
+      type: object
+      properties:
+        programId:
+          type: string
+        cohortId:
+          type: string
+        roundName:
+          type: string
+        startupId:
+          type: integer
+        judgeId:
+          type: integer
+        criterionId:
+          type: string
+        score:
+          type: integer
+        weight:
+          type: number
+        comment:
+          type: string
+          nullable: true
+      required:
+        - programId
+        - cohortId
+        - roundName
+        - startupId
+        - judgeId
+        - criterionId
+        - score
+        - weight
+
+    SubmitScoresRequest:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScoreRow"
+      required:
+        - rows
+
+    SubmitScoresResponse:
+      type: object
+      properties:
+        submitted:
+          type: integer
+      required:
+        - submitted
+
+    StartupRanking:
+      type: object
+      properties:
+        startupId:
+          type: integer
+        startupName:
+          type: string
+        avgPct:
+          type: number
+        sdPct:
+          type: number
+        judgeCount:
+          type: integer
+      required:
+        - startupId
+        - startupName
+        - avgPct
+        - sdPct
+        - judgeCount
+
+    JudgeAnalytic:
+      type: object
+      properties:
+        judgeId:
+          type: integer
+        judgeName:
+          type: string
+        meanPct:
+          type: number
+        sdPct:
+          type: number
+        bias:
+          type: number
+        startupsScored:
+          type: integer
+      required:
+        - judgeId
+        - judgeName
+        - meanPct
+        - sdPct
+        - bias
+        - startupsScored
+
+    MatrixCell:
+      type: object
+      properties:
+        startupId:
+          type: integer
+        startupName:
+          type: string
+        judgeScores:
+          type: object
+          additionalProperties:
+            type: number
+      required:
+        - startupId
+        - startupName
+        - judgeScores
+
+    AnalyticsResponse:
+      type: object
+      properties:
+        rankings:
+          type: array
+          items:
+            $ref: "#/components/schemas/StartupRanking"
+        judgeAnalytics:
+          type: array
+          items:
+            $ref: "#/components/schemas/JudgeAnalytic"
+        matrix:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatrixCell"
+        judges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Judge"
+      required:
+        - rankings
+        - judgeAnalytics
+        - matrix
+        - judges
+
+    AdvancePreviewItem:
+      type: object
+      properties:
+        startupId:
+          type: integer
+        startupName:
+          type: string
+        avgPct:
+          type: number
+        judgeCount:
+          type: integer
+        decision:
+          type: string
+          enum: [advance, hold]
+        thresholdPct:
+          type: number
+        minJudges:
+          type: integer
+      required:
+        - startupId
+        - startupName
+        - avgPct
+        - judgeCount
+        - decision
+        - thresholdPct
+        - minJudges
+
+    CreateProgramRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+      required:
+        - id
+        - name
+
+    UpdateProgramRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+
+    UpdateCohortRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: integer
+        active:
+          type: boolean
+
+    UpdateJudgeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+
+    CreateCohortRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        programId:
+          type: string
+        name:
+          type: string
+        year:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - id
+        - programId
+        - name
+        - year
+
+    CreateStartupRequest:
+      type: object
+      properties:
+        programId:
+          type: string
+        cohortId:
+          type: string
+        name:
+          type: string
+        sector:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+      required:
+        - programId
+        - cohortId
+        - name
+
+    UpdateStartupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        sector:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+
+    CreateJudgeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+          nullable: true
+        pin:
+          type: string
+      required:
+        - name
+        - email
+        - pin
+
+    CreateJudgeResponse:
+      type: object
+      properties:
+        judge:
+          $ref: "#/components/schemas/Judge"
+        userId:
+          type: integer
+      required:
+        - judge
+        - userId
+
+    ResetPinRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+          nullable: true
+
+    ResetPinResponse:
+      type: object
+      properties:
+        pin:
+          type: string
+        userId:
+          type: integer
+      required:
+        - pin
+        - userId
+
+    CreateAssignmentRequest:
+      type: object
+      properties:
+        programId:
+          type: string
+        cohortId:
+          type: string
+        judgeId:
+          type: integer
+      required:
+        - programId
+        - cohortId
+        - judgeId
