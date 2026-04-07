@@ -88,8 +88,9 @@ router.get("/diligence/threads/deal/:dealId", requireFounderOrIC, async (req, re
       if (!owns) return res.status(403).json({ error: "Access denied: this deal is not linked to your founder profile" });
     }
 
+    // dealId is ALWAYS included in the query — prevents fileId bypass (IDOR protection)
     const baseWhere = fileId
-      ? eq(diligenceQaThreadsTable.fileId, fileId)
+      ? and(eq(diligenceQaThreadsTable.dealId, dealId), eq(diligenceQaThreadsTable.fileId, fileId))
       : eq(diligenceQaThreadsTable.dealId, dealId);
 
     const threads = await db
