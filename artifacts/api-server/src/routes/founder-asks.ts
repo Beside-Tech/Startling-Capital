@@ -4,9 +4,12 @@ import {
   founderAsksTable, foundersTable, usersTable,
 } from "@workspace/db";
 import { eq, desc, and } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { requireAuth, requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
+
+const assigneeUsers = alias(usersTable, "assignee_users");
 
 router.get("/mp/founder-asks", requireIC, async (_req, res) => {
   try {
@@ -14,6 +17,7 @@ router.get("/mp/founder-asks", requireIC, async (_req, res) => {
       .select({
         id: founderAsksTable.id,
         founderId: founderAsksTable.founderId,
+        assignedToId: founderAsksTable.assignedToId,
         category: founderAsksTable.category,
         title: founderAsksTable.title,
         description: founderAsksTable.description,
@@ -26,11 +30,12 @@ router.get("/mp/founder-asks", requireIC, async (_req, res) => {
         fulfilledNote: founderAsksTable.fulfilledNote,
         companyName: foundersTable.companyName,
         founderName: usersTable.name,
-        assignedToName: usersTable.name,
+        assignedToName: assigneeUsers.name,
       })
       .from(founderAsksTable)
       .leftJoin(foundersTable, eq(founderAsksTable.founderId, foundersTable.id))
       .leftJoin(usersTable, eq(foundersTable.userId, usersTable.id))
+      .leftJoin(assigneeUsers, eq(founderAsksTable.assignedToId, assigneeUsers.id))
       .orderBy(desc(founderAsksTable.createdAt));
 
     res.json({ asks });

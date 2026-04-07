@@ -4,7 +4,7 @@ import { db } from "@workspace/db";
 import {
   icMeetingsTable, icMeetingDealsTable, dealFlowTable, usersTable, icVotesTable,
 } from "@workspace/db";
-import { eq, desc, count, and } from "drizzle-orm";
+import { eq, desc, count, and, inArray } from "drizzle-orm";
 import { requireIC, requireManagingPartner } from "../lib/auth";
 
 const router = Router();
@@ -97,7 +97,29 @@ router.get("/ic/meetings/:id", requireIC, async (req, res) => {
       .leftJoin(usersTable, eq(icMeetingDealsTable.presentedById, usersTable.id))
       .where(eq(icMeetingDealsTable.meetingId, id));
 
-    res.json({ meeting, deals });
+    const dealIds = deals.map(d => d.dealId);
+    const votesByDeal: Record<number, { id: number; vote: string; voterName?: string | null; dissentNote?: string | null }[]> = {};
+    if (dealIds.length > 0) {
+      const allVotes = await db
+        .select({
+          dealId: icVotesTable.dealId,
+          id: icVotesTable.id,
+          vote: icVotesTable.vote,
+          dissentNote: icVotesTable.dissentNote,
+          voterName: usersTable.name,
+        })
+        .from(icVotesTable)
+        .leftJoin(usersTable, eq(icVotesTable.voterId, usersTable.id))
+        .where(inArray(icVotesTable.dealId, dealIds));
+
+      for (const v of allVotes) {
+        if (!votesByDeal[v.dealId]) votesByDeal[v.dealId] = [];
+        votesByDeal[v.dealId].push({ id: v.id, vote: v.vote, voterName: v.voterName, dissentNote: v.dissentNote });
+      }
+    }
+
+    const dealsWithVotes = deals.map(d => ({ ...d, votes: votesByDeal[d.dealId] ?? [] }));
+    res.json({ meeting, deals: dealsWithVotes });
   } catch {
     res.status(500).json({ error: "Failed to fetch meeting" });
   }
