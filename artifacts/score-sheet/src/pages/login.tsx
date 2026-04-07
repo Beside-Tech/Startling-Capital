@@ -307,13 +307,14 @@ export default function Login() {
               {showDemo && (
                 <div className="mt-2 border border-border/50 rounded-lg overflow-hidden text-xs">
                   {[
-                    { role: "SuperAdmin",      email: "team@nobellum.com",    pin: "Nobellum2025!", color: "bg-violet-50 text-violet-700" },
-                    { role: "Admin",           email: "admin@nobellum.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700" },
-                    { role: "ManagingPartner", email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
-                    { role: "IC",              email: "ic@nobellum.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700" },
-                    { role: "Judge",           email: "judge@nobellum.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700" },
-                    { role: "Founder",         email: "founder@nobellum.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700" },
-                    { role: "LP",              email: "lp@nobellum.com",      pin: "LP12341234",   color: "bg-pink-50 text-pink-700" },
+                    { role: "SuperAdmin",        email: "team@nobellum.com",    pin: "Nobellum2025!", color: "bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300" },
+                    { role: "Admin",             email: "admin@nobellum.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
+                    { role: "ManagingPartner",   email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
+                    { role: "VentureAssociate",  email: "va@nobellum.com",      pin: "Associate1234",color: "bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300" },
+                    { role: "IC",                email: "ic@nobellum.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },
+                    { role: "Judge",             email: "judge@nobellum.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
+                    { role: "Founder",           email: "founder@nobellum.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300" },
+                    { role: "LP",                email: "lp@nobellum.com",      pin: "LP12341234",   color: "bg-pink-50 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300" },
                   ].map(({ role, email, pin, color }) => (
                     <button
                       key={role}

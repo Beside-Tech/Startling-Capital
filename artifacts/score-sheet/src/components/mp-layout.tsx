@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
@@ -8,7 +8,7 @@ import {
   FileSignature, Building2, HelpCircle, BookOpen, Vote,
 } from "lucide-react";
 
-const NAV_ITEMS = [
+const MP_NAV_ITEMS = [
   { icon: LayoutDashboard, label: "Dashboard",       path: "/mp/dashboard"      },
   { icon: GitBranch,       label: "Deal Flow",        path: "/mp/deal-flow"      },
   { icon: Vote,            label: "IC Meetings",      path: "/mp/ic-meetings"    },
@@ -24,7 +24,18 @@ const NAV_ITEMS = [
   { icon: CalendarCheck,   label: "Advisory",         path: "/mp/advisory"       },
 ];
 
-function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; currentPath: string }) {
+const VA_NAV_ITEMS = [
+  { icon: GitBranch,     label: "Deal Flow",    path: "/mp/deal-flow"    },
+  { icon: Vote,          label: "IC Meetings",  path: "/mp/ic-meetings"  },
+  { icon: FileSignature, label: "Term Sheets",  path: "/mp/term-sheet"   },
+  { icon: Briefcase,     label: "Portfolio",    path: "/mp/investments"  },
+  { icon: HelpCircle,    label: "Founder Asks", path: "/mp/founder-asks" },
+  { icon: CalendarCheck, label: "Advisory",     path: "/mp/advisory"     },
+];
+
+type NavItemDef = { icon: React.ElementType; label: string; path: string };
+
+function NavItem({ item, currentPath }: { item: NavItemDef; currentPath: string }) {
   const [, navigate] = useLocation();
   const isActive = currentPath === item.path;
   return (
@@ -44,9 +55,12 @@ function NavItem({ item, currentPath }: { item: typeof NAV_ITEMS[number]; curren
 }
 
 function Sidebar({ onClose }: { onClose?: () => void }) {
-  const { user, logout } = useAuth();
+  const { user, logout, role } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
   const [location, navigate] = useLocation();
+  const isVA = role === "ventureassociate";
+  const navItems = isVA ? VA_NAV_ITEMS : MP_NAV_ITEMS;
+  const roleLabel = isVA ? "Venture Associate" : "Managing Partner";
   const initials = user?.name ? user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) : "MP";
 
   return (
@@ -58,7 +72,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
           </div>
           <div>
             <span className="font-display font-bold text-sm text-sidebar-foreground">Nobellum</span>
-            <div className="text-[10px] text-muted-foreground leading-none">Ventures — Managing Partner</div>
+            <div className="text-[10px] text-muted-foreground leading-none">Ventures — {roleLabel}</div>
           </div>
         </div>
         {onClose && (
@@ -66,7 +80,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
         )}
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <NavItem key={item.path} item={item} currentPath={location} />
         ))}
       </nav>
