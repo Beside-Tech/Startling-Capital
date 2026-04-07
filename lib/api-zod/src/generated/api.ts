@@ -709,6 +709,37 @@ export const PutMpTermSheetsIdParams = zod.object({
 });
 
 /**
+ * @summary Submit term sheet to IC for review
+ */
+export const PostMpTermSheetsIdSubmitToIcParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List founder asks for the authenticated founder
+ */
+export const GetFounderAsksResponse = zod.object({
+  asks: zod.array(zod.object({}).passthrough()).optional(),
+});
+
+/**
+ * @summary Create a new founder ask
+ */
+export const PostFounderAsksBody = zod.object({
+  title: zod.string(),
+  category: zod.string(),
+  description: zod.string().optional(),
+  priority: zod.string().optional(),
+});
+
+/**
+ * @summary Delete a founder ask
+ */
+export const DeleteFounderAsksIdParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
  * @summary Create diligence checklist for a deal
  */
 export const PostDiligenceChecklistsBody = zod.object({
@@ -951,6 +982,21 @@ export const DeleteIcMeetingsIdDealsDealEntryIdParams = zod.object({
   id: zod.coerce.number(),
   dealEntryId: zod.coerce.number(),
 });
+
+/**
+ * @summary Generate a shareable packet token for a deal in an IC meeting
+ */
+export const PostIcMeetingsIdDealsDealEntryIdGenerateTokenParams = zod.object({
+  id: zod.coerce.number(),
+  dealEntryId: zod.coerce.number(),
+});
+
+export const PostIcMeetingsIdDealsDealEntryIdGenerateTokenResponse = zod.object(
+  {
+    token: zod.string().optional(),
+    url: zod.string().optional(),
+  },
+);
 
 /**
  * @summary Get deal with IC votes

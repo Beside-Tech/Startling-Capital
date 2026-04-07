@@ -12,14 +12,19 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
 const STAGES = [
-  { value: "sourced",        label: "Sourced",        color: "bg-gray-100 text-gray-700 border-gray-200"    },
-  { value: "screening",      label: "Screening",      color: "bg-blue-100 text-blue-700 border-blue-200"    },
-  { value: "due_diligence",  label: "Due Diligence",  color: "bg-amber-100 text-amber-700 border-amber-200" },
-  { value: "ic_review",      label: "IC Review",      color: "bg-violet-100 text-violet-700 border-violet-200" },
-  { value: "term_sheet",     label: "Term Sheet",     color: "bg-green-100 text-green-700 border-green-200" },
-  { value: "closed",         label: "Closed",         color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-  { value: "passed",         label: "Passed",         color: "bg-red-100 text-red-700 border-red-200"       },
+  { value: "sourced",        label: "Sourced",        color: "bg-gray-100 text-gray-700 border-gray-200"      },
+  { value: "interested",     label: "Interested",     color: "bg-sky-100 text-sky-700 border-sky-200"          },
+  { value: "due_diligence",  label: "Due Diligence",  color: "bg-amber-100 text-amber-700 border-amber-200"    },
+  { value: "ready_for_ic",   label: "Ready for IC",   color: "bg-violet-100 text-violet-700 border-violet-200" },
+  { value: "ic_approved",    label: "IC Approved",    color: "bg-teal-100 text-teal-700 border-teal-200"       },
+  { value: "ic_rejected",    label: "IC Rejected",    color: "bg-orange-100 text-orange-700 border-orange-200" },
+  { value: "closing",        label: "Closing",        color: "bg-green-100 text-green-700 border-green-200"    },
+  { value: "invested",       label: "Invested",       color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+  { value: "deal_dead",      label: "Deal Dead",      color: "bg-neutral-100 text-neutral-500 border-neutral-200" },
+  { value: "passed",         label: "Passed",         color: "bg-red-100 text-red-700 border-red-200"          },
 ] as const;
+
+type StageValue = typeof STAGES[number]["value"];
 
 export default function MPDealFlow() {
   return (
@@ -36,7 +41,7 @@ function DealFlowInner() {
   const [deals, setDeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ companyName: "", sector: "", stage: "", amountSoughtCad: "", instrument: "SAFE", pipelineStage: "sourced", source: "" });
+  const [form, setForm] = useState({ companyName: "", sector: "", stage: "", amountSoughtCad: "", instrument: "SAFE", pipelineStage: "sourced" as StageValue, source: "" });
   const [creating, setCreating] = useState(false);
   const [filterStage, setFilterStage] = useState<string>("all");
 
@@ -79,7 +84,6 @@ function DealFlowInner() {
     } else {
       const err = await res.json().catch(() => ({ error: "Transition rejected" }));
       toast({ title: err.error ?? "Invalid stage transition", variant: "destructive" });
-      // Reload to reset optimistic state
       fetchDeals();
     }
   };
@@ -87,6 +91,7 @@ function DealFlowInner() {
   const filtered = filterStage === "all" ? deals : deals.filter(d => d.pipelineStage === filterStage);
 
   const stageColor = (val: string) => STAGES.find(s => s.value === val)?.color ?? "bg-gray-100 text-gray-700";
+  const stageLabel = (val: string) => STAGES.find(s => s.value === val)?.label ?? val.replace(/_/g, " ");
 
   return (
     <div className="space-y-8">
@@ -121,7 +126,7 @@ function DealFlowInner() {
             ))}
             <div>
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Pipeline Stage</label>
-              <select className="mt-1 w-full text-sm border rounded-lg px-3 py-2 bg-background" value={form.pipelineStage} onChange={e => setForm(f => ({ ...f, pipelineStage: e.target.value }))}>
+              <select className="mt-1 w-full text-sm border rounded-lg px-3 py-2 bg-background" value={form.pipelineStage} onChange={e => setForm(f => ({ ...f, pipelineStage: e.target.value as StageValue }))}>
                 {STAGES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
             </div>
@@ -136,10 +141,24 @@ function DealFlowInner() {
       )}
 
       <div className="flex gap-2 flex-wrap">
-        <button className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filterStage === "all" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80"}`} onClick={() => setFilterStage("all")}>All ({deals.length})</button>
+        <button
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filterStage === "all" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80"}`}
+          onClick={() => setFilterStage("all")}
+        >
+          All ({deals.length})
+        </button>
         {STAGES.map(s => {
           const cnt = deals.filter(d => d.pipelineStage === s.value).length;
-          return <button key={s.value} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filterStage === s.value ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80"}`} onClick={() => setFilterStage(s.value)}>{s.label} {cnt > 0 && `(${cnt})`}</button>;
+          if (cnt === 0 && filterStage !== s.value) return null;
+          return (
+            <button
+              key={s.value}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filterStage === s.value ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80"}`}
+              onClick={() => setFilterStage(s.value)}
+            >
+              {s.label} {cnt > 0 && `(${cnt})`}
+            </button>
+          );
         })}
       </div>
 
@@ -156,7 +175,7 @@ function DealFlowInner() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-sm font-semibold">{deal.companyName}</span>
-                      <Badge className={`text-xs border ${stageColor(deal.pipelineStage)}`}>{deal.pipelineStage?.replace("_", " ")}</Badge>
+                      <Badge className={`text-xs border ${stageColor(deal.pipelineStage)}`}>{stageLabel(deal.pipelineStage)}</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">{[deal.sector, deal.stage, deal.amountSoughtCad && `CAD ${Number(deal.amountSoughtCad).toLocaleString()}`].filter(Boolean).join(" · ")}</p>
                     {deal.source && <p className="text-xs text-muted-foreground">Source: {deal.source}</p>}

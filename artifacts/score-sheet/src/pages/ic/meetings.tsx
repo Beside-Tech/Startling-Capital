@@ -4,8 +4,9 @@ import { ProtectedRoute } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, Calendar, FileText, CheckCircle2, Clock, Users2, ChevronRight } from "lucide-react";
-import { useLocation } from "wouter";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2, Calendar, FileText, CheckCircle2, XCircle, MinusCircle, HelpCircle, Users2 } from "lucide-react";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
@@ -17,6 +18,20 @@ const STATUS_COLOR: Record<string, string> = {
   cancelled: "bg-red-100 text-red-700",
 };
 
+const VOTE_OPTIONS = [
+  { value: "approve",   label: "Approve",   icon: CheckCircle2, cls: "text-emerald-600 border-emerald-300 hover:bg-emerald-50" },
+  { value: "reject",    label: "Reject",    icon: XCircle,      cls: "text-red-600 border-red-300 hover:bg-red-50"             },
+  { value: "abstain",   label: "Abstain",   icon: MinusCircle,  cls: "text-gray-500 border-gray-300 hover:bg-gray-50"          },
+  { value: "more_info", label: "More Info", icon: HelpCircle,   cls: "text-amber-600 border-amber-300 hover:bg-amber-50"       },
+] as const;
+
+const VOTE_ICON_MAP: Record<string, React.ReactNode> = {
+  approve:   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />,
+  reject:    <XCircle      className="h-3.5 w-3.5 text-red-500"     />,
+  abstain:   <MinusCircle  className="h-3.5 w-3.5 text-gray-400"    />,
+  more_info: <HelpCircle   className="h-3.5 w-3.5 text-amber-500"   />,
+};
+
 export default function ICMeetings() {
   return (
     <ProtectedRoute icOnly>
@@ -26,11 +41,14 @@ export default function ICMeetings() {
 }
 
 function ICMeetingsInner() {
+  const { toast } = useToast();
   const [meetings, setMeetings] = useState<any[]>([]);
   const [selected, setSelected] = useState<any>(null);
   const [deals, setDeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [voting, setVoting] = useState<Record<number, boolean>>({});
+  const [voteForm, setVoteForm] = useState<Record<number, { vote: string; dissentNote: string }>>({});
 
   useEffect(() => {
     fetch(`${BASE}/api/ic/meetings`, { headers: { Authorization: `Bearer ${token()}` } })
@@ -43,9 +61,41 @@ function ICMeetingsInner() {
     setDetailLoading(true);
     fetch(`${BASE}/api/ic/meetings/${id}`, { headers: { Authorization: `Bearer ${token()}` } })
       .then(r => r.ok ? r.json() : null)
-      .then(d => { if (d) { setSelected(d.meeting); setDeals(d.deals ?? []); } })
+      .then(d => {
+        if (d) {
+          setSelected(d.meeting);
+          setDeals(d.deals ?? []);
+          const initialForms: Record<number, { vote: string; dissentNote: string }> = {};
+          (d.deals ?? []).forEach((deal: any) => {
+            initialForms[deal.dealId] = { vote: "", dissentNote: "" };
+          });
+          setVoteForm(initialForms);
+        }
+      })
       .finally(() => setDetailLoading(false));
   }
+
+  const submitVote = async (dealId: number) => {
+    const form = voteForm[dealId];
+    if (!form?.vote) {
+      toast({ title: "Please select a vote option", variant: "destructive" });
+      return;
+    }
+    setVoting(v => ({ ...v, [dealId]: true }));
+    const res = await fetch(`${BASE}/api/ic/votes/${dealId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+      body: JSON.stringify({ vote: form.vote, dissentNote: form.dissentNote || undefined, meetingId: selected?.id }),
+    });
+    if (res.ok) {
+      toast({ title: "Vote submitted" });
+      if (selected) openMeeting(selected.id);
+    } else {
+      const err = await res.json().catch(() => ({}));
+      toast({ title: err.error ?? "Failed to submit vote", variant: "destructive" });
+    }
+    setVoting(v => ({ ...v, [dealId]: false }));
+  };
 
   if (loading) return <div className="text-center py-16"><Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" /></div>;
 
@@ -119,7 +169,7 @@ function ICMeetingsInner() {
                   )}
                   {selected.notes && (
                     <div>
-                      <p className="text-xs text-muted-foreground mb-1">Notes</p>
+                      <p className="text-xs text-muted-foreground mb-1">Meeting Notes</p>
                       <p className="text-sm whitespace-pre-wrap bg-muted/40 rounded-lg p-3">{selected.notes}</p>
                     </div>
                   )}
@@ -130,23 +180,81 @@ function ICMeetingsInner() {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base">Deals on Agenda ({deals.length})</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-4">
                   {deals.length === 0 ? (
                     <p className="text-sm text-muted-foreground">No deals added to this meeting.</p>
                   ) : deals.map((d: any) => (
-                    <div key={d.id} className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
-                      <div>
-                        <p className="font-medium text-sm">{d.companyName}</p>
-                        <p className="text-xs text-muted-foreground">{d.sector ?? "—"} · {d.pipelineStage}</p>
+                    <div key={d.id} className="border rounded-lg p-4 space-y-3 bg-muted/10">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="font-semibold text-sm">{d.companyName}</p>
+                          <p className="text-xs text-muted-foreground">{d.sector ?? "—"} · {d.pipelineStage?.replace(/_/g, " ")}</p>
+                        </div>
+                        <div className="text-right space-y-1">
+                          {d.recommendation && (
+                            <Badge variant="outline" className="text-xs">{d.recommendation.replace(/_/g, " ")}</Badge>
+                          )}
+                          {d.decisionReached && (
+                            <p className="text-xs text-emerald-600 flex items-center gap-1 justify-end">
+                              <CheckCircle2 className="h-3 w-3" />Decision reached
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-right">
-                        {d.recommendation && (
-                          <Badge variant="outline" className="text-xs">{d.recommendation}</Badge>
-                        )}
-                        {d.decisionReached && (
-                          <p className="text-xs text-emerald-600 flex items-center gap-1 mt-1"><CheckCircle2 className="h-3 w-3" />Decision reached</p>
-                        )}
-                      </div>
+
+                      {d.votes && d.votes.length > 0 && (
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Current Votes</p>
+                          {d.votes.map((v: any) => (
+                            <div key={v.id} className="flex items-center gap-2 text-xs">
+                              {VOTE_ICON_MAP[v.vote] ?? null}
+                              <span className="font-medium">{v.voterName ?? "IC Member"}</span>
+                              <span className="text-muted-foreground capitalize">{v.vote.replace(/_/g, " ")}</span>
+                              {v.dissentNote && <span className="text-red-500 italic">— {v.dissentNote}</span>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {selected.status === "scheduled" && (
+                        <div className="space-y-2 pt-1 border-t">
+                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Cast Your Vote</p>
+                          <div className="flex gap-2 flex-wrap">
+                            {VOTE_OPTIONS.map(opt => {
+                              const Icon = opt.icon;
+                              const isSelected = voteForm[d.dealId]?.vote === opt.value;
+                              return (
+                                <button
+                                  key={opt.value}
+                                  onClick={() => setVoteForm(f => ({ ...f, [d.dealId]: { ...f[d.dealId], vote: opt.value } }))}
+                                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${isSelected ? "bg-primary/10 border-primary text-primary" : opt.cls}`}
+                                >
+                                  <Icon className="h-3.5 w-3.5" />
+                                  {opt.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {(voteForm[d.dealId]?.vote === "reject" || voteForm[d.dealId]?.vote === "more_info") && (
+                            <Textarea
+                              rows={2}
+                              placeholder="Add a note (required for reject / more info)…"
+                              className="text-xs"
+                              value={voteForm[d.dealId]?.dissentNote ?? ""}
+                              onChange={e => setVoteForm(f => ({ ...f, [d.dealId]: { ...f[d.dealId], dissentNote: e.target.value } }))}
+                            />
+                          )}
+                          <Button
+                            size="sm"
+                            className="gradient-teal text-white border-0 hover:opacity-90"
+                            disabled={!voteForm[d.dealId]?.vote || voting[d.dealId]}
+                            onClick={() => submitVote(d.dealId)}
+                          >
+                            {voting[d.dealId] ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" /> : null}
+                            Submit Vote
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </CardContent>

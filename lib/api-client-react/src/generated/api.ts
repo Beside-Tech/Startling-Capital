@@ -36,6 +36,7 @@ import type {
   GetCohortsParams,
   GetCommitteeAnalyticsParams,
   GetConfigParams,
+  GetFounderAsks200,
   GetScoresParams,
   HealthStatus,
   Judge,
@@ -50,9 +51,11 @@ import type {
   PostClosingChecklistsBody,
   PostDataRoomDealsDealIdFilesBody,
   PostDiligenceChecklistsBody,
+  PostFounderAsksBody,
   PostIcDealsIdVote200,
   PostIcDealsIdVoteBody,
   PostIcMeetingsIdDealsBody,
+  PostIcMeetingsIdDealsDealEntryIdGenerateToken200,
   PostIcVotesDealId200,
   PostIcVotesDealIdBody,
   PostMpFundsFundIdLpAccountsBody,
@@ -3495,6 +3498,335 @@ export const usePutMpTermSheetsId = <
 };
 
 /**
+ * @summary Submit term sheet to IC for review
+ */
+export const getPostMpTermSheetsIdSubmitToIcUrl = (id: number) => {
+  return `/api/mp/term-sheets/${id}/submit-to-ic`;
+};
+
+export const postMpTermSheetsIdSubmitToIc = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostMpTermSheetsIdSubmitToIcUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getPostMpTermSheetsIdSubmitToIcMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["postMpTermSheetsIdSubmitToIc"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postMpTermSheetsIdSubmitToIc(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostMpTermSheetsIdSubmitToIcMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>
+>;
+
+export type PostMpTermSheetsIdSubmitToIcMutationError = ErrorType<void>;
+
+/**
+ * @summary Submit term sheet to IC for review
+ */
+export const usePostMpTermSheetsIdSubmitToIc = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postMpTermSheetsIdSubmitToIc>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getPostMpTermSheetsIdSubmitToIcMutationOptions(options));
+};
+
+/**
+ * @summary List founder asks for the authenticated founder
+ */
+export const getGetFounderAsksUrl = () => {
+  return `/api/founder/asks`;
+};
+
+export const getFounderAsks = async (
+  options?: RequestInit,
+): Promise<GetFounderAsks200> => {
+  return customFetch<GetFounderAsks200>(getGetFounderAsksUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetFounderAsksQueryKey = () => {
+  return [`/api/founder/asks`] as const;
+};
+
+export const getGetFounderAsksQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFounderAsks>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getFounderAsks>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetFounderAsksQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFounderAsks>>> = ({
+    signal,
+  }) => getFounderAsks({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFounderAsks>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetFounderAsksQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFounderAsks>>
+>;
+export type GetFounderAsksQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List founder asks for the authenticated founder
+ */
+
+export function useGetFounderAsks<
+  TData = Awaited<ReturnType<typeof getFounderAsks>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getFounderAsks>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetFounderAsksQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create a new founder ask
+ */
+export const getPostFounderAsksUrl = () => {
+  return `/api/founder/asks`;
+};
+
+export const postFounderAsks = async (
+  postFounderAsksBody: PostFounderAsksBody,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getPostFounderAsksUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postFounderAsksBody),
+  });
+};
+
+export const getPostFounderAsksMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFounderAsks>>,
+    TError,
+    { data: BodyType<PostFounderAsksBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postFounderAsks>>,
+  TError,
+  { data: BodyType<PostFounderAsksBody> },
+  TContext
+> => {
+  const mutationKey = ["postFounderAsks"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postFounderAsks>>,
+    { data: BodyType<PostFounderAsksBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postFounderAsks(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostFounderAsksMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postFounderAsks>>
+>;
+export type PostFounderAsksMutationBody = BodyType<PostFounderAsksBody>;
+export type PostFounderAsksMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create a new founder ask
+ */
+export const usePostFounderAsks = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFounderAsks>>,
+    TError,
+    { data: BodyType<PostFounderAsksBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postFounderAsks>>,
+  TError,
+  { data: BodyType<PostFounderAsksBody> },
+  TContext
+> => {
+  return useMutation(getPostFounderAsksMutationOptions(options));
+};
+
+/**
+ * @summary Delete a founder ask
+ */
+export const getDeleteFounderAsksIdUrl = (id: number) => {
+  return `/api/founder/asks/${id}`;
+};
+
+export const deleteFounderAsksId = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteFounderAsksIdUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteFounderAsksIdMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFounderAsksId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteFounderAsksId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteFounderAsksId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteFounderAsksId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteFounderAsksId(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteFounderAsksIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteFounderAsksId>>
+>;
+
+export type DeleteFounderAsksIdMutationError = ErrorType<void>;
+
+/**
+ * @summary Delete a founder ask
+ */
+export const useDeleteFounderAsksId = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFounderAsksId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteFounderAsksId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteFounderAsksIdMutationOptions(options));
+};
+
+/**
  * @summary List diligence checklists
  */
 export const getGetDiligenceChecklistsUrl = () => {
@@ -6648,6 +6980,105 @@ export const useDeleteIcMeetingsIdDealsDealEntryId = <
 > => {
   return useMutation(
     getDeleteIcMeetingsIdDealsDealEntryIdMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Generate a shareable packet token for a deal in an IC meeting
+ */
+export const getPostIcMeetingsIdDealsDealEntryIdGenerateTokenUrl = (
+  id: number,
+  dealEntryId: number,
+) => {
+  return `/api/ic/meetings/${id}/deals/${dealEntryId}/generate-token`;
+};
+
+export const postIcMeetingsIdDealsDealEntryIdGenerateToken = async (
+  id: number,
+  dealEntryId: number,
+  options?: RequestInit,
+): Promise<PostIcMeetingsIdDealsDealEntryIdGenerateToken200> => {
+  return customFetch<PostIcMeetingsIdDealsDealEntryIdGenerateToken200>(
+    getPostIcMeetingsIdDealsDealEntryIdGenerateTokenUrl(id, dealEntryId),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getPostIcMeetingsIdDealsDealEntryIdGenerateTokenMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>,
+    TError,
+    { id: number; dealEntryId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>,
+  TError,
+  { id: number; dealEntryId: number },
+  TContext
+> => {
+  const mutationKey = ["postIcMeetingsIdDealsDealEntryIdGenerateToken"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>,
+    { id: number; dealEntryId: number }
+  > = (props) => {
+    const { id, dealEntryId } = props ?? {};
+
+    return postIcMeetingsIdDealsDealEntryIdGenerateToken(
+      id,
+      dealEntryId,
+      requestOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostIcMeetingsIdDealsDealEntryIdGenerateTokenMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>
+  >;
+
+export type PostIcMeetingsIdDealsDealEntryIdGenerateTokenMutationError =
+  ErrorType<void>;
+
+/**
+ * @summary Generate a shareable packet token for a deal in an IC meeting
+ */
+export const usePostIcMeetingsIdDealsDealEntryIdGenerateToken = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>,
+    TError,
+    { id: number; dealEntryId: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof postIcMeetingsIdDealsDealEntryIdGenerateToken>>,
+  TError,
+  { id: number; dealEntryId: number },
+  TContext
+> => {
+  return useMutation(
+    getPostIcMeetingsIdDealsDealEntryIdGenerateTokenMutationOptions(options),
   );
 };
 

@@ -43,6 +43,8 @@ tags:
     description: Fund metrics snapshots and fund administration
   - name: lp-portal
     description: LP portal with quarterly updates and K-1
+  - name: founder
+    description: Founder-facing operations (asks, applications, data room)
 
 paths:
   /healthz:
@@ -964,6 +966,74 @@ paths:
       responses:
         "200":
           description: Updated term sheet
+  /mp/term-sheets/{id}/submit-to-ic:
+    post:
+      tags: [term-sheets]
+      summary: Submit term sheet to IC for review
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Term sheet submitted to IC
+        "404":
+          description: Term sheet not found
+  /founder/asks:
+    get:
+      tags: [founder]
+      summary: List founder asks for the authenticated founder
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of asks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asks:
+                    type: array
+                    items:
+                      type: object
+    post:
+      tags: [founder]
+      summary: Create a new founder ask
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, category]
+              properties:
+                title: { type: string }
+                category: { type: string }
+                description: { type: string }
+                priority: { type: string }
+      responses:
+        "201":
+          description: Ask created
+  /founder/asks/{id}:
+    delete:
+      tags: [founder]
+      summary: Delete a founder ask
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Ask deleted
+        "403":
+          description: Not authorized
+        "404":
+          description: Ask not found
   /diligence/checklists:
     get:
       tags: [diligence]
@@ -1499,6 +1569,32 @@ paths:
           description: Deal removed from meeting packet
         "404":
           description: Deal entry not found in this meeting
+  /ic/meetings/{id}/deals/{dealEntryId}/generate-token:
+    post:
+      tags: [ic-operations]
+      summary: Generate a shareable packet token for a deal in an IC meeting
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+        - in: path
+          name: dealEntryId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Shareable token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  url: { type: string }
+        "404":
+          description: Deal entry not found
   /ventures-vc/deals:
     get:
       tags: [deal-flow]

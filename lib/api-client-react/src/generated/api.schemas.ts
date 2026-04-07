@@ -443,6 +443,19 @@ export type PostMpTermSheetsBody = {
   status?: string;
 };
 
+export type GetFounderAsks200AsksItem = { [key: string]: unknown };
+
+export type GetFounderAsks200 = {
+  asks?: GetFounderAsks200AsksItem[];
+};
+
+export type PostFounderAsksBody = {
+  title: string;
+  category: string;
+  description?: string;
+  priority?: string;
+};
+
 export type PostDiligenceChecklistsBody = {
   dealId: number;
   name?: string;
@@ -529,6 +542,11 @@ export type PutIcMeetingsIdDealsDealEntryIdBody = {
   decisionReached?: boolean;
   decisionNotes?: string;
   packetUrl?: string;
+};
+
+export type PostIcMeetingsIdDealsDealEntryIdGenerateToken200 = {
+  token?: string;
+  url?: string;
 };
 
 export type PostIcVotesDealIdBodyVote =
