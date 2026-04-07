@@ -11,6 +11,33 @@ import { Loader2, Calendar, FileText, CheckCircle2, XCircle, MinusCircle, HelpCi
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface Meeting {
+  id: number;
+  title: string;
+  scheduledAt?: string;
+  status: string;
+  quorumReached: boolean;
+  agenda?: string;
+  notes?: string;
+  createdByName?: string;
+}
+
+interface MeetingDeal {
+  id: number;
+  dealId: number;
+  companyName?: string;
+  sector?: string;
+  pipelineStage?: string;
+  recommendation?: string;
+  decisionReached: boolean;
+  votes?: Array<{
+    id: number;
+    vote: string;
+    voterName?: string;
+    dissentNote?: string;
+  }>;
+}
+
 const STATUS_COLOR: Record<string, string> = {
   draft: "bg-gray-100 text-gray-700",
   scheduled: "bg-blue-100 text-blue-700",
@@ -42,9 +69,9 @@ export default function ICMeetings() {
 
 function ICMeetingsInner() {
   const { toast } = useToast();
-  const [meetings, setMeetings] = useState<any[]>([]);
-  const [selected, setSelected] = useState<any>(null);
-  const [deals, setDeals] = useState<any[]>([]);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [selected, setSelected] = useState<Meeting | null>(null);
+  const [deals, setDeals] = useState<MeetingDeal[]>([]);
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
   const [voting, setVoting] = useState<Record<number, boolean>>({});
@@ -66,7 +93,7 @@ function ICMeetingsInner() {
           setSelected(d.meeting);
           setDeals(d.deals ?? []);
           const initialForms: Record<number, { vote: string; dissentNote: string }> = {};
-          (d.deals ?? []).forEach((deal: any) => {
+          (d.deals as MeetingDeal[] ?? []).forEach((deal) => {
             initialForms[deal.dealId] = { vote: "", dissentNote: "" };
           });
           setVoteForm(initialForms);
@@ -110,7 +137,7 @@ function ICMeetingsInner() {
         <div className="lg:col-span-2 space-y-3">
           {meetings.length === 0 ? (
             <Card><CardContent className="py-8 text-center text-muted-foreground text-sm">No meetings scheduled yet.</CardContent></Card>
-          ) : meetings.map((m: any) => (
+          ) : meetings.map((m) => (
             <Card
               key={m.id}
               className={`cursor-pointer hover:shadow-md transition-shadow ${selected?.id === m.id ? "ring-2 ring-primary" : ""}`}
@@ -183,7 +210,7 @@ function ICMeetingsInner() {
                 <CardContent className="space-y-4">
                   {deals.length === 0 ? (
                     <p className="text-sm text-muted-foreground">No deals added to this meeting.</p>
-                  ) : deals.map((d: any) => (
+                  ) : deals.map((d) => (
                     <div key={d.id} className="border rounded-lg p-4 space-y-3 bg-muted/10">
                       <div className="flex items-start justify-between">
                         <div>
@@ -205,7 +232,7 @@ function ICMeetingsInner() {
                       {d.votes && d.votes.length > 0 && (
                         <div className="space-y-1">
                           <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Current Votes</p>
-                          {d.votes.map((v: any) => (
+                          {d.votes!.map((v) => (
                             <div key={v.id} className="flex items-center gap-2 text-xs">
                               {VOTE_ICON_MAP[v.vote] ?? null}
                               <span className="font-medium">{v.voterName ?? "IC Member"}</span>

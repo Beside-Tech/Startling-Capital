@@ -11,6 +11,17 @@ import { Loader2, GitBranch, Plus } from "lucide-react";
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const token = () => localStorage.getItem("auth_token") ?? "";
 
+interface Deal {
+  id: number;
+  companyName: string;
+  sector?: string;
+  stage?: string;
+  amountSoughtCad?: string;
+  instrument?: string;
+  pipelineStage: string;
+  source?: string;
+}
+
 const STAGES = [
   { value: "sourced",        label: "Sourced",        color: "bg-gray-100 text-gray-700 border-gray-200"      },
   { value: "interested",     label: "Interested",     color: "bg-sky-100 text-sky-700 border-sky-200"          },
@@ -38,7 +49,7 @@ export default function MPDealFlow() {
 
 function DealFlowInner() {
   const { toast } = useToast();
-  const [deals, setDeals] = useState<any[]>([]);
+  const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ companyName: "", sector: "", stage: "", amountSoughtCad: "", instrument: "SAFE", pipelineStage: "sourced" as StageValue, source: "" });

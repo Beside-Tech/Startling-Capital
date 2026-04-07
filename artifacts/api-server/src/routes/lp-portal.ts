@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import {
   lpQuarterlyUpdatesTable, lpProfilesTable, usersTable, capitalCallsTable,
-  capitalCallAllocationsTable, fundsTable,
+  capitalCallAllocationsTable, fundsTable, lpAccountsTable,
 } from "@workspace/db";
 import { eq, desc, and, sum } from "drizzle-orm";
 import { requireAuth, requireLP, requireManagingPartner } from "../lib/auth";
@@ -177,7 +177,12 @@ router.get("/lp/fund-summary", requireLP, async (req, res) => {
       rvpi: fundsTable.rvpi,
       irr: fundsTable.irr,
       navCad: fundsTable.navCad,
-    }).from(fundsTable).where(eq(fundsTable.isActive, true));
+      lpCommitmentCad: lpAccountsTable.commitmentCad,
+      lpAccountStatus: lpAccountsTable.status,
+    })
+    .from(lpAccountsTable)
+    .innerJoin(fundsTable, eq(lpAccountsTable.fundId, fundsTable.id))
+    .where(and(eq(lpAccountsTable.lpProfileId, lpProfile.id), eq(lpAccountsTable.status, "active")));
 
     res.json({
       profile: {
