@@ -136,7 +136,7 @@ function TestimonialsSection() {
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Your testimonial</label>
             <textarea
               className="w-full min-h-[80px] rounded-lg border border-input bg-background px-3 py-2 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
-              placeholder="Share your experience with Nobellum Programs — what impact did it have on your business?"
+              placeholder="Share your experience with Startling Capital Programs — what impact did it have on your business?"
               value={content}
               onChange={e => setContent(e.target.value)}
               maxLength={500}
@@ -189,7 +189,7 @@ function WelcomeBanner({ name }: { name: string }) {
           <div className="inline-flex items-center gap-1.5 bg-yellow-400/20 border border-yellow-400/30 rounded-full px-3 py-1 mb-2">
             <Briefcase className="h-3 w-3 text-yellow-300" />
             <span className="text-xs font-semibold text-yellow-200 tracking-wide">
-              {ventures.status === "exited" ? "Nobellum Ventures Alumni" : "Nobellum Ventures Portfolio Company"}
+              {ventures.status === "exited" ? "Startling Capital Ventures Alumni" : "Startling Capital Ventures Portfolio Company"}
             </span>
           </div>
         )}
@@ -376,7 +376,7 @@ function DataRoomStatus() {
 
 function AdvisoryLinks() {
   const links = [
-    { title: "Book a Mentorship Session", description: "1:1 with Nobellum advisors", url: "#", icon: Star },
+    { title: "Book a Mentorship Session", description: "1:1 with Startling Capital advisors", url: "#", icon: Star },
     { title: "Investor Pitch Workshop", description: "Next session: April 15", url: "#", icon: TrendingUp },
     { title: "Legal Resources Hub", description: "Templates, guides & more", url: "#", icon: FileText },
     { title: "Founder Community", description: "Connect with peers", url: "#", icon: Globe },
@@ -546,3 +546,4 @@ export default function FounderDashboard() {
     </ProtectedRoute>
   );
 }
+

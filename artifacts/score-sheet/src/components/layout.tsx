@@ -59,10 +59,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <aside className="w-64 border-r bg-card flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b gap-2">
           <div className="w-7 h-7 rounded-lg gradient-teal flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-xs">N</span>
+            <span className="text-white font-bold text-xs">S</span>
           </div>
           <div>
-            <div className="font-display font-bold text-sm text-foreground leading-none">Nobellum</div>
+            <div className="font-display font-bold text-sm text-foreground leading-none">Startling Capital</div>
             <div className="text-[9px] text-muted-foreground font-medium tracking-wide">PROGRAMS</div>
           </div>
         </div>
@@ -107,7 +107,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 {navLink("/admin/traction", "Traction Dashboard", TrendingUp)}
 
                 <div className="px-3 mb-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Nobellum Ventures
+                  Startling Capital Ventures
                 </div>
                 {navLink("/admin/ventures", "Portfolio", Briefcase)}
 
@@ -164,3 +164,4 @@ export function AppLayout({ children }: { children: ReactNode }) {
     </div>
   );
 }
+

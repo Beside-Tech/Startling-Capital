@@ -44,7 +44,7 @@ export default function AdminExport() {
       const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = downloadUrl;
-      a.download = `nobellum-scores-${selectedProgramId}-${selectedCohortId}-${selectedRoundName}.xlsx`;
+      a.download = `Startling Capital-scores-${selectedProgramId}-${selectedCohortId}-${selectedRoundName}.xlsx`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -116,3 +116,4 @@ export default function AdminExport() {
     </ProtectedRoute>
   );
 }
+

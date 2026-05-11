@@ -1,5 +1,5 @@
 /**
- * Nobellum Ventures routes:
+ * Startling Capital Ventures routes:
  *
  * Admin:
  *   GET  /api/admin/ventures/portfolio-summary      — aggregate stats
@@ -410,3 +410,4 @@ router.post("/admin/ventures/investments/:id/rounds", requireAuth, requireAdmin,
 });
 
 export default router;
+

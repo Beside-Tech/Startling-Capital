@@ -26,7 +26,7 @@ const TESTIMONIALS = [
     initials: "KA",
   },
   {
-    quote: "Nobellum didn't just give us funding — they gave us a framework to think bigger and a community that actually shows up.",
+    quote: "Startling Capital didn't just give us funding — they gave us a framework to think bigger and a community that actually shows up.",
     name: "Amara Osei",
     title: "CEO, AgriFlow",
     program: "GrowthWorks 2024",
@@ -40,7 +40,7 @@ const TESTIMONIALS = [
     initials: "TA",
   },
   {
-    quote: "I came in with an idea. I left with a product, a team, and my first paying customers. That's the Nobellum effect.",
+    quote: "I came in with an idea. I left with a product, a team, and my first paying customers. That's the Startling Capital effect.",
     name: "Nadia Diallo",
     title: "CEO, EduReach",
     program: "GrowthWorks 2023",
@@ -154,9 +154,9 @@ export default function Login() {
 
         <div className="relative flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-            <span className="text-white font-bold text-sm font-display">N</span>
+            <span className="text-white font-bold text-sm font-display">S</span>
           </div>
-          <span className="font-display font-bold text-xl text-white">Nobellum</span>
+          <span className="font-display font-bold text-xl text-white">Startling Capital</span>
         </div>
 
         <div className="relative">
@@ -208,9 +208,9 @@ export default function Login() {
             {/* Logo (mobile) */}
             <div className="flex items-center gap-2.5 mb-8 lg:hidden">
               <div className="w-8 h-8 rounded-lg gradient-teal flex items-center justify-center">
-                <span className="text-white font-bold text-sm font-display">N</span>
+                <span className="text-white font-bold text-sm font-display">S</span>
               </div>
-              <span className="font-display font-bold text-lg text-foreground">Nobellum</span>
+              <span className="font-display font-bold text-lg text-foreground">Startling Capital</span>
             </div>
 
             <div className="mb-8">
@@ -307,13 +307,13 @@ export default function Login() {
               {showDemo && (
                 <div className="mt-2 border border-border/50 rounded-lg overflow-hidden text-xs">
                   {[
-                    { role: "SuperAdmin",        email: "team@nobellum.com",    pin: "Nobellum2025!", color: "bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300" },
-                    { role: "Admin",             email: "admin@nobellum.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
-                    { role: "ManagingPartner",   email: "mp@nobellum.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
-                    { role: "IC",                email: "ic@nobellum.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },
-                    { role: "Judge",             email: "judge@nobellum.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
-                    { role: "Founder",           email: "founder@nobellum.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300" },
-                    { role: "LP",                email: "lp@nobellum.com",      pin: "LP12341234",   color: "bg-pink-50 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300" },
+                    { role: "SuperAdmin",        email: "team@startling-capital.com",    pin: "Startling Capital2025!", color: "bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300" },
+                    { role: "Admin",             email: "admin@startling-capital.com",   pin: "Admin1234",    color: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
+                    { role: "ManagingPartner",   email: "mp@startling-capital.com",      pin: "Partner1234",  color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
+                    { role: "IC",                email: "ic@startling-capital.com",      pin: "IC12341234",   color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },
+                    { role: "Judge",             email: "judge@startling-capital.com",   pin: "Judge1234",    color: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
+                    { role: "Founder",           email: "founder@startling-capital.com", pin: "Founder1234",  color: "bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300" },
+                    { role: "LP",                email: "lp@startling-capital.com",      pin: "LP12341234",   color: "bg-pink-50 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300" },
                   ].map(({ role, email, pin, color }) => (
                     <button
                       key={role}
@@ -338,3 +338,5 @@ export default function Login() {
     </div>
   );
 }
+
+

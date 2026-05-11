@@ -85,7 +85,7 @@ function downloadTestimonialsJson(testimonials: Testimonial[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `nobellum-testimonials-${new Date().toISOString().split("T")[0]}.json`;
+  a.download = `Startling Capital-testimonials-${new Date().toISOString().split("T")[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -112,7 +112,7 @@ function downloadTestimonialsCsv(testimonials: Testimonial[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `nobellum-testimonials-${new Date().toISOString().split("T")[0]}.csv`;
+  a.download = `Startling Capital-testimonials-${new Date().toISOString().split("T")[0]}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -397,3 +397,4 @@ function TestimonialCard({
     </Card>
   );
 }
+

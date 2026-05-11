@@ -231,7 +231,7 @@ function AdminVenturesDetailInner() {
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Nobellum Ventures
+          Startling Capital Ventures
         </button>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setShowAddRoundModal(true)}>
@@ -839,7 +839,7 @@ function AddRoundModal({
               onChange={(e) => setIsLead(e.target.checked)}
             />
             <label htmlFor="isLead" className="text-sm font-medium cursor-pointer">
-              Nobellum is lead investor in this round
+              Startling Capital is lead investor in this round
             </label>
           </div>
           <div>
@@ -861,3 +861,4 @@ function AddRoundModal({
     </Dialog>
   );
 }
+

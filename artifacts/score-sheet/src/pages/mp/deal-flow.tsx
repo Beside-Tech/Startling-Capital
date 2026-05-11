@@ -111,7 +111,7 @@ function DealFlowInner() {
           <h1 className="text-2xl font-bold font-display flex items-center gap-2">
             <GitBranch className="h-6 w-6 text-primary" /> Deal Flow
           </h1>
-          <p className="text-muted-foreground mt-1">Manage the full investment pipeline for Nobellum Ventures.</p>
+          <p className="text-muted-foreground mt-1">Manage the full investment pipeline for Startling Capital Ventures.</p>
         </div>
         <Button className="gradient-teal text-white border-0 hover:opacity-90 gap-2" onClick={() => setShowForm(s => !s)}>
           <Plus className="h-4 w-4" /> Add Deal
@@ -209,3 +209,4 @@ function DealFlowInner() {
     </div>
   );
 }
+

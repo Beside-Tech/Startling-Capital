@@ -39,7 +39,7 @@ function InvestmentsInner() {
         <h1 className="text-2xl font-bold font-display flex items-center gap-2">
           <Briefcase className="h-6 w-6 text-primary" /> Portfolio Investments
         </h1>
-        <p className="text-muted-foreground mt-1">All investments managed through Nobellum Ventures.</p>
+        <p className="text-muted-foreground mt-1">All investments managed through Startling Capital Ventures.</p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
@@ -98,3 +98,4 @@ function InvestmentsInner() {
     </div>
   );
 }
+

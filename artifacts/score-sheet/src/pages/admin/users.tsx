@@ -371,7 +371,7 @@ function AdminUsersInner() {
 
 const ROLE_GROUPS = [
   { label: "Accelerator", roles: ["Admin", "SuperAdmin", "Judge", "Founder"] },
-  { label: "Nobellum Ventures", roles: ["IC", "ManagingPartner", "LP"] },
+  { label: "Startling Capital Ventures", roles: ["IC", "ManagingPartner", "LP"] },
 ];
 
 function CreateAdminModal({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
@@ -412,7 +412,7 @@ function CreateAdminModal({ onClose, onCreated }: { onClose: () => void; onCreat
             <Input
               className="mt-1"
               type="email"
-              placeholder="e.g. jane@nobellum.com"
+              placeholder="e.g. jane@startling-capital.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -459,3 +459,5 @@ function CreateAdminModal({ onClose, onCreated }: { onClose: () => void; onCreat
     </Dialog>
   );
 }
+
+

@@ -26,22 +26,22 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
 
-## Project: Nobellum Ventures VC Platform
+## Project: Startling Capital Ventures VC Platform
 
 ### Artifacts
 - `artifacts/api-server` — Express 5 REST API (port 8080), JWT auth, Drizzle ORM
-- `artifacts/score-sheet` — React + Vite frontend (Nobellum Ventures web app)
+- `artifacts/score-sheet` — React + Vite frontend (Startling Capital Ventures web app)
 
 ### Demo Accounts (all roles)
 | Role | Email | Password |
 |------|-------|----------|
-| SuperAdmin | team@nobellum.com | Nobellum2025! |
-| Admin | admin@nobellum.com | Admin1234 |
-| ManagingPartner | mp@nobellum.com | Partner1234 |
-| IC | ic@nobellum.com | IC12341234 |
-| Judge | judge@nobellum.com | Judge1234 |
-| Founder | founder@nobellum.com | Founder1234 |
-| LP | lp@nobellum.com | LP12341234 |
+| SuperAdmin | team@Startling Capital.com | Startling Capital2025! |
+| Admin | admin@Startling Capital.com | Admin1234 |
+| ManagingPartner | mp@Startling Capital.com | Partner1234 |
+| IC | ic@Startling Capital.com | IC12341234 |
+| Judge | judge@Startling Capital.com | Judge1234 |
+| Founder | founder@Startling Capital.com | Founder1234 |
+| LP | lp@Startling Capital.com | LP12341234 |
 
 The login page has a collapsible "Demo Accounts" panel that pre-fills credentials on click.
 
@@ -82,3 +82,4 @@ Legacy stages (backward compat): `screening`, `ic_review`, `term_sheet`, `closed
 - `JWT_SECRET` — shared env var (auto-generated on first setup)
 - `SUPER_ADMIN_PIN` — shared env var (set to "773421")
 - `DATABASE_URL` — injected by Replit PostgreSQL
+

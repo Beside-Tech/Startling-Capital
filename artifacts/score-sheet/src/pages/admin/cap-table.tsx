@@ -198,7 +198,7 @@ function AdminCapTableInner() {
           <div className="grid grid-cols-2 gap-3 py-2">
             <div className="col-span-2 space-y-1.5">
               <Label>Investor / Holder Name</Label>
-              <Input placeholder="Nobellum Ventures" value={form.investorName} onChange={e => setForm(f => ({ ...f, investorName: e.target.value }))} />
+              <Input placeholder="Startling Capital Ventures" value={form.investorName} onChange={e => setForm(f => ({ ...f, investorName: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
               <Label>Type</Label>
@@ -248,3 +248,4 @@ function AdminCapTableInner() {
     </div>
   );
 }
+

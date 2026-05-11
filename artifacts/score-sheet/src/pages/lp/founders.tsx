@@ -42,7 +42,7 @@ function FoundersInner() {
         <h1 className="text-2xl font-bold font-display flex items-center gap-2">
           <Users className="h-6 w-6 text-primary" /> Our Founders
         </h1>
-        <p className="text-muted-foreground mt-1">Portfolio founders in the Nobellum Ventures ecosystem.</p>
+        <p className="text-muted-foreground mt-1">Portfolio founders in the Startling Capital Ventures ecosystem.</p>
       </div>
 
       {loading ? (
@@ -89,3 +89,4 @@ function FoundersInner() {
     </div>
   );
 }
+

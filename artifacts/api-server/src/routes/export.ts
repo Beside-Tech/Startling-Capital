@@ -135,7 +135,7 @@ router.get("/export/excel", requireAdmin, async (req, res) => {
   });
 
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = "Nobellum Score Sheet";
+  workbook.creator = "Startling Capital Score Sheet";
   workbook.created = new Date();
 
   const teal = "FF36A391";
@@ -245,7 +245,7 @@ router.get("/export/excel", requireAdmin, async (req, res) => {
     matrixSheet.addRow(rowData);
   }
 
-  const filename = `nobellum-scores-${programId}-${cohortId}-${round}.xlsx`;
+  const filename = `Startling Capital-scores-${programId}-${cohortId}-${round}.xlsx`;
   res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
   res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
 
@@ -254,3 +254,4 @@ router.get("/export/excel", requireAdmin, async (req, res) => {
 });
 
 export default router;
+

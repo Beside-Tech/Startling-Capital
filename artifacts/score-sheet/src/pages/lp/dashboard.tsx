@@ -45,7 +45,7 @@ function LPDashboardInner() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold font-display">LP Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Welcome to your Nobellum Ventures investor portal.</p>
+        <p className="text-muted-foreground mt-1">Welcome to your Startling Capital Ventures investor portal.</p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
@@ -95,3 +95,4 @@ function LPDashboardInner() {
     </div>
   );
 }
+

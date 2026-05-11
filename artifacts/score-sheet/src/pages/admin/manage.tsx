@@ -564,7 +564,7 @@ function ProgramsTab() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Programs</CardTitle>
-          <CardDescription>Manage Nobellum accelerator programs — all details editable here</CardDescription>
+          <CardDescription>Manage Startling Capital accelerator programs — all details editable here</CardDescription>
         </div>
         <Button size="sm" onClick={() => { resetForm(); setEditingId(null); setShowForm(true); }}>
           <Plus className="h-4 w-4 mr-1" /> Add Program
@@ -613,7 +613,7 @@ function ProgramsTab() {
           <DialogHeader>
             <DialogTitle>{editingId ? "Edit Program" : "Add Program"}</DialogTitle>
             <DialogDescription>
-              {editingId ? "Update all program details visible to founders and staff." : "Create a new Nobellum accelerator program."}
+              {editingId ? "Update all program details visible to founders and staff." : "Create a new Startling Capital accelerator program."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-5 py-2">
@@ -1517,3 +1517,4 @@ export default function AdminManage() {
     </ProtectedRoute>
   );
 }
+

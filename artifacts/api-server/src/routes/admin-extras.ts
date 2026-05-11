@@ -154,7 +154,7 @@ router.get("/admin/founders/export", requireAuth, requireAdmin, async (_req, res
 
     const csv = csvRows.join("\n");
     res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", `attachment; filename="nobellum-founders-${new Date().toISOString().split("T")[0]}.csv"`);
+    res.setHeader("Content-Disposition", `attachment; filename="Startling Capital-founders-${new Date().toISOString().split("T")[0]}.csv"`);
     res.send(csv);
   } catch (err) {
     res.status(500).json({ error: "Failed to export founders" });
@@ -229,3 +229,4 @@ router.delete("/admin/testimonials/:id", requireAuth, requireAdmin, async (req, 
 });
 
 export default router;
+

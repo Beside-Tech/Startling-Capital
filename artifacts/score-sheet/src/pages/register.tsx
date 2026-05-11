@@ -81,7 +81,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
 
       <h1 className="font-display font-bold text-3xl sm:text-4xl text-foreground mb-3 leading-tight">
         Welcome to{" "}
-        <span className="text-gradient">Nobellum</span>
+        <span className="text-gradient">Startling Capital</span>
       </h1>
       <p className="text-muted-foreground text-lg mb-8 max-w-md mx-auto leading-relaxed">
         You're about to join Africa's most ambitious founder community. It starts with one step.
@@ -371,7 +371,7 @@ function StartupInfoStep({ data, onChange, onNext, onBack }: {
 
         <div className="bg-primary/5 border border-primary/15 rounded-xl p-4">
           <p className="text-xs text-primary/80 leading-relaxed">
-            <span className="font-semibold">No company yet?</span> That's perfectly fine! Many Nobellum founders are still building when they apply. What matters is your vision and your grit.
+            <span className="font-semibold">No company yet?</span> That's perfectly fine! Many Startling Capital founders are still building when they apply. What matters is your vision and your grit.
           </p>
         </div>
       </div>
@@ -420,7 +420,7 @@ function SecureAccessStep({ data, onChange, onSubmit, onBack, isLoading }: {
         <div className="bg-accent/40 border border-accent rounded-xl p-4">
           <p className="text-sm text-foreground/80 leading-relaxed">
             Your PIN is your password — keep it safe and memorable. Use 4–8 digits.
-            Nobellum will never ask for your PIN over email or phone.
+            Startling Capital will never ask for your PIN over email or phone.
           </p>
         </div>
 
@@ -546,14 +546,14 @@ function SuccessStep({ name }: { name: string }) {
         Welcome, {name.split(" ")[0]}! 🎉
       </h2>
       <p className="text-muted-foreground text-base mb-8 max-w-sm mx-auto leading-relaxed">
-        Your Nobellum founder account is ready. Your journey to building something extraordinary starts right now.
+        Your Startling Capital founder account is ready. Your journey to building something extraordinary starts right now.
       </p>
 
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-6 text-left max-w-sm mx-auto space-y-3">
         {[
           "Explore active programs and apply",
           "Set up your investor data room",
-          "Connect with the Nobellum community",
+          "Connect with the startling-capital.community",
         ].map((item, i) => (
           <div key={item} className="flex items-center gap-3 text-sm">
             <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">
@@ -635,9 +635,9 @@ export default function Register() {
 
         <div className="relative flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-            <span className="text-white font-bold text-sm font-display">N</span>
+            <span className="text-white font-bold text-sm font-display">S</span>
           </div>
-          <span className="font-display font-bold text-xl text-white">Nobellum</span>
+          <span className="font-display font-bold text-xl text-white">Startling Capital</span>
         </div>
 
         <div className="relative">
@@ -649,7 +649,7 @@ export default function Register() {
               Your startup<br />deserves a<br />running start.
             </h2>
             <p className="text-white/75 text-lg leading-relaxed">
-              Join 200+ founders who've accessed funding, mentorship, and global connections through Nobellum.
+              Join 200+ founders who've accessed funding, mentorship, and global connections through Startling Capital.
             </p>
           </div>
 
@@ -670,7 +670,7 @@ export default function Register() {
         <div className="relative">
           <div className="bg-white/10 rounded-2xl p-4">
             <p className="text-white/85 text-sm italic leading-relaxed mb-2">
-              "Nobellum didn't just give us funding — they gave us a framework to think bigger."
+              "Startling Capital didn't just give us funding — they gave us a framework to think bigger."
             </p>
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">AO</div>
@@ -728,3 +728,5 @@ export default function Register() {
     </div>
   );
 }
+
+

@@ -147,7 +147,7 @@ function QAInner() {
             <MessageSquare className="h-6 w-6 text-primary" />
             Q&amp;A
           </h1>
-          <p className="text-muted-foreground mt-1">Ask questions and get answers from the Nobellum team.</p>
+          <p className="text-muted-foreground mt-1">Ask questions and get answers from the Startling Capital team.</p>
         </div>
         <Button className="gradient-teal text-white border-0 hover:opacity-90 gap-2" onClick={() => setShowForm(s => !s)}>
           <Plus className="h-4 w-4" /> Ask a Question
@@ -196,7 +196,7 @@ function QAInner() {
           <CardContent className="py-16 text-center">
             <MessageSquare className="h-12 w-12 mx-auto mb-3 text-muted-foreground/30" />
             <p className="text-muted-foreground font-medium">No questions yet</p>
-            <p className="text-sm text-muted-foreground mt-1">Ask your first question above and the Nobellum team will respond.</p>
+            <p className="text-sm text-muted-foreground mt-1">Ask your first question above and the Startling Capital team will respond.</p>
           </CardContent>
         </Card>
       ) : (
@@ -239,7 +239,7 @@ function QAInner() {
                         <div className={`flex-1 rounded-xl p-3 ${reply.isStaffReply ? "bg-primary/5 border border-primary/10" : "bg-secondary/50"}`}>
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-xs font-semibold">{reply.authorName || "Team"}</span>
-                            {reply.isStaffReply && <Badge className="text-xs bg-primary/10 text-primary border-primary/20 border">Nobellum Team</Badge>}
+                            {reply.isStaffReply && <Badge className="text-xs bg-primary/10 text-primary border-primary/20 border">Startling Capital Team</Badge>}
                           </div>
                           <p className="text-sm text-foreground whitespace-pre-wrap">{reply.body}</p>
                           <p className="text-xs text-muted-foreground mt-1">{new Date(reply.createdAt).toLocaleDateString("en-CA")}</p>
@@ -274,3 +274,4 @@ function QAInner() {
     </div>
   );
 }
+

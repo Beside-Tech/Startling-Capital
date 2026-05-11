@@ -36,7 +36,7 @@ function PortfolioInner() {
         <h1 className="text-2xl font-bold font-display flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-primary" /> Portfolio
         </h1>
-        <p className="text-muted-foreground mt-1">Active portfolio companies in Nobellum Ventures.</p>
+        <p className="text-muted-foreground mt-1">Active portfolio companies in Startling Capital Ventures.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
@@ -75,3 +75,4 @@ function PortfolioInner() {
     </div>
   );
 }
+

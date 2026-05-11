@@ -113,7 +113,7 @@ function MPFundsInner() {
               <div className="grid sm:grid-cols-3 gap-3">
                 <div>
                   <label className="text-xs text-muted-foreground">Fund Name *</label>
-                  <Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Nobellum Fund I" className="mt-1" />
+                  <Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Startling Capital Fund I" className="mt-1" />
                 </div>
                 <div>
                   <label className="text-xs text-muted-foreground">Vintage Year *</label>
@@ -253,3 +253,4 @@ function MPFundsInner() {
     </div>
   );
 }
+

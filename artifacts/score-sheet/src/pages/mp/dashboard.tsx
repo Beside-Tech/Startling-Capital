@@ -48,7 +48,7 @@ function MPDashboardInner() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold font-display">Managing Partner Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Nobellum Ventures — full portfolio and deal flow overview.</p>
+        <p className="text-muted-foreground mt-1">Startling Capital Ventures — full portfolio and deal flow overview.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -115,3 +115,4 @@ function MPDashboardInner() {
     </div>
   );
 }
+

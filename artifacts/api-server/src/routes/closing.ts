@@ -173,7 +173,7 @@ router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (re
       const [entry] = await db.insert(capTableEntriesTable).values({
         founderId: deal.founderId,
         fundId: fundId,
-        investorName: "Nobellum Ventures",
+        investorName: "Startling Capital Ventures",
         investorType: "investor",
         instrument: ts?.instrument ?? "SAFE",
         equityPct: ts?.equityPct ?? null,
@@ -192,3 +192,4 @@ router.post("/closing/checklists/:id/confirm", requireManagingPartner, async (re
 });
 
 export default router;
+

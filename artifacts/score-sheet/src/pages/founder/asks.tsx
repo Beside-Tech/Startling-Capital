@@ -77,7 +77,7 @@ function FounderAsksInner() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold font-display">My Asks</h1>
-            <p className="text-muted-foreground mt-1">Request help from the Nobellum team — intros, hiring, legal, and more.</p>
+            <p className="text-muted-foreground mt-1">Request help from the Startling Capital team — intros, hiring, legal, and more.</p>
           </div>
           <Button onClick={() => setCreating(true)} className="flex items-center gap-2">
             <Plus className="h-4 w-4" />New Ask
@@ -159,3 +159,4 @@ function FounderAsksInner() {
     </div>
   );
 }
+

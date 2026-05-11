@@ -14,7 +14,7 @@ import { eq } from "drizzle-orm";
 import { hashPin } from "./auth";
 import { logger } from "./logger";
 
-const SUPER_ADMIN_EMAIL = "team@nobellum.com";
+const SUPER_ADMIN_EMAIL = "team@startling-capital.com";
 
 export async function seedSuperAdmin(): Promise<void> {
   const pin = process.env.SUPER_ADMIN_PIN;
@@ -44,13 +44,13 @@ export async function seedSuperAdmin(): Promise<void> {
     const pinHash = await hashPin(pin);
     await db.insert(usersTable).values({
       email: SUPER_ADMIN_EMAIL,
-      name: "Nobellum Team",
+      name: "Startling Capital Team",
       role: "SuperAdmin",
       pinHash,
       active: true,
     });
 
-    logger.info("Super Admin account provisioned: team@nobellum.com");
+    logger.info("Super Admin account provisioned: team@startling-capital.com");
   } catch (err) {
     logger.error({ err }, "Failed to provision Super Admin account");
     process.exit(1);
@@ -68,3 +68,5 @@ if (import.meta.url === new URL(process.argv[1], import.meta.url).href ||
     process.exit(1);
   });
 }
+
+

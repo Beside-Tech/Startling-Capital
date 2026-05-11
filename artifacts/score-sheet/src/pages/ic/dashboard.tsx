@@ -60,7 +60,7 @@ function ICDashboardInner() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-foreground font-display">IC Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Investment Committee overview — Nobellum Ventures.</p>
+        <p className="text-muted-foreground mt-1">Investment Committee overview — Startling Capital Ventures.</p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
@@ -129,3 +129,4 @@ function ICDashboardInner() {
     </div>
   );
 }
+

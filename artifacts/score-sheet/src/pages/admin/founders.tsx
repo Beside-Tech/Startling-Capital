@@ -69,7 +69,7 @@ export default function AdminFounders() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `nobellum-founders-${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `Startling Capital-founders-${new Date().toISOString().split("T")[0]}.csv`;
       a.click();
       URL.revokeObjectURL(url);
       toast({ title: "Export complete", description: "Founders list downloaded as CSV" });
@@ -104,7 +104,7 @@ export default function AdminFounders() {
             <div>
               <h1 className="text-3xl font-bold tracking-tight font-display">Founder Management</h1>
               <p className="text-muted-foreground mt-1">
-                All founders registered in Nobellum Programs — view profiles, programs, and export data.
+                All founders registered in Startling Capital Programs — view profiles, programs, and export data.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -245,7 +245,7 @@ export default function AdminFounders() {
                       <div className="mb-3">
                         <Badge className="text-[10px] bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50 gap-1">
                           <Briefcase className="h-2.5 w-2.5" />
-                          {founder.investmentStatus === "exited" ? "Ventures Alumni" : "Nobellum Ventures"}
+                          {founder.investmentStatus === "exited" ? "Ventures Alumni" : "Startling Capital Ventures"}
                         </Badge>
                       </div>
                     )}
@@ -275,3 +275,4 @@ export default function AdminFounders() {
     </ProtectedRoute>
   );
 }
+

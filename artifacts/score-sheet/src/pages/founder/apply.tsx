@@ -549,7 +549,7 @@ export default function FounderApply() {
             </button>
             <div>
               <h1 className="font-display font-bold text-2xl text-foreground">Browse Programs</h1>
-              <p className="text-muted-foreground text-sm">Find and apply to Nobellum accelerator programs</p>
+              <p className="text-muted-foreground text-sm">Find and apply to Startling Capital accelerator programs</p>
             </div>
           </div>
 
@@ -604,7 +604,7 @@ export default function FounderApply() {
                   <Rocket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-semibold text-foreground text-lg mb-2">No programs available</h3>
                   <p className="text-muted-foreground text-sm">
-                    Nobellum programs will appear here when they're open. Check back soon!
+                    Startling Capital programs will appear here when they're open. Check back soon!
                   </p>
                 </div>
               )}
@@ -678,3 +678,4 @@ export default function FounderApply() {
     </ProtectedRoute>
   );
 }
+

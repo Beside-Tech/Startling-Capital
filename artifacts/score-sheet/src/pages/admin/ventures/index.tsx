@@ -166,7 +166,7 @@ function AdminVenturesInner() {
         <div>
           <h1 className="text-2xl font-bold text-foreground font-display flex items-center gap-2">
             <Briefcase className="h-6 w-6 text-primary" />
-            Nobellum Ventures
+            Startling Capital Ventures
           </h1>
           <p className="text-muted-foreground mt-1">
             Investment portfolio — track equity stakes, instruments, and founder performance.
@@ -596,3 +596,4 @@ function AddInvestmentModal({
     </Dialog>
   );
 }
+

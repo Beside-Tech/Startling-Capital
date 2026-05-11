@@ -58,7 +58,7 @@ export default function Legal({ legalType }: { legalType: LegalType }) {
               <span className="text-white font-bold text-xs">N</span>
             </div>
             <div>
-              <span className="font-display font-bold text-sm text-foreground leading-none">Nobellum</span>
+              <span className="font-display font-bold text-sm text-foreground leading-none">Startling Capital</span>
               <div className="text-[9px] text-muted-foreground font-medium tracking-wide leading-none">PROGRAMS</div>
             </div>
           </div>
@@ -98,9 +98,9 @@ export default function Legal({ legalType }: { legalType: LegalType }) {
         <div className="mb-8">
           <h1 className="font-display font-bold text-4xl text-foreground mb-2">{page.title}</h1>
           <p className="text-sm text-muted-foreground">
-            Nobellum Programs · Toronto, Canada ·{" "}
-            <a href="https://www.nobellum.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
-              nobellum.com <ExternalLink className="h-3 w-3" />
+            Startling Capital Programs · Toronto, Canada ·{" "}
+            <a href="https://www.startling-capital.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
+              startling-capital.com <ExternalLink className="h-3 w-3" />
             </a>
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function Legal({ legalType }: { legalType: LegalType }) {
         )}
 
         <div className="mt-12 pt-6 border-t border-border text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Nobellum. All rights reserved. Based in Toronto, Ontario, Canada.
+          © {new Date().getFullYear()} Startling Capital. All rights reserved. Based in Toronto, Ontario, Canada.
         </div>
       </div>
     </div>
@@ -131,3 +131,5 @@ export default function Legal({ legalType }: { legalType: LegalType }) {
 export function PrivacyPage() { return <Legal legalType="privacy" />; }
 export function TermsPage() { return <Legal legalType="terms" />; }
 export function CookiesPage() { return <Legal legalType="cookies" />; }
+
+

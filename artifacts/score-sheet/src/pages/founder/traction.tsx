@@ -162,7 +162,7 @@ function FounderTractionInner() {
           Traction Check-in
         </h1>
         <p className="text-muted-foreground mt-1">
-          Submit your monthly business metrics to keep Nobellum up to date on your growth.
+          Submit your monthly business metrics to keep Startling Capital up to date on your growth.
         </p>
       </div>
 
@@ -413,3 +413,4 @@ function FounderTractionInner() {
     </div>
   );
 }
+

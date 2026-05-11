@@ -45,10 +45,10 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between px-4 py-4 border-b border-sidebar-border">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <div className="w-8 h-8 rounded-lg gradient-teal flex items-center justify-center">
-            <span className="text-white font-bold text-sm font-display">N</span>
+            <span className="text-white font-bold text-sm font-display">S</span>
           </div>
           <div>
-            <span className="font-display font-bold text-sm text-sidebar-foreground">Nobellum</span>
+            <span className="font-display font-bold text-sm text-sidebar-foreground">Startling Capital</span>
             <div className="text-[10px] text-muted-foreground leading-none">LP Investor Portal</div>
           </div>
         </div>
@@ -97,8 +97,8 @@ export function LPLayout({ children }: { children: React.ReactNode }) {
         <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-border bg-background shrink-0">
           <button onClick={() => setMobileOpen(true)} className="text-muted-foreground hover:text-foreground"><Menu className="h-5 w-5" /></button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg gradient-teal flex items-center justify-center"><span className="text-white font-bold text-xs">N</span></div>
-            <span className="font-display font-bold text-sm">Nobellum LP</span>
+            <div className="w-7 h-7 rounded-lg gradient-teal flex items-center justify-center"><span className="text-white font-bold text-xs">S</span></div>
+            <span className="font-display font-bold text-sm">Startling Capital LP</span>
           </div>
           <div className="w-5" />
         </div>
@@ -109,3 +109,5 @@ export function LPLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+

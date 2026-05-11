@@ -84,7 +84,7 @@ function ApplicationsInner() {
           <CardContent className="py-20 text-center">
             <Inbox className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
             <p className="text-foreground font-medium mb-1">No applications yet</p>
-            <p className="text-muted-foreground text-sm mb-4">Apply to a Nobellum program to get started.</p>
+            <p className="text-muted-foreground text-sm mb-4">Apply to a Startling Capital program to get started.</p>
             <Button onClick={() => navigate("/founder/apply")} className="gradient-teal text-white border-0 hover:opacity-90">
               Browse Programs
             </Button>
@@ -122,3 +122,4 @@ function ApplicationsInner() {
     </div>
   );
 }
+

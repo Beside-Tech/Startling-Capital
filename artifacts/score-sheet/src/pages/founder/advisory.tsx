@@ -103,7 +103,7 @@ function AdvisoryInner() {
             <ExternalLink className="h-6 w-6 text-primary" />
             Advisory Services
           </h1>
-          <p className="text-muted-foreground mt-1">Request 1-on-1 sessions with Nobellum advisors and mentors.</p>
+          <p className="text-muted-foreground mt-1">Request 1-on-1 sessions with Startling Capital advisors and mentors.</p>
         </div>
         <Button className="gradient-teal text-white border-0 hover:opacity-90 gap-2" onClick={() => setShowForm(s => !s)}>
           <Plus className="h-4 w-4" /> Request Session
@@ -163,7 +163,7 @@ function AdvisoryInner() {
           <CardContent className="py-16 text-center">
             <CalendarCheck className="h-12 w-12 mx-auto mb-3 text-muted-foreground/30" />
             <p className="text-muted-foreground font-medium">No sessions yet</p>
-            <p className="text-sm text-muted-foreground mt-1">Request your first advisory session to connect with a Nobellum advisor.</p>
+            <p className="text-sm text-muted-foreground mt-1">Request your first advisory session to connect with a Startling Capital advisor.</p>
           </CardContent>
         </Card>
       ) : (
@@ -217,3 +217,4 @@ function AdvisoryInner() {
     </div>
   );
 }
+
