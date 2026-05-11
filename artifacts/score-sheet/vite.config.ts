@@ -40,7 +40,7 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname),
   build: {
-    outDir: "../../dist-frontend",
+    outDir: "dist",
     emptyOutDir: true,
   },
   server: {
