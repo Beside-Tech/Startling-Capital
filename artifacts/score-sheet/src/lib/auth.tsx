@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const user = userStr ? JSON.parse(userStr) : null;
     const allowedStr = localStorage.getItem("auth_assignments");
     const allowedAssignments = allowedStr ? JSON.parse(allowedStr) : [];
-    
+
     return {
       token,
       role,
@@ -37,6 +37,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading: true,
     };
   });
+
+  const logout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_role");
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_assignments");
+    setAuthTokenGetter(() => null);
+    setState({
+      token: null,
+      role: null,
+      user: null,
+      allowedAssignments: [],
+      isAuthenticated: false,
+      isLoading: false,
+    });
+  };
 
   const { data, isLoading, error } = useGetMe({
     query: {
@@ -83,22 +99,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       allowedAssignments,
       isAuthenticated: true,
-      isLoading: false,
-    });
-  };
-
-  const logout = () => {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("auth_role");
-    localStorage.removeItem("auth_user");
-    localStorage.removeItem("auth_assignments");
-    setAuthTokenGetter(() => null);
-    setState({
-      token: null,
-      role: null,
-      user: null,
-      allowedAssignments: [],
-      isAuthenticated: false,
       isLoading: false,
     });
   };

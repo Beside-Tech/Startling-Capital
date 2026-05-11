@@ -85,7 +85,7 @@ function RootRedirect() {
     else if (role === "ic") navigate("/ic/dashboard");
     else if (role === "managingpartner") navigate("/mp/dashboard");
     else if (role === "lp") navigate("/lp/dashboard");
-  }, []);
+  }, [token, role, navigate]);
 
   if (!token) return <Landing />;
 

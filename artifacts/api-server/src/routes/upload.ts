@@ -1,45 +1,40 @@
 import { Router } from "express";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 import { requireAuth } from "../lib/auth";
+import { v2 as cloudinary } from "cloudinary";
+import { Readable } from "stream";
 
 const router = Router();
 
-const UPLOADS_DIR = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, UPLOADS_DIR),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const ext = path.extname(file.originalname);
-    cb(null, `${unique}${ext}`);
-  },
+// Configure Cloudinary from environment variables
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const ALLOWED_MIMETYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "text/plain",
+  "text/csv",
+];
+
+// Use memory storage so we can stream to Cloudinary
 const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
   fileFilter: (_req, file, cb) => {
-    const allowed = [
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "application/vnd.ms-excel",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/vnd.ms-powerpoint",
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "text/plain",
-      "text/csv",
-    ];
-    if (allowed.includes(file.mimetype)) {
+    if (ALLOWED_MIMETYPES.includes(file.mimetype)) {
       cb(null, true);
     } else {
       cb(new Error(`File type ${file.mimetype} not allowed`));
@@ -47,28 +42,61 @@ const upload = multer({
   },
 });
 
-router.post("/upload", requireAuth, upload.single("file"), (req, res) => {
+/**
+ * Upload a single file to Cloudinary.
+ * Returns the secure Cloudinary URL stored in Neon via the url field.
+ */
+router.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
   if (!req.file) {
     res.status(400).json({ error: "BadRequest", message: "No file uploaded" });
     return;
   }
-  const fileUrl = `/api/uploads/${req.file.filename}`;
-  res.json({
-    url: fileUrl,
-    originalName: req.file.originalname,
-    size: req.file.size,
-    mimetype: req.file.mimetype,
-  });
-});
 
-router.get("/uploads/:filename", requireAuth, (req, res) => {
-  const filename = path.basename(String(req.params.filename));
-  const filePath = path.join(UPLOADS_DIR, filename);
-  if (!fs.existsSync(filePath)) {
-    res.status(404).json({ error: "NotFound", message: "File not found" });
+  if (
+    !process.env.CLOUDINARY_CLOUD_NAME ||
+    !process.env.CLOUDINARY_API_KEY ||
+    !process.env.CLOUDINARY_API_SECRET
+  ) {
+    res.status(500).json({
+      error: "ConfigError",
+      message: "Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET in .env",
+    });
     return;
   }
-  res.sendFile(filePath);
+
+  try {
+    // Detect resource type
+    const isImage = req.file.mimetype.startsWith("image/");
+    const resourceType = isImage ? "image" : "raw";
+
+    // Stream buffer to Cloudinary
+    const result = await new Promise<{ secure_url: string; public_id: string; bytes: number }>((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "startling-capital",
+          resource_type: resourceType,
+          use_filename: true,
+          unique_filename: true,
+        },
+        (error, result) => {
+          if (error || !result) return reject(error ?? new Error("Upload failed"));
+          resolve(result as { secure_url: string; public_id: string; bytes: number });
+        }
+      );
+      Readable.from(req.file!.buffer).pipe(uploadStream);
+    });
+
+    res.json({
+      url: result.secure_url,
+      publicId: result.public_id,
+      originalName: req.file.originalname,
+      size: result.bytes,
+      mimetype: req.file.mimetype,
+    });
+  } catch (err) {
+    console.error("Cloudinary upload error:", err);
+    res.status(500).json({ error: "UploadError", message: "Failed to upload file to Cloudinary" });
+  }
 });
 
 export default router;
