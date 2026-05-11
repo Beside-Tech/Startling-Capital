@@ -1,7 +1,7 @@
 {
     "version": 2,
-    "buildCommand": "cd artifacts/score-sheet && pnpm run build",
-    "outputDirectory": "artifacts/score-sheet/dist/public",
+    "buildCommand": "pnpm --filter @workspace/score-sheet build",
+    "outputDirectory": "dist-frontend",
     "installCommand": "pnpm install --ignore-scripts",
     "framework": null,
     "rewrites": [
