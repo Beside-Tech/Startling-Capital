@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "pnpm --filter @workspace/score-sheet build",
+    "buildCommand": "cd artifacts/score-sheet && pnpm run build",
     "outputDirectory": "artifacts/score-sheet/dist/public",
     "installCommand": "pnpm install --ignore-scripts",
     "framework": null,
