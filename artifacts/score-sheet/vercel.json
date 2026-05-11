@@ -1,8 +1,9 @@
 {
     "version": 2,
-    "buildCommand": "vite build --config vite.config.ts",
-    "outputDirectory": "dist",
-    "framework": "vite",
+    "buildCommand": "pnpm --filter @workspace/score-sheet build",
+    "outputDirectory": "artifacts/score-sheet/dist",
+    "installCommand": "pnpm install --ignore-scripts",
+    "framework": null,
     "rewrites": [
         {
             "source": "/(.*)",
@@ -11,5 +12,33 @@
     ],
     "env": {
         "BASE_PATH": "/"
-    }
+    },
+    "headers": [
+        {
+            "source": "/assets/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=31536000, immutable"
+                }
+            ]
+        },
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-XSS-Protection",
+                    "value": "1; mode=block"
+                }
+            ]
+        }
+    ]
 }
